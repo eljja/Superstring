@@ -1,0 +1,258 @@
+"""
+Pre-populated registry of the 5 consistent 10-dimensional superstring theories
+and 11-dimensional M-Theory, adhering to the Pydantic schemas.
+"""
+
+from typing import Dict
+from .models import SuperstringTheory, MasslessField, DBrane, DualityRelation
+
+THEORIES: Dict[str, SuperstringTheory] = {
+    "Type_I": SuperstringTheory(
+        name="Type I",
+        dimensions=10,
+        orientation="Unoriented",
+        string_type="Open & Closed",
+        supersymmetry="N=1 chiral",
+        supercharges=16,
+        gauge_group="SO(32)",
+        description=(
+            "Type I superstring theory includes both open and closed, unoriented strings. "
+            "It exhibits N=1 supersymmetry in 10 dimensions, with 16 supercharges. "
+            "An anomaly cancellation mechanism forces its gauge group to be SO(32). "
+            "It is dual to the Heterotic SO(32) theory under S-duality."
+        ),
+        massless_spectrum=[
+            MasslessField(name="Graviton", symbol="g_mu_nu", sector="NS-NS (Closed)", spin=2.0, description="Mediator of gravity"),
+            MasslessField(name="Dilaton", symbol="phi", sector="NS-NS (Closed)", spin=0.0, description="Governs string coupling strength"),
+            MasslessField(name="Ramond-Ramond 2-form", symbol="C_2", sector="R-R (Closed)", spin=1.0, description="Couples to D1 and D5 branes"),
+            MasslessField(name="SO(32) Gauge Bosons", symbol="A_mu", sector="Gauge (Open)", spin=1.0, description="Gauge fields for SO(32) Yang-Mills theory"),
+            MasslessField(name="Gravitino", symbol="Psi_mu", sector="NS-R / R-NS", spin=1.5, description="Supersymmetric partner of the graviton"),
+            MasslessField(name="Dilatino", symbol="lambda", sector="NS-R / R-NS", spin=0.5, description="Supersymmetric partner of the dilaton"),
+            MasslessField(name="SO(32) Gaugino", symbol="chi", sector="Gaugino (Open)", spin=0.5, description="Supersymmetric partners of the gauge bosons")
+        ],
+        allowed_branes=[
+            DBrane(name="D1-brane (D-string)", dimension=1, tension_formula="1 / (2 * pi * g_s * alpha')", charge_carrier="C_2", description="Stable open-string bound state, dual to F1"),
+            DBrane(name="D5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * g_s * alpha'^3)", charge_carrier="C_6 (magnetic dual of C_2)", description="Five-dimensional brane, couples magnetically to C_2"),
+            DBrane(name="D9-brane", dimension=9, tension_formula="1 / ((2 * pi)^9 * g_s * alpha'^5)", charge_carrier="C_10", description="Spacetime-filling brane, required for anomaly cancellation and SO(32) gauge group")
+        ],
+        dualities=[
+            DualityRelation(
+                type="S-duality",
+                target_theory="Heterotic_SO32",
+                parameter_mapping="g_s^(Type I) = 1 / g_s^(Het)",
+                physical_effect="Maps strong coupling of Type I to weak coupling of Heterotic SO(32)."
+            )
+        ]
+    ),
+
+    "Type_IIA": SuperstringTheory(
+        name="Type IIA",
+        dimensions=10,
+        orientation="Oriented",
+        string_type="Closed",
+        supersymmetry="N=2 non-chiral (1,1)",
+        supercharges=32,
+        gauge_group="None",
+        description=(
+            "Type IIA superstring theory consists of oriented, closed strings. "
+            "It has N=2 supersymmetry, which is non-chiral (meaning left- and right-movers "
+            "have opposite chiralities). It is equivalent to 11D M-Theory compactified on a circle, "
+            "where D0-branes represent Kaluza-Klein momentum states. It is T-dual to Type IIB."
+        ),
+        massless_spectrum=[
+            MasslessField(name="Graviton", symbol="g_mu_nu", sector="NS-NS", spin=2.0, description="Mediator of gravity"),
+            MasslessField(name="Dilaton", symbol="phi", sector="NS-NS", spin=0.0, description="Governs string coupling strength"),
+            MasslessField(name="Kalb-Ramond 2-form", symbol="B_2", sector="NS-NS", spin=1.0, description="Kalb-Ramond field, couples to fundamental strings (F1)"),
+            MasslessField(name="Ramond-Ramond 1-form", symbol="C_1", sector="R-R", spin=1.0, description="Gauge potential for D0-branes"),
+            MasslessField(name="Ramond-Ramond 3-form", symbol="C_3", sector="R-R", spin=1.0, description="Gauge potential for D2-branes"),
+            MasslessField(name="Gravitinos (Opposite Chirality)", symbol="Psi_mu^1, Psi_mu^2", sector="NS-R / R-NS", spin=1.5, description="Two gravitinos of opposite chirality"),
+            MasslessField(name="Dilatinos (Opposite Chirality)", symbol="lambda^1, lambda^2", sector="NS-R / R-NS", spin=0.5, description="Two dilatinos of opposite chirality")
+        ],
+        allowed_branes=[
+            DBrane(name="D0-brane", dimension=0, tension_formula="1 / (g_s * sqrt(alpha'))", charge_carrier="C_1", description="Point-like D-brane, represents Kaluza-Klein momentum of 11D gravity"),
+            DBrane(name="D2-brane", dimension=2, tension_formula="1 / ((2 * pi)^2 * g_s * alpha'^1.5)", charge_carrier="C_3", description="Two-dimensional membrane, dual to M2-brane"),
+            DBrane(name="D4-brane", dimension=4, tension_formula="1 / ((2 * pi)^4 * g_s * alpha'^2.5)", charge_carrier="C_5 (magnetic dual of C_3)", description="Four-dimensional membrane, wrapping M5-brane on S1"),
+            DBrane(name="D6-brane", dimension=6, tension_formula="1 / ((2 * pi)^6 * g_s * alpha'^3.5)", charge_carrier="C_7 (magnetic dual of C_1)", description="Six-dimensional membrane, magnetic Kaluza-Klein monopole"),
+            DBrane(name="D8-brane", dimension=8, tension_formula="1 / ((2 * pi)^8 * g_s * alpha'^4.5)", charge_carrier="C_9", description="Eight-dimensional membrane, acts as a domain wall in massive IIA supergravity"),
+            DBrane(name="NS5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * g_s^2 * alpha'^3)", is_dirichlet=False, charge_carrier="B_6 (magnetic dual of B_2)", description="Solitonic 5-brane, extremely heavy at weak coupling due to 1/g_s^2 scaling")
+        ],
+        dualities=[
+            DualityRelation(
+                type="T-duality",
+                target_theory="Type_IIB",
+                parameter_mapping="R -> alpha' / R",
+                physical_effect="Type IIA compactified on a circle of radius R is physically equivalent to Type IIB compactified on a circle of radius alpha'/R."
+            ),
+            DualityRelation(
+                type="M-theory limit",
+                target_theory="M_Theory",
+                parameter_mapping="R_11 = g_s * sqrt(alpha')",
+                physical_effect="At strong coupling (g_s -> infinity), Type IIA grows an 11th dimension of radius R_11, becoming 11D M-Theory."
+            )
+        ]
+    ),
+
+    "Type_IIB": SuperstringTheory(
+        name="Type IIB",
+        dimensions=10,
+        orientation="Oriented",
+        string_type="Closed",
+        supersymmetry="N=2 chiral (2,0)",
+        supercharges=32,
+        gauge_group="None",
+        description=(
+            "Type IIB superstring theory consists of oriented, closed strings. "
+            "It has N=2 supersymmetry, which is chiral (meaning left- and right-movers "
+            "have the same chirality). It is exceptionally symmetric, possessing a "
+            "non-perturbative SL(2, Z) S-duality symmetry that maps the theory to itself, "
+            "exchanging the fundamental string (F1) and the D-string (D1)."
+        ),
+        massless_spectrum=[
+            MasslessField(name="Graviton", symbol="g_mu_nu", sector="NS-NS", spin=2.0, description="Mediator of gravity"),
+            MasslessField(name="Dilaton", symbol="phi", sector="NS-NS", spin=0.0, description="Governs string coupling strength"),
+            MasslessField(name="Kalb-Ramond 2-form", symbol="B_2", sector="NS-NS", spin=1.0, description="Kalb-Ramond field, couples to fundamental strings"),
+            MasslessField(name="Axion (RR 0-form)", symbol="C_0", sector="R-R", spin=0.0, description="Ramond-Ramond 0-form field"),
+            MasslessField(name="Ramond-Ramond 2-form", symbol="C_2", sector="R-R", spin=1.0, description="Kalb-Ramond-like field, couples to D-strings"),
+            MasslessField(name="Ramond-Ramond 4-form", symbol="C_4", sector="R-R", spin=1.0, description="Has a self-dual 5-form field strength F_5^+, couples to D3-branes"),
+            MasslessField(name="Gravitinos (Same Chirality)", symbol="Psi_mu^1, Psi_mu^2", sector="NS-R / R-NS", spin=1.5, description="Two gravitinos of the same chirality"),
+            MasslessField(name="Dilatinos (Same Chirality)", symbol="lambda^1, lambda^2", sector="NS-R / R-NS", spin=0.5, description="Two dilatinos of the same chirality")
+        ],
+        allowed_branes=[
+            DBrane(name="D1-brane (D-string)", dimension=1, tension_formula="1 / (2 * pi * g_s * alpha')", charge_carrier="C_2", description="Stable string-like brane, S-dual to F1"),
+            DBrane(name="D3-brane", dimension=3, tension_formula="1 / ((2 * pi)^3 * g_s * alpha'^2)", charge_carrier="C_4", description="Three-dimensional brane, invariant under S-duality, hosts 4D N=4 Super Yang-Mills on its worldvolume"),
+            DBrane(name="D5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * g_s * alpha'^3)", charge_carrier="C_6 (magnetic dual of C_2)", description="Five-dimensional D-brane, S-dual to NS5-brane"),
+            DBrane(name="D7-brane", dimension=7, tension_formula="1 / ((2 * pi)^7 * g_s * alpha'^4)", charge_carrier="C_8 (magnetic dual of C_0)", description="Seven-dimensional D-brane, codimension-2 object, essential in F-theory"),
+            DBrane(name="D9-brane", dimension=9, tension_formula="1 / ((2 * pi)^9 * g_s * alpha'^5)", charge_carrier="C_10", description="Spacetime-filling D-brane, unstable unless coupled with orientifold planes"),
+            DBrane(name="NS5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * g_s^2 * alpha'^3)", is_dirichlet=False, charge_carrier="B_6 (magnetic dual of B_2)", description="Solitonic 5-brane, S-dual to D5-brane")
+        ],
+        dualities=[
+            DualityRelation(
+                type="T-duality",
+                target_theory="Type_IIA",
+                parameter_mapping="R -> alpha' / R",
+                physical_effect="Type IIB compactified on a circle of radius R is T-dual to Type IIA compactified on a circle of radius alpha'/R."
+            ),
+            DualityRelation(
+                type="S-duality",
+                target_theory="Type_IIB",
+                parameter_mapping="g_s -> 1/g_s, phi -> -phi, B_2 <-> C_2, F1 <-> D1, NS5 <-> D5",
+                physical_effect="Self-duality! Maps strong coupling to weak coupling, exchanging fundamental and D-type strings/5-branes while leaving the D3-brane invariant."
+            )
+        ]
+    ),
+
+    "Heterotic_SO32": SuperstringTheory(
+        name="Heterotic SO(32)",
+        dimensions=10,
+        orientation="Oriented",
+        string_type="Closed",
+        supersymmetry="N=1 chiral",
+        supercharges=16,
+        gauge_group="SO(32)",
+        description=(
+            "Heterotic SO(32) theory utilizes a highly unique closed-string structure: "
+            "left-moving modes are bosonic strings in 26 dimensions (with 16 compactified "
+            "dimensions providing the SO(32) gauge group symmetries), while right-moving "
+            "modes are 10D superstrings. It is chiral, has N=1 supersymmetry in 10D, and "
+            "is T-dual to the Heterotic E8 x E8 theory."
+        ),
+        massless_spectrum=[
+            MasslessField(name="Graviton", symbol="g_mu_nu", sector="NS-NS", spin=2.0, description="Mediator of gravity"),
+            MasslessField(name="Dilaton", symbol="phi", sector="NS-NS", spin=0.0, description="Governs string coupling strength"),
+            MasslessField(name="Kalb-Ramond 2-form", symbol="B_2", sector="NS-NS", spin=1.0, description="Kalb-Ramond field, couples to heterotic string"),
+            MasslessField(name="SO(32) Gauge Bosons", symbol="A_mu", sector="Gauge (Left-movers)", spin=1.0, description="Gauge fields for SO(32) Yang-Mills theory"),
+            MasslessField(name="Gravitino", symbol="Psi_mu", sector="Right-movers (R)", spin=1.5, description="Supersymmetric partner of the graviton"),
+            MasslessField(name="Dilatino", symbol="lambda", sector="Right-movers (R)", spin=0.5, description="Supersymmetric partner of the dilaton"),
+            MasslessField(name="SO(32) Gaugino", symbol="chi", sector="Gaugino", spin=0.5, description="Supersymmetric partners of the gauge bosons")
+        ],
+        allowed_branes=[
+            DBrane(name="NS5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * g_s^2 * alpha'^3)", is_dirichlet=False, charge_carrier="B_6 (magnetic dual of B_2)", description="Solitonic 5-brane, stable due to magnetic Kalb-Ramond charge. No stable D-branes exist in Heterotic theory.")
+        ],
+        dualities=[
+            DualityRelation(
+                type="T-duality",
+                target_theory="Heterotic_E8xE8",
+                parameter_mapping="R -> alpha' / R",
+                physical_effect="Heterotic SO(32) compactified on a circle of radius R is dual to Heterotic E8xE8 compactified on a circle of radius alpha'/R."
+            ),
+            DualityRelation(
+                type="S-duality",
+                target_theory="Type_I",
+                parameter_mapping="g_s^(Het) = 1 / g_s^(Type I)",
+                physical_effect="Strong coupling Heterotic SO(32) maps to weakly coupled Type I superstring theory."
+            )
+        ]
+    ),
+
+    "Heterotic_E8xE8": SuperstringTheory(
+        name="Heterotic E8 x E8",
+        dimensions=10,
+        orientation="Oriented",
+        string_type="Closed",
+        supersymmetry="N=1 chiral",
+        supercharges=16,
+        gauge_group="E8 x E8",
+        description=(
+            "Heterotic E8 x E8 is the second heterotic theory. It utilizes the same structure "
+            "as HO (left-moving 26D bosonic modes, right-moving 10D superstring modes), but "
+            "the 16 compact left-moving dimensions are configured to produce E8 x E8 gauge symmetry. "
+            "This theory is highly favored for phenomenology, since compactifying E8 x E8 on a Calabi-Yau "
+            "manifold naturally yields grand unified models like E6, complete with three generations of fermions. "
+            "It is dual to M-Theory on an interval under strong coupling."
+        ),
+        massless_spectrum=[
+            MasslessField(name="Graviton", symbol="g_mu_nu", sector="NS-NS", spin=2.0, description="Mediator of gravity"),
+            MasslessField(name="Dilaton", symbol="phi", sector="NS-NS", spin=0.0, description="Governs string coupling strength"),
+            MasslessField(name="Kalb-Ramond 2-form", symbol="B_2", sector="NS-NS", spin=1.0, description="Kalb-Ramond field, couples to heterotic string"),
+            MasslessField(name="E8 x E8 Gauge Bosons", symbol="A_mu", sector="Gauge (Left-movers)", spin=1.0, description="Gauge fields for E8 x E8 Yang-Mills theory"),
+            MasslessField(name="Gravitino", symbol="Psi_mu", sector="Right-movers (R)", spin=1.5, description="Supersymmetric partner of the graviton"),
+            MasslessField(name="Dilatino", symbol="lambda", sector="Right-movers (R)", spin=0.5, description="Supersymmetric partner of the dilaton"),
+            MasslessField(name="E8 x E8 Gaugino", symbol="chi", sector="Gaugino", spin=0.5, description="Supersymmetric partners of the gauge bosons")
+        ],
+        allowed_branes=[
+            DBrane(name="NS5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * g_s^2 * alpha'^3)", is_dirichlet=False, charge_carrier="B_6 (magnetic dual of B_2)", description="Solitonic 5-brane. No stable D-branes exist.")
+        ],
+        dualities=[
+            DualityRelation(
+                type="T-duality",
+                target_theory="Heterotic_SO32",
+                parameter_mapping="R -> alpha' / R",
+                physical_effect="Heterotic E8xE8 compactified on a circle of radius R is T-dual to Heterotic SO(32) on a circle of radius alpha'/R."
+            ),
+            DualityRelation(
+                type="M-theory limit (Horava-Witten)",
+                target_theory="M_Theory",
+                parameter_mapping="R_11 = g_s * sqrt(alpha')",
+                physical_effect="At strong coupling, Heterotic E8xE8 grows an 11th dimension in the form of a line segment S1/Z2 (an interval). "
+                                "The two E8 gauge groups live on the two 9D boundary faces, realizing Horava-Witten theory."
+            )
+        ]
+    ),
+
+    "M_Theory": SuperstringTheory(
+        name="M-Theory",
+        dimensions=11,
+        orientation="Oriented",
+        string_type="None (Membranes only)",
+        supersymmetry="N=1 (11D)",
+        supercharges=32,
+        gauge_group="None",
+        description=(
+            "M-Theory is the overarching 11-dimensional theory that unites all five superstring theories. "
+            "Instead of strings, its fundamental excitations are 2-dimensional membranes (M2-branes) "
+            "and 5-dimensional membranes (M5-branes). Superstring theories emerge as different "
+            "limits of M-Theory (e.g., Type IIA is M-Theory compactified on a circle, Heterotic E8xE8 "
+            "is M-Theory compactified on an interval S1/Z2)."
+        ),
+        massless_spectrum=[
+            MasslessField(name="11D Graviton", symbol="g_MN", sector="11D Supergravity", spin=2.0, description="11-dimensional graviton"),
+            MasslessField(name="11D 3-form field", symbol="A_3", sector="11D Supergravity", spin=1.0, description="Three-form gauge potential, couples to M2-branes"),
+            MasslessField(name="11D Gravitino", symbol="Psi_M", sector="11D Supergravity", spin=1.5, description="11-dimensional gravitino, N=1, 32 supercharges")
+        ],
+        allowed_branes=[
+            DBrane(name="M2-brane", dimension=2, tension_formula="1 / ((2 * pi)^2 * l_p^3)", is_dirichlet=False, charge_carrier="A_3", description="Two-dimensional membrane, fundamental excitation of M-theory"),
+            DBrane(name="M5-brane", dimension=5, tension_formula="1 / ((2 * pi)^5 * l_p^6)", is_dirichlet=False, charge_carrier="A_6 (magnetic dual of A_3)", description="Five-dimensional membrane, magnetic dual to M2-brane")
+        ],
+        dualities=[]
+    )
+}

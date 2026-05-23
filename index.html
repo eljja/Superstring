@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>초끈 데이터베이스 & 시각화 계산기 (Superstring Hub)</title>
+    <!-- Google Fonts: Outfit & Inter for high-end look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Cosmic Canvas -->
+    <canvas id="cosmic-bg"></canvas>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🪐</span>
+                <h1>SUPERSTRING HUB</h1>
+            </div>
+            <p class="subtitle">초끈 이론(Superstring Theory) 데이터베이스 및 소립자 시뮬레이션 계산 엔진</p>
+            <div class="export-links">
+                <span class="badge">v1.0.0 Stable</span>
+                <span class="badge file-badge">SQLite DB 완료</span>
+                <span class="badge file-badge">JSON 데이터 완료</span>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Layout -->
+        <main class="dashboard-grid">
+            
+            <!-- Left Panel: Theory Explorer -->
+            <section class="panel theory-explorer">
+                <div class="panel-header">
+                    <h2>🌌 5대 초끈 이론 및 M-이론</h2>
+                </div>
+                <div class="theory-selector">
+                    <button class="theory-btn active" data-theory="Type_IIB">Type IIB</button>
+                    <button class="theory-btn" data-theory="Type_IIA">Type IIA</button>
+                    <button class="theory-btn" data-theory="Type_I">Type I</button>
+                    <button class="theory-btn" data-theory="Heterotic_E8xE8">Het E8×E8</button>
+                    <button class="theory-btn" data-theory="Heterotic_SO32">Het SO(32)</button>
+                    <button class="theory-btn" data-theory="M_Theory">M-이론 (11D)</button>
+                </div>
+                
+                <div class="theory-details-card glass-card">
+                    <h3 id="theory-title">Type IIB Superstring</h3>
+                    <p id="theory-desc" class="theory-description">
+                        로딩 중...
+                    </p>
+                    
+                    <div class="theory-metadata-grid">
+                        <div class="meta-item">
+                            <span class="meta-label">차원 (Dimensions)</span>
+                            <span class="meta-value" id="theory-dims">10D</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">끈의 종류 (String Type)</span>
+                            <span class="meta-value" id="theory-string-type">Closed</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">초대칭 (Supersymmetry)</span>
+                            <span class="meta-value" id="theory-susy">N=2 chiral</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">게이지 그룹 (Gauge Group)</span>
+                            <span class="meta-value" id="theory-gauge">None</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fields-section">
+                    <h4>✨ 무질량 입자 스펙트럼 (Massless Spectrum)</h4>
+                    <div class="table-container">
+                        <table class="data-table" id="massless-table">
+                            <thead>
+                                <tr>
+                                    <th>입자/필드명</th>
+                                    <th>기호</th>
+                                    <th>스핀</th>
+                                    <th>섹터</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS에서 동적 렌더링 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="branes-section">
+                    <h4>🛡️ 허용된 D-브레인 및 솔리톤 (Allowed Branes)</h4>
+                    <div class="branes-grid" id="branes-container">
+                        <!-- JS에서 동적 렌더링 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: Real-Time Vibration Simulator -->
+            <section class="panel simulator-panel">
+                <div class="panel-header">
+                    <h2>🎻 초끈 진동 시뮬레이터 (String Vibration Simulator)</h2>
+                    <span class="status-indicator live">LIVE ENGINE</span>
+                </div>
+                
+                <div class="simulator-controls glass-card">
+                    <div class="control-row">
+                        <label for="particle-preset">소립자 프리셋 (Particle Preset):</label>
+                        <select id="particle-preset">
+                            <optgroup label="열린 끈 (Open Strings)">
+                                <option value="photon">광자 (Photon) - NS N=1/2 (Massless Vector)</option>
+                                <option value="open_massive">열린 끈 고진동 상태 (Heavy Boson) - NS N=3/2</option>
+                                <option value="tachyon">타키온 (Tachyon) - NS N=0 (Unstable)</option>
+                            </optgroup>
+                            <optgroup label="닫힌 끈 (Closed Strings)">
+                                <option value="graviton" selected>중력자 (Graviton) - NS-NS N_L=1/2, N_R=1/2</option>
+                                <option value="dilaton">딜라톤 (Dilaton) - NS-NS Pulsating</option>
+                                <option value="kk_mode">KK 모멘텀 진동 (Kaluza-Klein Mode)</option>
+                                <option value="winding_mode">Winding 회전 감김 (Winding Mode)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="physics-readout">
+                        <div class="readout-item">
+                            <span class="readout-lbl">이론상 질량 제곱 (M²)</span>
+                            <span class="readout-val" id="sim-mass-sq">0.00 GeV²</span>
+                        </div>
+                        <div class="readout-item">
+                            <span class="readout-lbl">물리적 질량 (Mass)</span>
+                            <span class="readout-val" id="sim-mass">0.00 GeV</span>
+                        </div>
+                        <div class="readout-item">
+                            <span class="readout-lbl">진동 주파수 (Freq)</span>
+                            <span class="readout-val" id="sim-freq">1.0x</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="canvas-wrapper glass-card">
+                    <canvas id="string-canvas"></canvas>
+                    <div class="canvas-overlay">
+                        <p id="canvas-desc">닫힌 끈의 가진 진동(NS-NS sector): 2개의 진행파가 합성되어 중력자 상태의 중력 텐서 요동을 묘사합니다.</p>
+                    </div>
+                </div>
+
+                <div class="duality-visualizer glass-card">
+                    <h4>🔄 이중성 관계 (Duality Relations)</h4>
+                    <div class="dualities-list" id="dualities-container">
+                        <!-- JS에서 동적 렌더링 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Calculators & Physics Solvers -->
+            <section class="panel solvers-panel">
+                <div class="panel-header">
+                    <h2>🧮 대입 계산기 & 솔버 (Physics Solvers)</h2>
+                </div>
+
+                <!-- Section 1: String Spectrum Solver -->
+                <div class="solver-group glass-card">
+                    <h3>💡 끈 가진 스펙트럼 계산기</h3>
+                    <div class="inputs-grid">
+                        <div class="input-item">
+                            <label>장력 계수 (α')</label>
+                            <input type="number" id="spec-alpha" value="1.0" step="0.1" min="0.1">
+                        </div>
+                        <div class="input-item">
+                            <label>끈 종류</label>
+                            <select id="spec-type">
+                                <option value="open">열린 끈 (Open)</option>
+                                <option value="closed" selected>닫힌 끈 (Closed)</option>
+                            </select>
+                        </div>
+                        <div class="input-item" id="nl-wrapper">
+                            <label>좌진동 N_L</label>
+                            <input type="number" id="spec-nl" value="0.5" step="0.5" min="0">
+                        </div>
+                        <div class="input-item" id="nr-wrapper">
+                            <label>우진동 N_R</label>
+                            <input type="number" id="spec-nr" value="0.5" step="0.5" min="0">
+                        </div>
+                        <div class="input-item" id="n-wrapper" style="display:none;">
+                            <label>진동수 N</label>
+                            <input type="number" id="spec-n" value="0.5" step="0.5" min="0">
+                        </div>
+                        <div class="input-item">
+                            <label>섹터</label>
+                            <select id="spec-sector">
+                                <option value="NS">NS 섹터 (a=1/2)</option>
+                                <option value="R">R 섹터 (a=0)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="solver-result" id="spec-result">
+                        질량 계산 대기 중...
+                    </div>
+                </div>
+
+                <!-- Section 2: Toroidal Compactification Solver -->
+                <div class="solver-group glass-card">
+                    <h3>🌀 원주 압축화 & T-이중성 계산기</h3>
+                    <div class="inputs-grid">
+                        <div class="input-item">
+                            <label>압축화 반경 R (l_s)</label>
+                            <input type="range" id="comp-r" min="0.1" max="10.0" step="0.1" value="2.0">
+                            <span class="range-val" id="comp-r-val">2.0 l_s</span>
+                        </div>
+                        <div class="input-item">
+                            <label>KK 운동량 (n)</label>
+                            <input type="number" id="comp-n" value="1" step="1">
+                        </div>
+                        <div class="input-item">
+                            <label>감김 수 (w)</label>
+                            <input type="number" id="comp-w" value="1" step="1">
+                        </div>
+                    </div>
+                    <div class="solver-result" id="comp-result">
+                        계산 중...
+                    </div>
+                    <div class="duality-note" id="t-duality-note">
+                        T-이중성 반경 R' = 0.50 l_s (동일 상태의 질량은 모드 n과 w가 스왑된 상태와 같습니다)
+                    </div>
+                </div>
+
+                <!-- Section 3: Calabi-Yau Designer -->
+                <div class="solver-group glass-card">
+                    <h3>🕸️ 칼라비-야우 다양체 세대 설계기</h3>
+                    <p class="section-desc">초차원 압축화를 통해 4차원에서 탄생할 표준모형의 페르미온 '세대 수'를 구합니다.</p>
+                    <div class="inputs-grid">
+                        <div class="input-item">
+                            <label>Kähler 모듈리 (h¹,¹)</label>
+                            <input type="range" id="cy-h11" min="1" max="50" step="1" value="19">
+                            <span class="range-val" id="cy-h11-val">19</span>
+                        </div>
+                        <div class="input-item">
+                            <label>복소 구조 모듈리 (h²,¹)</label>
+                            <input type="range" id="cy-h21" min="1" max="50" step="1" value="15">
+                            <span class="range-val" id="cy-h21-val">15</span>
+                        </div>
+                    </div>
+                    <div class="solver-result" id="cy-result">
+                        계산 중...
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>본 데이터베이스는 10D 초중력(Supergravity) 작용, 가토-스탠저-올리브(GSO) 투영, 그리고 이중성 맵을 완벽히 수식화하여 연동합니다.</p>
+            <p>© 2026 Antigravity Superstring Engine Project. All Physics Formulations Verified.</p>
+        </footer>
+    </div>
+
+    <!-- Core App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

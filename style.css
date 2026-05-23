@@ -1,0 +1,632 @@
+/* 
+   Superstring Hub Style - Premium Glassmorphic Cosmic Theme
+   Using Vanilla CSS with deep gradients, glows, and futuristic styling.
+*/
+
+:root {
+    --bg-color: #05050a;
+    --card-bg: rgba(10, 10, 22, 0.45);
+    --card-border: rgba(124, 58, 237, 0.15);
+    --card-border-hover: rgba(124, 58, 237, 0.4);
+    
+    --primary-glow: #7c3aed;
+    --secondary-glow: #06b6d4;
+    --accent-glow: #10b981;
+    --danger-glow: #ef4444;
+    
+    --text-main: #f3f4f6;
+    --text-muted: #9ca3af;
+    --text-glow: #e9d5ff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Background Cosmic Canvas */
+#cosmic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* App Layout Container */
+.app-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    gap: 24px;
+}
+
+/* Header Area */
+.app-header {
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.4) 0%, rgba(10, 10, 22, 0.2) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    backdrop-filter: blur(12px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 28px;
+    animation: float 4s ease-in-out infinite;
+}
+
+.app-header h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    background: linear-gradient(to right, #a78bfa, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    max-width: 500px;
+}
+
+.export-links {
+    display: flex;
+    gap: 10px;
+}
+
+.badge {
+    background: rgba(124, 58, 237, 0.2);
+    border: 1px solid rgba(124, 58, 237, 0.4);
+    color: #c084fc;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.file-badge {
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: #22d3ee;
+}
+
+/* Dashboard Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr 400px;
+    gap: 24px;
+    flex: 1;
+}
+
+@media (max-width: 1400px) {
+    .dashboard-grid {
+        grid-template-columns: 340px 1fr;
+    }
+    .solvers-panel {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .theory-explorer, .simulator-panel, .solvers-panel {
+        grid-column: span 1;
+    }
+}
+
+/* Panel Styles */
+.panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 8px;
+}
+
+.panel-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-glow);
+    letter-spacing: 0.5px;
+}
+
+/* Glassmorphic Card */
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 20px;
+    backdrop-filter: blur(16px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.glass-card:hover {
+    border-color: var(--card-border-hover);
+    box-shadow: 0 8px 30px 0 rgba(124, 58, 237, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Theory Selector Buttons */
+.theory-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.theory-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: var(--text-muted);
+    border-radius: 8px;
+    padding: 10px 4px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.theory-btn:hover {
+    background: rgba(124, 58, 237, 0.1);
+    border-color: rgba(124, 58, 237, 0.3);
+    color: var(--text-main);
+}
+
+.theory-btn.active {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(6, 182, 212, 0.3) 100%);
+    border-color: #a78bfa;
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(124, 58, 237, 0.25);
+}
+
+/* Theory Info Card */
+.theory-details-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #22d3ee;
+    margin-bottom: 10px;
+}
+
+.theory-description {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+.theory-metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 14px;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.meta-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Massless Spectrum Table */
+.fields-section h4, .branes-section h4, .duality-visualizer h4 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a78bfa;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    text-align: left;
+}
+
+.data-table th {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 8px 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.data-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.field-symbol {
+    font-family: 'Fira Code', monospace;
+    color: #22d3ee;
+    font-weight: 600;
+    background: rgba(6, 182, 212, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* D-Brane Grid Cards */
+.branes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.brane-badge-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.brane-badge-card h5 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #34d399;
+}
+
+.brane-formula {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Simulator Canvas & Layout */
+.simulator-panel {
+    flex: 1;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-glow);
+}
+
+.status-indicator::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--accent-glow);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: pulse 1.5s infinite;
+}
+
+.simulator-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.control-row label {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.control-row select {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--card-border);
+    color: var(--text-main);
+    border-radius: 8px;
+    padding: 8px 12px;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.control-row select:focus {
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.3);
+}
+
+.physics-readout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.readout-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.readout-lbl {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.readout-val {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: #e9d5ff;
+}
+
+/* Canvas Display */
+.canvas-wrapper {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    height: 320px;
+    background: radial-gradient(circle at center, #0f0a2a 0%, #030308 100%);
+    border: 1px solid rgba(124, 58, 237, 0.25);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8), 0 8px 32px 0 rgba(0,0,0,0.5);
+}
+
+#string-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.canvas-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%);
+    padding: 14px 20px;
+    pointer-events: none;
+}
+
+.canvas-overlay p {
+    font-size: 12px;
+    color: var(--text-glow);
+    line-height: 1.5;
+}
+
+/* Dualities */
+.dualities-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.duality-item-card {
+    background: rgba(6, 182, 212, 0.03);
+    border: 1px solid rgba(6, 182, 212, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.duality-item-card h6 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #22d3ee;
+    margin-bottom: 4px;
+}
+
+.duality-item-card p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Interactive Solvers Side */
+.solver-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.solver-group h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-glow);
+    border-left: 3px solid var(--primary-glow);
+    padding-left: 8px;
+}
+
+.section-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.inputs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.input-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-item label {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.input-item input[type="number"], .input-item select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    color: var(--text-main);
+    padding: 8px;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+}
+
+.input-item input[type="number"]:focus, .input-item select:focus {
+    border-color: var(--primary-glow);
+}
+
+/* Slider Controls */
+.input-item input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+    margin: 10px 0;
+}
+
+.input-item input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary-glow);
+    box-shadow: 0 0 8px var(--primary-glow);
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+.input-item input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.range-val {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: #22d3ee;
+    text-align: right;
+    margin-top: -4px;
+}
+
+/* Result readout */
+.solver-result {
+    background: rgba(124, 58, 237, 0.05);
+    border: 1px solid rgba(124, 58, 237, 0.15);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #e9d5ff;
+}
+
+.duality-note {
+    font-size: 10px;
+    color: var(--text-muted);
+    border-top: 1px dashed rgba(255, 255, 255, 0.06);
+    padding-top: 8px;
+    line-height: 1.4;
+}
+
+/* Footer Section */
+.app-footer {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Keyframes and Animations */
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-6px) rotate(10deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; box-shadow: 0 0 4px var(--accent-glow); }
+    50% { opacity: 1; box-shadow: 0 0 12px var(--accent-glow); }
+    100% { opacity: 0.6; box-shadow: 0 0 4px var(--accent-glow); }
+}
