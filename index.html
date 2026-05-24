@@ -34,6 +34,7 @@
         <div class="tab-navigation glass-card">
             <button class="tab-btn active" data-tab="explorer">🌌 이론 탐색기 (Theory Explorer)</button>
             <button class="tab-btn" data-tab="assembly">🧪 입자 조립 연구소 (Particle Lab)</button>
+            <button class="tab-btn" data-tab="scattering">💥 입자 산란 연구소 (Scattering Lab)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
         </div>
 
@@ -173,6 +174,63 @@
                             <label>초대칭 깨짐 에너지 스케일 (SUSY Breaking)</label>
                             <input type="range" id="asm-susy" min="0" max="5" step="0.1" value="0.0">
                             <span class="range-val" id="asm-susy-val">0.0 GeV</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 4: Scattering Lab Left -->
+                <div id="left-scattering" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>💥 고에너지 충돌 및 산란 설정</h2>
+                    </div>
+                    <p class="section-desc">Mandelstam 변수 및 D-브레인 기하학 구조를 조정하여 끈 산란 진폭과 게이지-중력 결합 상수를 제어합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>Mandelstam 충돌 에너지</h3>
+                        <div class="input-item" style="margin-top: 5px;">
+                            <label>질량중심 에너지 제곱 (s)</label>
+                            <input type="range" id="scat-s" min="0.05" max="5.0" step="0.05" value="1.5">
+                            <span class="range-val" id="scat-s-val">1.50 GeV²</span>
+                        </div>
+                        
+                        <div class="input-item" style="margin-top: 5px;">
+                            <label>모멘텀 전송 제곱 (t)</label>
+                            <input type="range" id="scat-t" min="-4.0" max="-0.05" step="0.05" value="-1.0">
+                            <span class="range-val" id="scat-t-val">-1.00 GeV²</span>
+                        </div>
+
+                        <div class="inputs-grid" style="margin-top: 5px;">
+                            <div class="input-item">
+                                <label>Regge 기울기 (α')</label>
+                                <input type="number" id="scat-alpha-prime" value="1.0" step="0.1" min="0.1">
+                            </div>
+                            <div class="input-item">
+                                <label>궤적 절편 (α₀)</label>
+                                <select id="scat-alpha-zero">
+                                    <option value="-1.0" selected>타키온 보손 (-1.0)</option>
+                                    <option value="0.0">무질량 벡터 (0.0)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>D-브레인 & 압축화 차원 기하</h3>
+                        <div class="input-item">
+                            <label>D-브레인 차원 (p-brane)</label>
+                            <input type="range" id="scat-p-brane" min="3" max="9" step="1" value="3">
+                            <span class="range-val" id="scat-p-brane-val">D3-brane</span>
+                        </div>
+                        
+                        <div class="inputs-grid" style="margin-top: 5px;">
+                            <div class="input-item">
+                                <label>컴팩트 부피 (V_p-3)</label>
+                                <input type="number" id="scat-v-compact" value="1.0" step="0.1" min="0.1">
+                            </div>
+                            <div class="input-item">
+                                <label>6차원 CY 부피 (V_6)</label>
+                                <input type="number" id="scat-v-6" value="1.0" step="0.1" min="0.1">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -400,6 +458,67 @@
                         <p class="section-desc">E8 대칭성이 세계면에 임베딩되어 표준모형의 게이지 대칭 및 대수적 페르미온 표현으로 깨지는 경로입니다.</p>
                         <div class="gut-tree" id="asm-gut-tree">
                             <!-- JS에서 동적 렌더링 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 4: Scattering Lab Right -->
+                <div id="right-scattering" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 Veneziano Amplitude & Unification</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>Virasoro-Veneziano Resonance Spectrum</h3>
+                        <p class="section-desc">s-채널 질량 극점(Poles)에서 극대화되는 4-point open string 트리 레벨 산란 진폭 |A(s,t)|² 분포 곡선입니다.</p>
+                        <div class="canvas-wrapper glass-card" style="height: 180px; margin-top: 8px; border: 1px solid rgba(6, 182, 212, 0.25);">
+                            <canvas id="resonance-canvas"></canvas>
+                        </div>
+                        <div class="solver-result" id="scat-result" style="font-size:11px; line-height: 1.5; padding: 10px; font-family: 'Fira Code', monospace; white-space: pre-wrap;">
+                            진폭 계산 중...
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>게이지-중력 결합 홀로그래픽 통합</h3>
+                        <p class="section-desc">초끈 장력 및 여분 차원 기하로부터 4차원 초대칭 양-밀스 게이지 장의 g_YM 강도와 중력 상수 G_N의 상대적 비율을 유도합니다.</p>
+                        
+                        <div class="assembled-particle-card" style="border-color: rgba(6, 182, 212, 0.3);">
+                            <div class="asm-spec-grid">
+                                <div class="asm-spec-item">
+                                    <span class="label">게이지 결합 g_YM</span>
+                                    <span class="value" id="scat-res-gym" style="color: #22d3ee;">0.000</span>
+                                </div>
+                                <div class="asm-spec-item">
+                                    <span class="label">중력 상수 G_N</span>
+                                    <span class="value" id="scat-res-gn" style="color: #a78bfa;">0.000</span>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 12px; display:flex; flex-direction:column; gap: 8px;">
+                                <div class="unification-bar-container">
+                                    <div class="unification-lbl-row" style="display:flex; justify-content:space-between; font-size:10px; color: var(--text-muted); margin-bottom: 2px;">
+                                        <span>양-밀스 게이지 결합 세기 (α_YM)</span>
+                                        <span id="scat-bar-val-ym" style="font-family:'Fira Code', monospace; color: #22d3ee;">0.00%</span>
+                                    </div>
+                                    <div class="unification-bar-track" style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow:hidden;">
+                                        <div class="unification-bar-fill ym-fill" id="scat-bar-fill-ym" style="width: 0%; height:100%; background: linear-gradient(to right, #0891b2, #22d3ee); border-radius: 3px; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </div>
+                                <div class="unification-bar-container">
+                                    <div class="unification-lbl-row" style="display:flex; justify-content:space-between; font-size:10px; color: var(--text-muted); margin-bottom: 2px;">
+                                        <span>상대적 중력 강도 (G_N / g_YM²)</span>
+                                        <span id="scat-bar-val-gn" style="font-family:'Fira Code', monospace; color: #a78bfa;">0.00e-36</span>
+                                    </div>
+                                    <div class="unification-bar-track" style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow:hidden;">
+                                        <div class="unification-bar-fill gn-fill" id="scat-bar-fill-gn" style="width: 0%; height:100%; background: linear-gradient(to right, #6d28d9, #c084fc); border-radius: 3px; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px;" id="scat-unification-desc">
+                                D3-brane 위의 YM 이론...
+                            </p>
                         </div>
                     </div>
                 </div>

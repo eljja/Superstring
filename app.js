@@ -207,9 +207,23 @@ function initTabs() {
                 panel.classList.toggle("active", panel.id === `right-${tabId}`);
             });
             
+            // Update canvas description based on active tab
+            const canvasDesc = document.getElementById("canvas-desc");
+            if (tabId === "explorer") {
+                handlePresetChange();
+            } else if (tabId === "assembly") {
+                canvasDesc.innerText = "입자 조립 연구소 라이브 진동면: 조합된 양자수와 압축 반경에 맞게 닫힌끈 또는 열린끈의 커스텀 정상파 진동 요동을 실시간으로 렌더링합니다.";
+            } else if (tabId === "scattering") {
+                canvasDesc.innerText = "입자 산란 연구소 세계면 튜브 (pants diagram): 두 개의 끈이 병합된 후 붕괴하여 새로운 끈들로 나누어지는 연속적이고 특이점 없는 2차원 세계면 위상 공간을 시각화합니다.";
+            } else if (tabId === "diagnostics") {
+                canvasDesc.innerText = "이론적 검증 및 진단 라이브 모니터: 설정된 매개변수 하에서 끈의 무결성 및 등각 변칙 붕괴 파동을 감지하고 상태를 점검합니다.";
+            }
+            
             // Execute related calculations immediately
             if (tabId === "assembly") {
                 runAssemblyEngine();
+            } else if (tabId === "scattering") {
+                runScatteringEngine();
             } else if (tabId === "diagnostics") {
                 runDiagnosticsEngine();
             }
@@ -881,6 +895,157 @@ function drawStringSimulationFrame() {
             ctx.closePath();
             ctx.stroke();
         }
+    } else if (activeTab === "scattering") {
+        // --- TAB 4: Scattering Lab (3D Pants Worldsheet Tube) ---
+        ctx.save();
+        
+        // Draw incoming/outgoing boundary lines
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        // Draw branes/boundaries
+        ctx.moveTo(cx - 180, cy - 80); ctx.lineTo(cx - 180, cy + 80);
+        ctx.moveTo(cx + 180, cy - 80); ctx.lineTo(cx + 180, cy + 80);
+        ctx.stroke();
+        
+        // Helper function for 3D pants coordinate math
+        function getPantsPoint(u, v, upper) {
+            const X = u * 180;
+            const center_offset = 38 * (1.0 - Math.exp(-3.0 * u * u));
+            const Y_center = upper ? center_offset : -center_offset;
+            const R = 18 + 14 * Math.exp(-3.0 * u * u) + 2.0 * Math.sin(time * 2.0 + u * 6.0);
+            
+            const Y = Y_center + R * Math.cos(v);
+            const Z = R * Math.sin(v);
+            
+            const projX = cx + X + Z * 0.35;
+            const projY = cy + Y - Z * 0.15;
+            return { x: projX, y: projY, z: Z };
+        }
+        
+        // 1. Draw BACK half of longitudinal lines (Z < 0)
+        ctx.lineWidth = 1.0;
+        ctx.strokeStyle = "rgba(124, 58, 237, 0.2)";
+        const numLongs = 8;
+        for (let j = 0; j < numLongs; j++) {
+            const v = (j / numLongs) * Math.PI * 2;
+            const isBack = Math.sin(v) < 0;
+            if (!isBack) continue;
+            
+            // Upper sheet
+            ctx.beginPath();
+            let p = getPantsPoint(-1.0, v, true);
+            ctx.moveTo(p.x, p.y);
+            for (let i = 1; i <= 30; i++) {
+                const u = -1.0 + 2.0 * (i / 30);
+                p = getPantsPoint(u, v, true);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+            
+            // Lower sheet
+            ctx.beginPath();
+            p = getPantsPoint(-1.0, v, false);
+            ctx.moveTo(p.x, p.y);
+            for (let i = 1; i <= 30; i++) {
+                const u = -1.0 + 2.0 * (i / 30);
+                p = getPantsPoint(u, v, false);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+        }
+        
+        // 2. Draw BACK half of latitude rings (Z < 0)
+        const numRings = 16;
+        for (let i = 0; i <= numRings; i++) {
+            const u = -1.0 + 2.0 * (i / numRings);
+            ctx.beginPath();
+            let start = getPantsPoint(u, Math.PI / 2, true);
+            ctx.moveTo(start.x, start.y);
+            for (let j = 1; j <= 20; j++) {
+                const v = Math.PI / 2 + Math.PI * (j / 20);
+                const p = getPantsPoint(u, v, true);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+            
+            ctx.beginPath();
+            start = getPantsPoint(u, Math.PI / 2, false);
+            ctx.moveTo(start.x, start.y);
+            for (let j = 1; j <= 20; j++) {
+                const v = Math.PI / 2 + Math.PI * (j / 20);
+                const p = getPantsPoint(u, v, false);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+        }
+        
+        // 3. Draw FRONT half of latitude rings (Z >= 0) - Glowing cyan
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = "#22d3ee";
+        ctx.shadowColor = "#22d3ee";
+        ctx.shadowBlur = 12;
+        for (let i = 0; i <= numRings; i++) {
+            const u = -1.0 + 2.0 * (i / numRings);
+            
+            // Fade ends slightly, make center glow more
+            const alpha = 0.4 + 0.5 * Math.exp(-3.0 * u * u);
+            ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+            
+            ctx.beginPath();
+            let start = getPantsPoint(u, -Math.PI / 2, true);
+            ctx.moveTo(start.x, start.y);
+            for (let j = 1; j <= 20; j++) {
+                const v = -Math.PI / 2 + Math.PI * (j / 20);
+                const p = getPantsPoint(u, v, true);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+            
+            ctx.beginPath();
+            start = getPantsPoint(u, -Math.PI / 2, false);
+            ctx.moveTo(start.x, start.y);
+            for (let j = 1; j <= 20; j++) {
+                const v = -Math.PI / 2 + Math.PI * (j / 20);
+                const p = getPantsPoint(u, v, false);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+        
+        // 4. Draw FRONT half of longitudinal lines (Z >= 0) - Sleek purple
+        ctx.lineWidth = 1.8;
+        ctx.strokeStyle = "#a78bfa";
+        for (let j = 0; j < numLongs; j++) {
+            const v = (j / numLongs) * Math.PI * 2;
+            const isFront = Math.sin(v) >= 0;
+            if (!isFront) continue;
+            
+            // Upper sheet
+            ctx.beginPath();
+            let p = getPantsPoint(-1.0, v, true);
+            ctx.moveTo(p.x, p.y);
+            for (let i = 1; i <= 30; i++) {
+                const u = -1.0 + 2.0 * (i / 30);
+                p = getPantsPoint(u, v, true);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+            
+            // Lower sheet
+            ctx.beginPath();
+            p = getPantsPoint(-1.0, v, false);
+            ctx.moveTo(p.x, p.y);
+            for (let i = 1; i <= 30; i++) {
+                const u = -1.0 + 2.0 * (i / 30);
+                p = getPantsPoint(u, v, false);
+                ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+        }
+        ctx.restore();
+        
     } else {
         // --- TAB 2 & 3: Interactive Physics String (renders dynamic Custom Vibrations) ---
         const sector = document.getElementById("asm-sector").value;
@@ -987,6 +1152,271 @@ function handlePresetChange() {
 }
 document.getElementById("particle-preset").addEventListener("change", handlePresetChange);
 
+// --- 8.5 Scattering Lab Calculation & Visualizers ---
+function complexGamma(z) {
+    if (z.real <= 0 && Math.abs(z.real - Math.round(z.real)) < 1e-9 && Math.abs(z.imag) < 1e-9) {
+        return { real: Infinity, imag: 0 };
+    }
+    if (z.real < 0.5) {
+        const pix = Math.PI * z.real;
+        const piy = Math.PI * z.imag;
+        const sin_real = Math.sin(pix) * Math.cosh(piy);
+        const sin_imag = Math.cos(pix) * Math.sinh(piy);
+        const sin_mag_sq = sin_real * sin_real + sin_imag * sin_imag;
+        if (sin_mag_sq < 1e-12) return { real: Infinity, imag: 0 };
+        const inv_sin = {
+            real: sin_real / sin_mag_sq,
+            imag: -sin_imag / sin_mag_sq
+        };
+        const g_one_minus_z = complexGamma({ real: 1.0 - z.real, imag: -z.imag });
+        const denom_real = g_one_minus_z.real * g_one_minus_z.real + g_one_minus_z.imag * g_one_minus_z.imag;
+        if (denom_real < 1e-12) return { real: Infinity, imag: 0 };
+        const num = {
+            real: Math.PI * inv_sin.real,
+            imag: Math.PI * inv_sin.imag
+        };
+        return {
+            real: (num.real * g_one_minus_z.real + num.imag * g_one_minus_z.imag) / denom_real,
+            imag: (num.imag * g_one_minus_z.real - num.real * g_one_minus_z.imag) / denom_real
+        };
+    }
+    const p = [
+        0.99999999999980993,
+        676.5203681218851,
+        -1259.1392167224028,
+        771.32342877765313,
+        -176.61502916214059,
+        12.507343278686905,
+        -0.13857109526572012,
+        9.9843695780195716e-6,
+        1.5056327351493116e-7
+    ];
+    const g = 7;
+    const z_adj = { real: z.real - 1.0, imag: z.imag };
+    let x_real = p[0];
+    let x_imag = 0.0;
+    for (let i = 1; i < p.length; i++) {
+        const denom_r = z_adj.real + i;
+        const denom_i = z_adj.imag;
+        const d_mag_sq = denom_r * denom_r + denom_i * denom_i;
+        x_real += p[i] * denom_r / d_mag_sq;
+        x_imag -= p[i] * denom_i / d_mag_sq;
+    }
+    const t = { real: z_adj.real + g + 0.5, imag: z_adj.imag };
+    const t_mag = Math.sqrt(t.real * t.real + t.imag * t.imag);
+    const t_arg = Math.atan2(t.imag, t.real);
+    const ln_t_r = Math.log(t_mag);
+    const ln_t_i = t_arg;
+    const a_r = z_adj.real + 0.5;
+    const a_i = z_adj.imag;
+    const exponent_r = a_r * ln_t_r - a_i * ln_t_i;
+    const exponent_i = a_r * ln_t_i + a_i * ln_t_r;
+    const pwr_mag = Math.exp(exponent_r);
+    const pwr_real = pwr_mag * Math.cos(exponent_i);
+    const pwr_imag = pwr_mag * Math.sin(exponent_i);
+    const exp_neg_t_mag = Math.exp(-t.real);
+    const exp_neg_t_r = exp_neg_t_mag * Math.cos(-t.imag);
+    const exp_neg_t_i = exp_neg_t_mag * Math.sin(-t.imag);
+    const sqrt_2pi = Math.sqrt(2.0 * Math.PI);
+    const c1_r = pwr_real * exp_neg_t_r - pwr_imag * exp_neg_t_i;
+    const c1_i = pwr_real * exp_neg_t_i + pwr_imag * exp_neg_t_r;
+    const c2_r = c1_r * x_real - c1_i * x_imag;
+    const c2_i = c1_r * x_imag + c1_i * x_real;
+    return {
+        real: sqrt_2pi * c2_r,
+        imag: sqrt_2pi * c2_i
+    };
+}
+
+function calculateVenezianoJS(s, t, alpha_prime, alpha_zero, epsilon = 0.04) {
+    const alpha_s = { real: alpha_zero + alpha_prime * s, imag: alpha_prime * epsilon };
+    const alpha_t = { real: alpha_zero + alpha_prime * t, imag: 0.0 };
+    
+    const gamma_s = complexGamma({ real: -alpha_s.real, imag: -alpha_s.imag });
+    const gamma_t = complexGamma({ real: -alpha_t.real, imag: -alpha_t.imag });
+    const gamma_st = complexGamma({ real: -(alpha_s.real + alpha_t.real), imag: -(alpha_s.imag + alpha_t.imag) });
+    
+    if (gamma_s.real === Infinity || gamma_t.real === Infinity) {
+        return { real: Infinity, imag: 0, magnitude_squared: Infinity };
+    }
+    if (gamma_st.real === Infinity) {
+        return { real: 0, imag: 0, magnitude_squared: 0 };
+    }
+    
+    const num_r = gamma_s.real * gamma_t.real - gamma_s.imag * gamma_t.imag;
+    const num_i = gamma_s.real * gamma_t.imag + gamma_s.imag * gamma_t.real;
+    
+    const denom = gamma_st.real * gamma_st.real + gamma_st.imag * gamma_st.imag;
+    if (denom < 1e-15) {
+        return { real: Infinity, imag: 0, magnitude_squared: Infinity };
+    }
+    
+    const amp_r = (num_r * gamma_st.real + num_i * gamma_st.imag) / denom;
+    const amp_i = (num_i * gamma_st.real - num_r * gamma_st.imag) / denom;
+    
+    const mag_sq = amp_r * amp_r + amp_i * amp_i;
+    
+    return {
+        real: amp_r,
+        imag: amp_i,
+        magnitude_squared: mag_sq
+    };
+}
+
+function runScatteringEngine() {
+    const s = parseFloat(document.getElementById("scat-s").value);
+    const t = parseFloat(document.getElementById("scat-t").value);
+    const alpha_prime = parseFloat(document.getElementById("scat-alpha-prime").value) || 1.0;
+    const alpha_zero = parseFloat(document.getElementById("scat-alpha-zero").value) || -1.0;
+    const p = parseInt(document.getElementById("scat-p-brane").value) || 3;
+    const v_compact = parseFloat(document.getElementById("scat-v-compact").value) || 1.0;
+    const v_6 = parseFloat(document.getElementById("scat-v-6").value) || 1.0;
+    
+    document.getElementById("scat-s-val").innerText = s.toFixed(2) + " GeV²";
+    document.getElementById("scat-t-val").innerText = t.toFixed(2) + " GeV²";
+    document.getElementById("scat-p-brane-val").innerText = `D${p}-brane`;
+    
+    const res = calculateVenezianoJS(s, t, alpha_prime, alpha_zero);
+    let mag = res.magnitude_squared;
+    
+    let scatText = `4-Point Veneziano Amplitude 계산결과:\n`;
+    scatText += `  Mandelstam s: ${s.toFixed(2)} | t: ${t.toFixed(2)} | u: ${(-s-t).toFixed(2)}\n`;
+    scatText += `  α(s) = ${alpha_zero.toFixed(1)} + ${alpha_prime.toFixed(1)}·(${s.toFixed(2)} + 0.04i) = ${(alpha_zero + alpha_prime * s).toFixed(2)} + ${(alpha_prime * 0.04).toFixed(3)}i\n`;
+    scatText += `  진폭 A(s,t): ${res.real === Infinity ? "Infinity" : `${res.real.toFixed(3)} + ${res.imag.toFixed(3)}i`}\n`;
+    scatText += `  강도 |A|²: ${mag === Infinity ? "Infinity" : mag.toFixed(4)}`;
+    document.getElementById("scat-result").innerText = scatText;
+    
+    // holographic coupling unification
+    const g_s = 0.2;
+    const factor = Math.pow(2 * Math.PI, p - 3);
+    const g_ym_sq = factor * g_s * Math.pow(alpha_prime, (p - 3) / 2.0) / v_compact;
+    const g_ym = Math.sqrt(g_ym_sq);
+    const alpha_ym = g_ym_sq / (4.0 * Math.PI);
+    const G_N = (g_s * g_s * Math.pow(alpha_prime, 4)) / (8.0 * v_6);
+    
+    document.getElementById("scat-res-gym").innerText = g_ym.toFixed(4);
+    document.getElementById("scat-res-gn").innerText = G_N.toExponential(4);
+    
+    const ym_pct = Math.min(100, Math.max(0, alpha_ym * 100));
+    document.getElementById("scat-bar-val-ym").innerText = (alpha_ym * 100).toFixed(2) + "%";
+    document.getElementById("scat-bar-fill-ym").style.width = ym_pct.toFixed(1) + "%";
+    
+    const rel_strength = g_ym_sq > 0 ? G_N / g_ym_sq : 0;
+    document.getElementById("scat-bar-val-gn").innerText = rel_strength.toExponential(2);
+    
+    const log_strength = rel_strength > 0 ? Math.log10(rel_strength) : -120;
+    const strength_pct = Math.min(100, Math.max(0, ((log_strength + 40) / 40) * 100));
+    document.getElementById("scat-bar-fill-gn").style.width = strength_pct.toFixed(1) + "%";
+    
+    let desc = `양-밀스 이론이 D${p}-brane 상에 국소화되었습니다.\n`;
+    desc += `끈 스케일에서의 결합 대칭성: g_YM = ${g_ym.toFixed(3)} (α_YM = ${alpha_ym.toFixed(4)}).\n`;
+    desc += `4차원 중력 대비 게이지 힘 강도 비율: 1 : ${rel_strength > 0 ? (1/rel_strength).toExponential(2) : "Infinity"}.\n`;
+    desc += `이는 초끈의 고에너지 영역에서 게이지 힘과 중력이 기하학적으로 통합됨을 시연합니다.`;
+    document.getElementById("scat-unification-desc").innerText = desc;
+    
+    // Draw resonance chart
+    const rCanvas = document.getElementById("resonance-canvas");
+    if (!rCanvas) return;
+    const rCtx = rCanvas.getContext("2d");
+    const rW = rCanvas.width = rCanvas.parentNode.clientWidth;
+    const rH = rCanvas.height = 180;
+    
+    rCtx.fillStyle = "#030308";
+    rCtx.fillRect(0, 0, rW, rH);
+    
+    rCtx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+    rCtx.lineWidth = 1;
+    const numGridLines = 6;
+    for (let i = 1; i < numGridLines; i++) {
+        const gx = (i / numGridLines) * rW;
+        rCtx.beginPath();
+        rCtx.moveTo(gx, 0); rCtx.lineTo(gx, rH);
+        rCtx.stroke();
+        const gy = (i / numGridLines) * rH;
+        rCtx.beginPath();
+        rCtx.moveTo(0, gy); rCtx.lineTo(rW, gy);
+        rCtx.stroke();
+    }
+    
+    const points = [];
+    const sMax = 5.0;
+    const pointsCount = 120;
+    for (let i = 0; i <= pointsCount; i++) {
+        const ptS = (i / pointsCount) * sMax;
+        const ampRes = calculateVenezianoJS(ptS, t, alpha_prime, alpha_zero);
+        let val = ampRes.magnitude_squared;
+        if (isNaN(val) || val === Infinity) val = 1e6;
+        points.push({ s: ptS, val: val });
+    }
+    
+    const logPoints = points.map(pt => ({
+        x: (pt.s / sMax) * (rW - 40) + 20,
+        y: rH - 20 - (Math.min(1.0, Math.log10(pt.val + 1.0) / 6.0) * (rH - 35))
+    }));
+    
+    rCtx.beginPath();
+    rCtx.moveTo(logPoints[0].x, logPoints[0].y);
+    for (let i = 1; i < logPoints.length; i++) {
+        rCtx.lineTo(logPoints[i].x, logPoints[i].y);
+    }
+    const gr = rCtx.createLinearGradient(0, 0, rW, 0);
+    gr.addColorStop(0, "#06b6d4");
+    gr.addColorStop(0.5, "#7c3aed");
+    gr.addColorStop(1, "#c084fc");
+    rCtx.strokeStyle = gr;
+    rCtx.lineWidth = 2;
+    rCtx.stroke();
+    
+    rCtx.lineTo(logPoints[logPoints.length - 1].x, rH - 20);
+    rCtx.lineTo(logPoints[0].x, rH - 20);
+    rCtx.closePath();
+    const fillGr = rCtx.createLinearGradient(0, 0, 0, rH);
+    fillGr.addColorStop(0, "rgba(124, 58, 237, 0.15)");
+    fillGr.addColorStop(1, "rgba(3, 3, 8, 0.0)");
+    rCtx.fillStyle = fillGr;
+    rCtx.fill();
+    
+    rCtx.fillStyle = "#9ca3af";
+    rCtx.font = "8px Fira Code, monospace";
+    rCtx.textAlign = "center";
+    for (let sTick = 0; sTick <= sMax; sTick += 1) {
+        const tx = (sTick / sMax) * (rW - 40) + 20;
+        rCtx.fillText(sTick.toFixed(0), tx, rH - 6);
+        rCtx.strokeStyle = "rgba(255,255,255,0.15)";
+        rCtx.beginPath();
+        rCtx.moveTo(tx, rH - 18); rCtx.lineTo(tx, rH - 20);
+        rCtx.stroke();
+    }
+    
+    const curX = (s / sMax) * (rW - 40) + 20;
+    rCtx.strokeStyle = "rgba(34, 211, 238, 0.35)";
+    rCtx.lineWidth = 1;
+    rCtx.setLineDash([3, 3]);
+    rCtx.beginPath();
+    rCtx.moveTo(curX, 8); rCtx.lineTo(curX, rH - 20);
+    rCtx.stroke();
+    rCtx.setLineDash([]);
+    
+    let activeY = rH - 20 - (Math.min(1.0, Math.log10(mag + 1.0) / 6.0) * (rH - 35));
+    if (isNaN(activeY)) activeY = rH - 20;
+    rCtx.fillStyle = "#22d3ee";
+    rCtx.shadowColor = "#22d3ee";
+    rCtx.shadowBlur = 8;
+    rCtx.beginPath();
+    rCtx.arc(curX, activeY, 4, 0, Math.PI * 2);
+    rCtx.fill();
+    rCtx.shadowBlur = 0;
+}
+
+// Bind Scattering events
+document.getElementById("scat-s").addEventListener("input", runScatteringEngine);
+document.getElementById("scat-t").addEventListener("input", runScatteringEngine);
+document.getElementById("scat-alpha-prime").addEventListener("input", runScatteringEngine);
+document.getElementById("scat-alpha-zero").addEventListener("change", runScatteringEngine);
+document.getElementById("scat-p-brane").addEventListener("input", runScatteringEngine);
+document.getElementById("scat-v-compact").addEventListener("input", runScatteringEngine);
+document.getElementById("scat-v-6").addEventListener("input", runScatteringEngine);
+
 // --- 9. Initialization ---
 window.onload = () => {
     resizeCanvas();
@@ -1002,6 +1432,7 @@ window.onload = () => {
     
     // Rerun dynamic checks for other tabs
     runAssemblyEngine();
+    runScatteringEngine();
     runDiagnosticsEngine();
     
     handlePresetChange();

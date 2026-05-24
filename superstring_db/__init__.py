@@ -18,6 +18,11 @@ from .solvers import (
 from .export import export_to_json, export_to_sqlite, export_all
 from .simulator import StringParticleSimulator, ParticleState
 from .diagnostics import run_full_diagnostics
+from .interactions import (
+    calculate_veneziano_amplitude,
+    get_regge_poles,
+    calculate_unified_couplings
+)
 
 __all__ = [
     "StringUnits",
@@ -44,7 +49,10 @@ __all__ = [
     "export_all",
     "StringParticleSimulator",
     "ParticleState",
-    "run_full_diagnostics"
+    "run_full_diagnostics",
+    "calculate_veneziano_amplitude",
+    "get_regge_poles",
+    "calculate_unified_couplings"
 ]
 
 __version__ = "1.0.0"
