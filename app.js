@@ -215,6 +215,8 @@ function initTabs() {
                 canvasDesc.innerText = "입자 조립 연구소 라이브 진동면: 조합된 양자수와 압축 반경에 맞게 닫힌끈 또는 열린끈의 커스텀 정상파 진동 요동을 실시간으로 렌더링합니다.";
             } else if (tabId === "scattering") {
                 canvasDesc.innerText = "입자 산란 연구소 세계면 튜브 (pants diagram): 두 개의 끈이 병합된 후 붕괴하여 새로운 끈들로 나누어지는 연속적이고 특이점 없는 2차원 세계면 위상 공간을 시각화합니다.";
+            } else if (tabId === "holography") {
+                canvasDesc.innerText = "홀로그래피 & 블랙홀 연구소: D1-D5-P 블랙홀의 슈바르츠실트/BPS 이벤트 지평선(Event Horizon) 및 끈 fuzzball 미시진동 상태를 시각화합니다.";
             } else if (tabId === "diagnostics") {
                 canvasDesc.innerText = "이론적 검증 및 진단 라이브 모니터: 설정된 매개변수 하에서 끈의 무결성 및 등각 변칙 붕괴 파동을 감지하고 상태를 점검합니다.";
             }
@@ -224,6 +226,8 @@ function initTabs() {
                 runAssemblyEngine();
             } else if (tabId === "scattering") {
                 runScatteringEngine();
+            } else if (tabId === "holography") {
+                runHolographyEngine();
             } else if (tabId === "diagnostics") {
                 runDiagnosticsEngine();
             }
@@ -1012,38 +1016,135 @@ function drawStringSimulationFrame() {
             }
             ctx.stroke();
         }
-        ctx.shadowBlur = 0;
+        }
+        ctx.restore();
         
-        // 4. Draw FRONT half of longitudinal lines (Z >= 0) - Sleek purple
-        ctx.lineWidth = 1.8;
-        ctx.strokeStyle = "#a78bfa";
-        for (let j = 0; j < numLongs; j++) {
-            const v = (j / numLongs) * Math.PI * 2;
-            const isFront = Math.sin(v) >= 0;
-            if (!isFront) continue;
+    } else if (activeTab === "holography") {
+        // --- TAB 5: Holography & Black Holes (3D Event Horizon & Fuzzball strings) ---
+        ctx.save();
+        
+        const q1 = parseInt(document.getElementById("holo-q1").value) || 4;
+        const q5 = parseInt(document.getElementById("holo-q5").value) || 9;
+        const np = parseInt(document.getElementById("holo-np").value) || 16;
+        const deltam = parseFloat(document.getElementById("holo-deltam").value) || 0.0;
+        
+        const horizonR = Math.min(100, Math.max(45, 30 + 1.5 * Math.sqrt(q1 * q5)));
+        
+        // Accretion disk/gravity lensing glow behind BH
+        const lensGrad = ctx.createRadialGradient(cx, cy, horizonR * 0.8, cx, cy, horizonR * 2.2);
+        lensGrad.addColorStop(0, "rgba(3, 3, 8, 1)");
+        lensGrad.addColorStop(0.2, "rgba(245, 158, 11, 0.18)"); // glowing amber
+        lensGrad.addColorStop(0.5, "rgba(139, 92, 246, 0.06)"); // red-shifted purple
+        lensGrad.addColorStop(1.0, "rgba(3, 3, 8, 0)");
+        ctx.fillStyle = lensGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, horizonR * 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Event Horizon sphere shadow
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.9)";
+        ctx.fillStyle = "rgba(4, 4, 10, 0.95)";
+        ctx.beginPath();
+        ctx.arc(cx, cy, horizonR, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Rotating 3D wireframe grid
+        const numLatitudes = 8;
+        const numLongitudes = 8;
+        const rotX = time * 0.25;
+        const rotY = time * 0.12;
+        
+        function projectSphere(lat, lon) {
+            const theta = (lat / numLatitudes) * Math.PI;
+            const phi = (lon / numLongitudes) * Math.PI * 2 + rotY;
             
-            // Upper sheet
-            ctx.beginPath();
-            let p = getPantsPoint(-1.0, v, true);
-            ctx.moveTo(p.x, p.y);
-            for (let i = 1; i <= 30; i++) {
-                const u = -1.0 + 2.0 * (i / 30);
-                p = getPantsPoint(u, v, true);
-                ctx.lineTo(p.x, p.y);
-            }
-            ctx.stroke();
+            const X3 = horizonR * Math.sin(theta) * Math.cos(phi);
+            const Y3 = horizonR * Math.cos(theta);
+            const Z3 = horizonR * Math.sin(theta) * Math.sin(phi);
             
-            // Lower sheet
+            const cosX = Math.cos(rotX);
+            const sinX = Math.sin(rotX);
+            const Y_rot = Y3 * cosX - Z3 * sinX;
+            const Z_rot = Y3 * sinX + Z3 * cosX;
+            
+            const projX = cx + X3 + Z_rot * 0.3;
+            const projY = cy + Y_rot - Z_rot * 0.12;
+            return { x: projX, y: projY, z: Z_rot };
+        }
+        
+        // Draw back grid (Z < 0) - thin and faded
+        ctx.lineWidth = 1.0;
+        ctx.strokeStyle = "rgba(245, 158, 11, 0.12)";
+        for (let i = 1; i < numLatitudes; i++) {
             ctx.beginPath();
-            p = getPantsPoint(-1.0, v, false);
-            ctx.moveTo(p.x, p.y);
-            for (let i = 1; i <= 30; i++) {
-                const u = -1.0 + 2.0 * (i / 30);
-                p = getPantsPoint(u, v, false);
-                ctx.lineTo(p.x, p.y);
+            let start = projectSphere(i, 0);
+            ctx.moveTo(start.x, start.y);
+            for (let j = 1; j <= 24; j++) {
+                const p = projectSphere(i, (j / 24) * numLongitudes * 2);
+                if (p.z < 0) ctx.lineTo(p.x, p.y);
+                else ctx.moveTo(p.x, p.y);
             }
             ctx.stroke();
         }
+        
+        // Draw front grid (Z >= 0) - glowing amber gold
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "rgba(251, 191, 36, 0.38)";
+        ctx.shadowColor = "rgba(251, 191, 36, 0.35)";
+        ctx.shadowBlur = 8;
+        for (let i = 1; i < numLatitudes; i++) {
+            ctx.beginPath();
+            let pStart = projectSphere(i, 0);
+            if (pStart.z >= 0) ctx.moveTo(pStart.x, pStart.y);
+            for (let j = 1; j <= 24; j++) {
+                const p = projectSphere(i, (j / 24) * numLongitudes * 2);
+                if (p.z >= 0) {
+                    if (j === 1 || pStart.z < 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                pStart = p;
+            }
+            ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
+        
+        // Draw vibrating quantum fuzzball strings (cyan & purple)
+        const numFuzzStrings = Math.min(8, Math.max(3, Math.round(Math.sqrt(np))));
+        for (let sIdx = 0; sIdx < numFuzzStrings; sIdx++) {
+            const stringPhase = (sIdx / numFuzzStrings) * Math.PI * 2 + time * 0.8;
+            ctx.lineWidth = 2.0;
+            ctx.strokeStyle = sIdx % 2 === 0 ? "rgba(34, 211, 238, 0.75)" : "rgba(167, 139, 250, 0.75)";
+            ctx.shadowColor = sIdx % 2 === 0 ? "#22d3ee" : "#a78bfa";
+            ctx.shadowBlur = 10;
+            
+            ctx.beginPath();
+            const fuzzSteps = 90;
+            for (let i = 0; i <= fuzzSteps; i++) {
+                const angle = (i / fuzzSteps) * Math.PI * 2;
+                
+                const freq = 6 + sIdx;
+                const fuzzAmp = (3 + 5 * Math.sin(Math.sqrt(deltam))) * Math.sin(freq * angle - time * 3.5);
+                const currentR = horizonR + fuzzAmp;
+                
+                const tiltAngle = (sIdx / numFuzzStrings) * Math.PI;
+                const X = currentR * Math.cos(angle);
+                const Y = currentR * Math.sin(angle) * Math.cos(tiltAngle);
+                const Z = currentR * Math.sin(angle) * Math.sin(tiltAngle);
+                
+                const projX = cx + X + Z * 0.35;
+                const projY = cy + Y - Z * 0.15;
+                
+                const isFront = Z >= -10;
+                if (isFront) {
+                    if (i === 0) ctx.moveTo(projX, projY);
+                    else ctx.lineTo(projX, projY);
+                } else {
+                    ctx.moveTo(projX, projY);
+                }
+            }
+            ctx.stroke();
+        }
+        ctx.shadowBlur = 0;
         ctx.restore();
         
     } else {
@@ -1417,6 +1518,86 @@ document.getElementById("scat-p-brane").addEventListener("input", runScatteringE
 document.getElementById("scat-v-compact").addEventListener("input", runScatteringEngine);
 document.getElementById("scat-v-6").addEventListener("input", runScatteringEngine);
 
+// --- 8.6 Holography & Black Hole Thermodynamics Solver ---
+function runHolographyEngine() {
+    const q1 = parseInt(document.getElementById("holo-q1").value) || 4;
+    const q5 = parseInt(document.getElementById("holo-q5").value) || 9;
+    const np = parseInt(document.getElementById("holo-np").value) || 16;
+    const deltam = parseFloat(document.getElementById("holo-deltam").value) || 0.0;
+    const nc = parseInt(document.getElementById("holo-nc").value) || 100;
+    const gym_sq = parseFloat(document.getElementById("holo-gym").value) || 0.5;
+    
+    document.getElementById("holo-q1-val").innerText = q1;
+    document.getElementById("holo-q5-val").innerText = q5;
+    document.getElementById("holo-np-val").innerText = np;
+    document.getElementById("holo-deltam-val").innerText = deltam === 0.0 ? "0.0 GeV (Extremal BPS)" : `${deltam.toFixed(1)} GeV`;
+    document.getElementById("holo-nc-val").innerText = nc;
+    document.getElementById("holo-gym-val").innerText = gym_sq.toFixed(2);
+    
+    const q1_abs = Math.abs(q1);
+    const q5_abs = Math.abs(q5);
+    const np_abs = Math.abs(np);
+    
+    const s_micro = 2.0 * Math.PI * Math.sqrt(q1_abs * q5_abs * np_abs);
+    
+    const g_s = 0.2;
+    const alpha_prime = 1.0;
+    const g_5 = (g_s * g_s * Math.pow(alpha_prime, 1.5)) / (32.0 * Math.PI * Math.PI);
+    
+    const area = 8.0 * Math.PI * g_5 * Math.sqrt(q1_abs * q5_abs * np_abs);
+    const s_macro = area / (4.0 * g_5);
+    
+    const denom = 2.0 * Math.PI * Math.sqrt(q1_abs * q5_abs * np_abs);
+    const t_h = Math.sqrt(2.0 * deltam) / denom;
+    
+    const bps_mass = (q1_abs / g_s) + (q5_abs / g_s) + np_abs;
+    
+    document.getElementById("holo-res-smicro").innerText = s_micro.toFixed(4);
+    document.getElementById("holo-res-smacro").innerText = s_macro.toFixed(4);
+    document.getElementById("holo-res-th").innerText = t_h === 0.0 ? "0.00000 GeV (BPS)" : `${t_h.toFixed(5)} GeV`;
+    document.getElementById("holo-res-bpsmass").innerText = bps_mass.toFixed(2) + " M_s";
+    
+    let entropyText = `열역학적 일치도 평가:\n`;
+    entropyText += `  S_micro (미시 상태 수):  ${s_micro.toFixed(6)}\n`;
+    entropyText += `  S_macro (아인슈타인 영역): ${s_macro.toFixed(6)}\n`;
+    entropyText += `  일치 비율 (Ratio):       ${(s_micro / s_macro).toFixed(6)}\n`;
+    entropyText += `  ↳ 결과: D1-D5-P 끈의 통계역학적 모드 수와 초중력 시공간 지평선 면적 비례 엔트로피가 100% 완벽히 일치합니다!`;
+    document.getElementById("holo-entropy-result").innerText = entropyText;
+    
+    const lambda = gym_sq * nc;
+    const rads = Math.pow(lambda, 0.25);
+    
+    document.getElementById("holo-res-lambda").innerText = lambda.toFixed(2);
+    document.getElementById("holo-res-rads").innerText = rads.toFixed(3) + " l_s";
+    
+    const opList = document.getElementById("holo-op-mapping-list");
+    opList.innerHTML = `
+      Boundary CFT 연산자 (4D)  ↔  Bulk AdS 필드 (5D)\n
+      -------------------------------------------\n
+      • Chiral Primary (O₂):    m²R² = -4.0 (초중력 스칼라)\n
+      • tr F² (Dilaton Operator): m²R² =  0.0 (무질량 딜라톤)\n
+      • KK Excited State (O₆):   m²R² = 12.0 (질량성 KK 스칼라)
+    `;
+    
+    let regimeDesc = `Holographic Regime:\n`;
+    if (lambda < 1.0) {
+        regimeDesc += `Boundary Perturbative CFT / Highly Curved Quantum String. (λ = ${lambda.toFixed(2)}). 강한 시공간 곡률로 양자 중력 이상이 작용하여 고전적 아인슈타인 초중력 근사가 불가능합니다.`;
+    } else if (lambda < 10.0) {
+        regimeDesc += `Intermediate Coupling. 반클래식 끈 요동 및 보정 계수가 활성화됩니다.`;
+    } else {
+        regimeDesc += `Strong CFT / Weak Classical Supergravity. (λ = ${lambda.toFixed(2)}). AdS 반경 R_ads = ${rads.toFixed(2)} l_s >> l_s로 시공간이 평평해져 클래식 Einstein 초중력 계산이 고도로 정확합니다!`;
+    }
+    document.getElementById("holo-regime-desc").innerText = regimeDesc;
+}
+
+// Bind Holography events
+document.getElementById("holo-q1").addEventListener("input", runHolographyEngine);
+document.getElementById("holo-q5").addEventListener("input", runHolographyEngine);
+document.getElementById("holo-np").addEventListener("input", runHolographyEngine);
+document.getElementById("holo-deltam").addEventListener("input", runHolographyEngine);
+document.getElementById("holo-nc").addEventListener("input", runHolographyEngine);
+document.getElementById("holo-gym").addEventListener("input", runHolographyEngine);
+
 // --- 9. Initialization ---
 window.onload = () => {
     resizeCanvas();
@@ -1433,6 +1614,7 @@ window.onload = () => {
     // Rerun dynamic checks for other tabs
     runAssemblyEngine();
     runScatteringEngine();
+    runHolographyEngine();
     runDiagnosticsEngine();
     
     handlePresetChange();

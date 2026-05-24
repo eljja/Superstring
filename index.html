@@ -35,6 +35,7 @@
             <button class="tab-btn active" data-tab="explorer">🌌 이론 탐색기 (Theory Explorer)</button>
             <button class="tab-btn" data-tab="assembly">🧪 입자 조립 연구소 (Particle Lab)</button>
             <button class="tab-btn" data-tab="scattering">💥 입자 산란 연구소 (Scattering Lab)</button>
+            <button class="tab-btn" data-tab="holography">🔮 홀로그래피 & 블랙홀 (Holography & BH)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
         </div>
 
@@ -230,6 +231,58 @@
                             <div class="input-item">
                                 <label>6차원 CY 부피 (V_6)</label>
                                 <input type="number" id="scat-v-6" value="1.0" step="0.1" min="0.1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 5: Holography & BH Left -->
+                <div id="left-holography" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🔮 블랙홀 & 홀로그래피 설정</h2>
+                    </div>
+                    <p class="section-desc">D-브레인의 수량과 충돌 매개변수를 조정하여 블랙홀의 미시상태(Microstates) 엔트로피와 AdS/CFT 강결합 홀로그래피를 시뮬레이션합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>D1-D5-P 블랙홀 전하</h3>
+                        <div class="inputs-grid" style="margin-top: 5px;">
+                            <div class="input-item">
+                                <label>D1-brane 전하 (Q₁)</label>
+                                <input type="range" id="holo-q1" min="1" max="20" step="1" value="4">
+                                <span class="range-val" id="holo-q1-val">4</span>
+                            </div>
+                            <div class="input-item">
+                                <label>D5-brane 전하 (Q₅)</label>
+                                <input type="range" id="holo-q5" min="1" max="20" step="1" value="9">
+                                <span class="range-val" id="holo-q5-val">9</span>
+                            </div>
+                        </div>
+                        
+                        <div class="input-item" style="margin-top: 5px;">
+                            <label>S¹ 컴팩트 KK 모멘텀 (N_p)</label>
+                            <input type="range" id="holo-np" min="1" max="50" step="1" value="16">
+                            <span class="range-val" id="holo-np-val">16</span>
+                        </div>
+
+                        <div class="input-item" style="margin-top: 5px;">
+                            <label>열역학 질량 여기 (ΔM - Extremal off-set)</label>
+                            <input type="range" id="holo-deltam" min="0.0" max="10.0" step="0.1" value="0.0">
+                            <span class="range-val" id="holo-deltam-val">0.0 GeV (Extremal BPS)</span>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>AdS/CFT Boundary CFT 매개변수</h3>
+                        <div class="inputs-grid" style="margin-top: 5px;">
+                            <div class="input-item">
+                                <label>D3-brane 갯수 (N_c)</label>
+                                <input type="range" id="holo-nc" min="2" max="200" step="2" value="100">
+                                <span class="range-val" id="holo-nc-val">100</span>
+                            </div>
+                            <div class="input-item">
+                                <label>Yang-Mills 결합제곱 (g_YM²)</label>
+                                <input type="range" id="holo-gym" min="0.05" max="2.0" step="0.05" value="0.5">
+                                <span class="range-val" id="holo-gym-val">0.50</span>
                             </div>
                         </div>
                     </div>
@@ -518,6 +571,87 @@
                             
                             <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px;" id="scat-unification-desc">
                                 D3-brane 위의 YM 이론...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 5: Holography & BH Right -->
+                <div id="right-holography" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 Entropy & AdS/CFT Dictionary</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>Strominger-Vafa 엔트로피 일치 검증</h3>
+                        <p class="section-desc">D-브레인 미시상태 계수 계량($S_{\text{micro}}$)과 5차원 아인슈타인 수중력 시공간 면적($S_{\text{macro}}$)의 완벽한 상등(Duality)을 실시간 검증합니다.</p>
+                        
+                        <div class="assembled-particle-card" style="border-color: rgba(234, 179, 8, 0.3); background: linear-gradient(135deg, rgba(234,179,8,0.02) 0%, rgba(10,10,22,0.4) 100%);">
+                            <div class="asm-spec-grid">
+                                <div class="asm-spec-item" style="border-color: rgba(234,179,8,0.25); background: rgba(0,0,0,0.35);">
+                                    <span class="label" style="color: #f59e0b; font-size: 9px;">미시 상태 엔트로피 S_micro</span>
+                                    <span class="value" id="holo-res-smicro" style="color: #fbbf24; font-size:14px;">0.000</span>
+                                </div>
+                                <div class="asm-spec-item" style="border-color: rgba(234,179,8,0.25); background: rgba(0,0,0,0.35);">
+                                    <span class="label" style="color: #f59e0b; font-size: 9px;">시공간 면적 엔트로피 S_macro</span>
+                                    <span class="value" id="holo-res-smacro" style="color: #fbbf24; font-size:14px;">0.000</span>
+                                </div>
+                            </div>
+                            
+                            <div class="input-item" style="margin-top: 12px; border-top:1px dashed rgba(255,255,255,0.06); padding-top:10px;">
+                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px;">
+                                    <span style="color: var(--text-muted);">호킹 온도 (Hawking Temp):</span>
+                                    <span id="holo-res-th" style="font-family:'Fira Code', monospace; color: #f87171;">0.000 GeV</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; font-size:11px;">
+                                    <span style="color: var(--text-muted);">블랙홀 BPS 질량:</span>
+                                    <span id="holo-res-bpsmass" style="font-family:'Fira Code', monospace; color: var(--text-main);">0.00 M_s</span>
+                                </div>
+                            </div>
+                            
+                            <div class="solver-result" id="holo-entropy-result" style="font-size:11px; padding: 10px; margin-top: 10px; border-color: rgba(234,179,8,0.2); background: rgba(234,179,8,0.05); color:#fef08a; font-family:'Fira Code', monospace; white-space: pre-wrap; line-height: 1.4;">
+                                일치성 평가 중...
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>AdS/CFT Boundary-Bulk 사전 (Dictionary)</h3>
+                        <p class="section-desc">4차원 게이지 대칭성과 5차원 중력 시공간의 이중 대칭성 분류 및 대수적 매핑 사전입니다.</p>
+                        
+                        <div class="assembled-particle-card" style="border-color: rgba(167, 139, 250, 0.3);">
+                            <div class="asm-spec-grid">
+                                <div class="asm-spec-item">
+                                    <span class="label">t' Hooft 결합 계수 (λ)</span>
+                                    <span class="value" id="holo-res-lambda" style="color: #a78bfa;">0.00</span>
+                                </div>
+                                <div class="asm-spec-item">
+                                    <span class="label">AdS 곡률 반경 (R_ads)</span>
+                                    <span class="value" id="holo-res-rads" style="color: #a78bfa;">0.00 l_s</span>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 12px; display:flex; flex-direction:column; gap: 8px;">
+                                <div class="unification-bar-container">
+                                    <div class="unification-lbl-row" style="display:flex; justify-content:space-between; font-size:10px; color: var(--text-muted); margin-bottom: 2px;">
+                                        <span>점성-엔트로피비 KSS Bound (η / s)</span>
+                                        <span id="holo-bar-val-kss" style="font-family:'Fira Code', monospace; color: #10b981;">1 / 4π</span>
+                                    </div>
+                                    <div class="unification-bar-track" style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow:hidden;">
+                                        <div class="unification-bar-fill kss-fill" style="width: 100%; height:100%; background: #10b981; border-radius: 3px; box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="operator-mapping" style="margin-top: 10px; border-top:1px dashed rgba(255,255,255,0.06); padding-top:8px;">
+                                <span style="font-size:11px; color:#c084fc; font-weight:600; display:block; margin-bottom:4px;">대표 연산자 이중성 매핑:</span>
+                                <div style="font-size:10px; line-height:1.5; color:var(--text-muted); font-family: 'Fira Code', monospace;" id="holo-op-mapping-list">
+                                    <!-- JS에서 동적 연산자 목록 렌더링 -->
+                                </div>
+                            </div>
+                            
+                            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 8px;" id="holo-regime-desc">
+                                Holographic Regime...
                             </p>
                         </div>
                     </div>

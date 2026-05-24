@@ -23,6 +23,11 @@ from .interactions import (
     get_regge_poles,
     calculate_unified_couplings
 )
+from .holography import (
+    calculate_strominger_vafa_entropy,
+    calculate_near_extremal_hawking,
+    calculate_adscft_dictionary
+)
 
 __all__ = [
     "StringUnits",
@@ -52,7 +57,10 @@ __all__ = [
     "run_full_diagnostics",
     "calculate_veneziano_amplitude",
     "get_regge_poles",
-    "calculate_unified_couplings"
+    "calculate_unified_couplings",
+    "calculate_strominger_vafa_entropy",
+    "calculate_near_extremal_hawking",
+    "calculate_adscft_dictionary"
 ]
 
 __version__ = "1.0.0"
