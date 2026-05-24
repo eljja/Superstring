@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Vibrant cosmic gradient -->
+    <linearGradient id="stringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="50%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#22d3ee" />
+    </linearGradient>
+    
+    <!-- Outer Glow filter for glowing string effect -->
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="18" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Subtle dark translucent space background for browser tab contrast -->
+  <circle cx="256" cy="256" r="236" fill="#06060c" stroke="rgba(124, 58, 237, 0.25)" stroke-width="8" />
+  
+  <!-- Vibrating Closed String Path (representing N_L=2, N_R=2 graviton-like shape ripples) -->
+  <path d="M 256,100 
+           C 315,100 340,150 385,175
+           C 430,200 450,215 450,256
+           C 450,297 430,312 385,337
+           C 340,362 315,412 256,412
+           C 197,412 172,362 127,337
+           C 82,312 62,297 62,256
+           C 62,215 82,200 127,175
+           C 172,150 197,100 256,100 Z" 
+        fill="none" 
+        stroke="url(#stringGrad)" 
+        stroke-width="26" 
+        stroke-linecap="round"
+        filter="url(#glow)" />
+        
+  <!-- Core Singularity Particle -->
+  <circle cx="256" cy="256" r="36" fill="#22d3ee" filter="url(#glow)" />
+</svg>
