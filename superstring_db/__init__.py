@@ -28,6 +28,10 @@ from .holography import (
     calculate_near_extremal_hawking,
     calculate_adscft_dictionary
 )
+from .cosmology import (
+    calculate_cosmic_string_gw,
+    calculate_kklt_inflation
+)
 
 __all__ = [
     "StringUnits",
@@ -60,7 +64,9 @@ __all__ = [
     "calculate_unified_couplings",
     "calculate_strominger_vafa_entropy",
     "calculate_near_extremal_hawking",
-    "calculate_adscft_dictionary"
+    "calculate_adscft_dictionary",
+    "calculate_cosmic_string_gw",
+    "calculate_kklt_inflation"
 ]
 
 __version__ = "1.0.0"

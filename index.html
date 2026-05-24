@@ -36,6 +36,7 @@
             <button class="tab-btn" data-tab="assembly">🧪 입자 조립 연구소 (Particle Lab)</button>
             <button class="tab-btn" data-tab="scattering">💥 입자 산란 연구소 (Scattering Lab)</button>
             <button class="tab-btn" data-tab="holography">🔮 홀로그래피 & 블랙홀 (Holography & BH)</button>
+            <button class="tab-btn" data-tab="cosmology">🪐 우주끈 & 우주론 (Cosmic Cosmology)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
         </div>
 
@@ -284,6 +285,57 @@
                                 <input type="range" id="holo-gym" min="0.05" max="2.0" step="0.05" value="0.5">
                                 <span class="range-val" id="holo-gym-val">0.50</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 6: Cosmic Cosmology Left -->
+                <div id="left-cosmology" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🪐 우주끈 & 끈 인플레이션 설정</h2>
+                    </div>
+                    <p class="section-desc">우주 스케일로 늘어난 초거대 우주끈(Cosmic String)의 장력과 모드가 남기는 중력파 신호, 그리고 브레인 급팽창(Inflation)의 우주 마이크로파 배경(CMB) 물리량을 설계합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>초거대 우주끈 루프 & 중력파</h3>
+                        <div class="input-item">
+                            <label>우주끈 무차원 장력 (log₁₀ Gμ)</label>
+                            <input type="range" id="cosmo-gmu-log" min="-11.0" max="-5.0" step="0.1" value="-7.0">
+                            <span class="range-val" id="cosmo-gmu-val">Gμ = 1.00e-7</span>
+                        </div>
+                        
+                        <div class="inputs-grid" style="margin-top: 5px;">
+                            <div class="input-item">
+                                <label>루프 길이 L (광년)</label>
+                                <input type="range" id="cosmo-length" min="0.1" max="20.0" step="0.1" value="10.0">
+                                <span class="range-val" id="cosmo-length-val">10.0 광년</span>
+                            </div>
+                            <div class="input-item">
+                                <label>루프 거리 d_L (Mpc)</label>
+                                <input type="range" id="cosmo-dist" min="10" max="500" step="10" value="100">
+                                <span class="range-val" id="cosmo-dist-val">100 Mpc</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>KKLT 브레인 급팽창 (CMB)</h3>
+                        <div class="inputs-grid" style="margin-top: 5px;">
+                            <div class="input-item">
+                                <label>인플라톤 위치 (z)</label>
+                                <input type="range" id="cosmo-z" min="0.05" max="1.5" step="0.05" value="0.5">
+                                <span class="range-val" id="cosmo-z-val">0.50</span>
+                            </div>
+                            <div class="input-item">
+                                <label>플럭스 세기 (W₀)</label>
+                                <input type="range" id="cosmo-w0" min="0.1" max="2.0" step="0.1" value="1.0">
+                                <span class="range-val" id="cosmo-w0-val">1.0</span>
+                            </div>
+                        </div>
+                        <div class="input-item" style="margin-top: 5px;">
+                            <label>허블 파라미터 (β)</label>
+                            <input type="range" id="cosmo-beta" min="0.01" max="0.5" step="0.01" value="0.05">
+                            <span class="range-val" id="cosmo-beta-val">0.05</span>
                         </div>
                     </div>
                 </div>
@@ -652,6 +704,67 @@
                             
                             <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 8px;" id="holo-regime-desc">
                                 Holographic Regime...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 6: Cosmic Cosmology Right -->
+                <div id="right-cosmology" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 GW Spectrum & CMB Observables</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>Gravitational Wave Strain Spectrum</h3>
+                        <p class="section-desc">우주끈 Cusp와 Kink의 고주파 충격파가 생성하는 중력파 진폭 h(f) 스펙트럼 곡선입니다. f⁻¹/³ 감소 특성을 보입니다.</p>
+                        <div class="canvas-wrapper glass-card" style="height: 180px; margin-top: 8px; border: 1px solid rgba(16, 185, 129, 0.25);">
+                            <canvas id="cosmo-gw-canvas"></canvas>
+                        </div>
+                        <div class="solver-result" id="cosmo-gw-result" style="font-size:11px; padding: 10px; font-family: 'Fira Code', monospace; white-space: pre-wrap; line-height: 1.4; border-color: rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.05); color:#a7f3d0;">
+                            중력파 스펙트럼 로딩 중...
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>CMB 급팽창 관측 데이터 비교</h3>
+                        <p class="section-desc">KKLT 끈 급팽창 모델의 4차원 유효 예측치들을 최신 Planck 2018 CMB 고해상도 우주 배경 복사 관측 한계들과 대조합니다.</p>
+                        
+                        <div class="assembled-particle-card" style="border-color: rgba(34, 211, 238, 0.3);">
+                            <div class="asm-spec-grid">
+                                <div class="asm-spec-item">
+                                    <span class="label">스펙트럼 지수 (n_s)</span>
+                                    <span class="value" id="cosmo-res-ns" style="color: #22d3ee;">0.9650</span>
+                                </div>
+                                <div class="asm-spec-item">
+                                    <span class="label">텐서-스칼라 비 (r)</span>
+                                    <span class="value" id="cosmo-res-r" style="color: #a78bfa;">0.0000</span>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 12px; display:flex; flex-direction:column; gap: 8px;">
+                                <div class="unification-bar-container">
+                                    <div class="unification-lbl-row" style="display:flex; justify-content:space-between; font-size:10px; color: var(--text-muted); margin-bottom: 2px;">
+                                        <span>Planck spectral index 매칭 (Target: 0.961 - 0.969)</span>
+                                        <span id="cosmo-bar-val-ns" style="font-family:'Fira Code', monospace; color: #22d3ee;">0.00%</span>
+                                    </div>
+                                    <div class="unification-bar-track" style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow:hidden;">
+                                        <div class="unification-bar-fill ns-fill" id="cosmo-bar-fill-ns" style="width: 0%; height:100%; background: linear-gradient(to right, #0891b2, #22d3ee); border-radius: 3px; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </div>
+                                <div class="unification-bar-container">
+                                    <div class="unification-lbl-row" style="display:flex; justify-content:space-between; font-size:10px; color: var(--text-muted); margin-bottom: 2px;">
+                                        <span>Planck BICEP/Keck r tensor limit (Target: &lt; 0.036)</span>
+                                        <span id="cosmo-bar-val-r" style="font-family:'Fira Code', monospace; color: #a78bfa;">0.00%</span>
+                                    </div>
+                                    <div class="unification-bar-track" style="height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow:hidden;">
+                                        <div class="unification-bar-fill r-fill" id="cosmo-bar-fill-r" style="width: 0%; height:100%; background: linear-gradient(to right, #6d28d9, #c084fc); border-radius: 3px; transition: width 0.3s ease;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; font-family: 'Fira Code', monospace;" id="cosmo-status-desc">
+                                Cosmological Status...
                             </p>
                         </div>
                     </div>

@@ -219,6 +219,8 @@ function initTabs() {
                 canvasDesc.innerText = "홀로그래피 & 블랙홀 연구소: D1-D5-P 블랙홀의 슈바르츠실트/BPS 이벤트 지평선(Event Horizon) 및 끈 fuzzball 미시진동 상태를 시각화합니다.";
             } else if (tabId === "diagnostics") {
                 canvasDesc.innerText = "이론적 검증 및 진단 라이브 모니터: 설정된 매개변수 하에서 끈의 무결성 및 등각 변칙 붕괴 파동을 감지하고 상태를 점검합니다.";
+            } else if (tabId === "cosmology") {
+                canvasDesc.innerText = "우주끈 & 우주론 연구소: 우주 거대 루프의 Cusp 진동 및 시공간을 흔드는 중력파 버스트 파동, 그리고 KKLT 인플레이션의 CMB 전천 편평도를 시각화합니다.";
             }
             
             // Execute related calculations immediately
@@ -230,6 +232,8 @@ function initTabs() {
                 runHolographyEngine();
             } else if (tabId === "diagnostics") {
                 runDiagnosticsEngine();
+            } else if (tabId === "cosmology") {
+                runCosmologyEngine();
             }
         });
     });
@@ -722,6 +726,8 @@ window.addEventListener("resize", resizeCanvas);
 
 // Background particles for cosmetic depth
 const cosmicParticles = [];
+let lastCuspTime = 0;
+const gwRipples = [];
 for (let i = 0; i < 30; i++) {
     cosmicParticles.push({
         x: Math.random(),
@@ -1145,6 +1151,96 @@ function drawStringSimulationFrame() {
             ctx.stroke();
         }
         ctx.shadowBlur = 0;
+        ctx.restore();
+        
+    } else if (activeTab === "cosmology") {
+        // --- TAB 6: Cosmic Cosmology Loop Cusp & Gravitational Wave Shockwaves ---
+        ctx.save();
+        
+        const gmuLog = parseFloat(document.getElementById("cosmo-gmu-log").value) || -7.0;
+        const tensionGmu = Math.pow(10, gmuLog);
+        const baseRadius = 80;
+        
+        // Draw deforming closed cosmic string loop
+        ctx.strokeStyle = "rgba(16, 185, 129, 0.85)"; // Emerald Green
+        ctx.shadowColor = "#10b981";
+        ctx.shadowBlur = 12;
+        ctx.lineWidth = 3.5;
+        
+        const steps = 180;
+        ctx.beginPath();
+        for (let i = 0; i <= steps; i++) {
+            const angle = (i / steps) * Math.PI * 2;
+            
+            // Left and right running modes
+            const leftMode = 12 * Math.sin(2 * angle - time * 1.8);
+            const rightMode = 8 * Math.sin(3 * angle + time * 1.2);
+            
+            // Periodic cusp factor peaking every ~3.6 seconds
+            const cuspCycle = (time * 0.87) % Math.PI;
+            const cuspStrength = Math.pow(Math.sin(cuspCycle), 12);
+            
+            // Cusp localized deformation at angle = 0
+            const dAngle = angle > Math.PI ? angle - 2 * Math.PI : angle;
+            const cuspDeform = -35 * cuspStrength * Math.exp(-30 * dAngle * dAngle);
+            
+            const currentR = baseRadius + leftMode + rightMode + cuspDeform;
+            
+            const x = cx + currentR * Math.cos(angle);
+            const y = cy + currentR * Math.sin(angle) + 10 * cuspStrength * Math.exp(-30 * dAngle * dAngle);
+            
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        
+        // Periodic ripple spawn logic
+        const cuspCycle = (time * 0.87) % Math.PI;
+        const cuspStrength = Math.pow(Math.sin(cuspCycle), 12);
+        
+        if (cuspStrength > 0.9 && time - lastCuspTime > 3.0) {
+            lastCuspTime = time;
+            
+            // Spawn concentric expanding GW ripple from the cusp point at angle=0
+            gwRipples.push({
+                x: cx + baseRadius - 15,
+                y: cy,
+                r: 5,
+                maxR: 280,
+                opacity: 1.0,
+                speed: 4.5
+            });
+        }
+        
+        // Draw and update GW ripples
+        ctx.restore();
+        ctx.save();
+        ctx.shadowBlur = 0;
+        for (let rIdx = gwRipples.length - 1; rIdx >= 0; rIdx--) {
+            const rip = gwRipples[rIdx];
+            rip.r += rip.speed;
+            rip.opacity = 1.0 - (rip.r / rip.maxR);
+            
+            if (rip.opacity <= 0) {
+                gwRipples.splice(rIdx, 1);
+                continue;
+            }
+            
+            ctx.strokeStyle = `rgba(16, 185, 129, ${rip.opacity * 0.7})`;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(rip.x, rip.y, rip.r, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            if (rip.r > 30) {
+                ctx.strokeStyle = `rgba(34, 211, 238, ${rip.opacity * 0.35})`;
+                ctx.beginPath();
+                ctx.arc(rip.x, rip.y, rip.r - 25, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
         ctx.restore();
         
     } else {
@@ -1598,6 +1694,305 @@ document.getElementById("holo-deltam").addEventListener("input", runHolographyEn
 document.getElementById("holo-nc").addEventListener("input", runHolographyEngine);
 document.getElementById("holo-gym").addEventListener("input", runHolographyEngine);
 
+// --- 8.7 Cosmic Cosmology Tab Solver & Graph ---
+function runCosmologyEngine() {
+    const gmuLog = parseFloat(document.getElementById("cosmo-gmu-log").value) || -7.0;
+    const loopLengthLy = parseFloat(document.getElementById("cosmo-length").value) || 10.0;
+    const distanceMpc = parseFloat(document.getElementById("cosmo-dist").value) || 100.0;
+    
+    const zInflaton = parseFloat(document.getElementById("cosmo-z").value) || 0.5;
+    const fluxW0 = parseFloat(document.getElementById("cosmo-w0").value) || 1.0;
+    const betaHsq = parseFloat(document.getElementById("cosmo-beta").value) || 0.05;
+    
+    const tensionGmu = Math.pow(10, gmuLog);
+    document.getElementById("cosmo-gmu-val").innerText = `Gμ = ${tensionGmu.toExponential(2)}`;
+    document.getElementById("cosmo-length-val").innerText = `${loopLengthLy.toFixed(1)} 광년`;
+    document.getElementById("cosmo-dist-val").innerText = `${distanceMpc.toFixed(0)} Mpc`;
+    
+    document.getElementById("cosmo-z-val").innerText = zInflaton.toFixed(2);
+    document.getElementById("cosmo-w0-val").innerText = fluxW0.toFixed(1);
+    document.getElementById("cosmo-beta-val").innerText = betaHsq.toFixed(2);
+    
+    // Cosmic String calculations
+    const gamma = 50.0;
+    const lifetimeYears = loopLengthLy / (gamma * tensionGmu);
+    const massSolar = loopLengthLy * tensionGmu * 7.126e13;
+    const pPlanck = 3.628e52;
+    const powerWatts = gamma * Math.pow(tensionGmu, 2) * pPlanck;
+    
+    const testFrequency = 1.0; // Hz
+    const lMpc = loopLengthLy * 3.066e-7;
+    let hSingle = (tensionGmu * Math.pow(lMpc, 2.0/3.0)) / (distanceMpc * Math.pow(testFrequency, 1.0/3.0)) * 1.5e-3;
+    if (hSingle > 1e-15) hSingle = 1e-15;
+    
+    let detectability = "Below current detector sensitivities";
+    if (hSingle > 1e-21) {
+        detectability = "Highly Detectable (LIGO / Virgo / KAGRA cusp burst)";
+    } else if (hSingle > 1e-25) {
+        detectability = "Observable (LISA space-based interferometer)";
+    } else if (hSingle > 1e-28) {
+        detectability = "Observable (NANOGrav / Pulsar Timing Array stochastic range)";
+    }
+    
+    let gwText = `우주끈 루프 동역학 및 중력파 버스트 분석 결과:\n`;
+    gwText += `  • 무차원 장력 (Gμ):       ${tensionGmu.toExponential(4)}\n`;
+    gwText += `  • 고유 루프 질량 (Mass):   ${massSolar.toExponential(4)} M_solar\n`;
+    gwText += `  • 방출 중력파 일률(Power):  ${powerWatts.toExponential(4)} Watts\n`;
+    gwText += `  • 중력 댐핑 수명 (τ):     ${lifetimeYears.toExponential(4)} 년\n`;
+    gwText += `  • 1Hz Cusp 변형률 h(f):   ${hSingle.toExponential(4)}\n`;
+    gwText += `  • 감지 가능 상태:         ${detectability}`;
+    
+    document.getElementById("cosmo-gw-result").innerText = gwText;
+    
+    // KKLT Inflation calculations
+    const v0 = fluxW0 * 1.5e-9;
+    const V = v0 * (1.0 - 0.5 * betaHsq * zInflaton * zInflaton);
+    const vPrime = -v0 * betaHsq * zInflaton;
+    const vDoublePrime = -v0 * betaHsq;
+    
+    const epsilon = V > 0 ? 0.5 * Math.pow(vPrime / V, 2) : 0.0;
+    const eta = V > 0 ? vDoublePrime / V : 0.0;
+    
+    const ns = 1.0 - 6.0 * epsilon + 2.0 * eta;
+    const r = 16.0 * epsilon;
+    
+    document.getElementById("cosmo-res-ns").innerText = ns.toFixed(4);
+    document.getElementById("cosmo-res-r").innerText = r.toFixed(5);
+    
+    // Match progress bars
+    const nsDiff = Math.abs(ns - 0.965);
+    const nsPercentage = Math.max(0, 100 - (nsDiff / 0.02) * 100);
+    document.getElementById("cosmo-bar-val-ns").innerText = `${nsPercentage.toFixed(1)}%`;
+    document.getElementById("cosmo-bar-fill-ns").style.width = `${nsPercentage.toFixed(1)}%`;
+    
+    const rPercentage = r < 0.036 ? Math.max(0, 100 - (r / 0.036) * 100) : 0;
+    document.getElementById("cosmo-bar-val-r").innerText = `${rPercentage.toFixed(1)}%`;
+    document.getElementById("cosmo-bar-fill-r").style.width = `${rPercentage.toFixed(1)}%`;
+    
+    const isNsValid = Math.abs(ns - 0.965) <= 0.015;
+    const isRValid = r < 0.036;
+    
+    let statusMsg = "";
+    if (isNsValid && isRValid) {
+        statusMsg = "🪐 Planck CMB Compliant (Successfully stabilized de Sitter vacuum)";
+    } else if (isNsValid) {
+        statusMsg = "⚠️ Tensor-to-scalar ratio exceeds Planck constraints (r > 0.036)";
+    } else if (isRValid) {
+        statusMsg = "⚠️ Spectral index violates Planck scale limits (n_s != 0.965)";
+    } else {
+        statusMsg = "❌ Violates all cosmological observational limits (Ghost/Eta problem active)";
+    }
+    document.getElementById("cosmo-status-desc").innerText = statusMsg;
+    
+    // Draw spectrum graph
+    drawGwSpectrum(tensionGmu, lMpc, distanceMpc);
+}
+
+function drawGwSpectrum(gmu, lMpc, dL) {
+    const gwCanvas = document.getElementById("cosmo-gw-canvas");
+    if (!gwCanvas) return;
+    const gCtx = gwCanvas.getContext("2d");
+    
+    const rect = gwCanvas.parentNode.getBoundingClientRect();
+    gwCanvas.width = rect.width * (window.devicePixelRatio || 1);
+    gwCanvas.height = rect.height * (window.devicePixelRatio || 1);
+    
+    const w = gwCanvas.width;
+    const h = gwCanvas.height;
+    
+    gCtx.fillStyle = "#030308";
+    gCtx.fillRect(0, 0, w, h);
+    
+    const padLeft = 50;
+    const padRight = 15;
+    const padTop = 15;
+    const padBottom = 25;
+    const pW = w - padLeft - padRight;
+    const pH = h - padTop - padBottom;
+    
+    const logFMin = -9.0;
+    const logFMax = 3.0;
+    const logHMin = -30.0;
+    const logHMax = -14.0;
+    
+    function getX(freq) {
+        const logF = Math.log10(freq);
+        const frac = (logF - logFMin) / (logFMax - logFMin);
+        return padLeft + frac * pW;
+    }
+    function getY(strain) {
+        const logH = Math.log10(strain);
+        const frac = (logH - logHMin) / (logHMax - logHMin);
+        return padTop + (1.0 - frac) * pH;
+    }
+    
+    // Draw grid lines & labels
+    gCtx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+    gCtx.lineWidth = 1;
+    gCtx.fillStyle = "rgba(255, 255, 255, 0.35)";
+    gCtx.font = "8px 'Fira Code', monospace";
+    gCtx.textAlign = "center";
+    gCtx.textBaseline = "top";
+    
+    const freqDecades = [
+        { val: 1e-9, label: "10⁻⁹" },
+        { val: 1e-6, label: "10⁻⁶" },
+        { val: 1e-3, label: "10⁻³" },
+        { val: 1, label: "1" },
+        { val: 1e3, label: "10³" }
+    ];
+    freqDecades.forEach(d => {
+        const x = getX(d.val);
+        gCtx.beginPath();
+        gCtx.moveTo(x, padTop);
+        gCtx.lineTo(x, h - padBottom);
+        gCtx.stroke();
+        
+        gCtx.fillText(d.label + " Hz", x, h - padBottom + 4);
+    });
+    
+    gCtx.textAlign = "right";
+    gCtx.textBaseline = "middle";
+    const strainDecades = [
+        { val: 1e-30, label: "10⁻³⁰" },
+        { val: 1e-25, label: "10⁻²⁵" },
+        { val: 1e-20, label: "10⁻²⁰" },
+        { val: 1e-15, label: "10⁻¹⁵" }
+    ];
+    strainDecades.forEach(d => {
+        const y = getY(d.val);
+        gCtx.beginPath();
+        gCtx.moveTo(padLeft, y);
+        gCtx.lineTo(w - padRight, y);
+        gCtx.stroke();
+        
+        gCtx.fillText(d.label, padLeft - 6, y);
+    });
+    
+    // Draw experimental bounds shaded regions
+    // 1. NANOGrav PTA
+    gCtx.save();
+    gCtx.fillStyle = "rgba(167, 139, 250, 0.05)";
+    gCtx.strokeStyle = "rgba(167, 139, 250, 0.15)";
+    gCtx.beginPath();
+    for (let fHz = 1e-9; fHz <= 1e-7; fHz *= 1.3) {
+        const logF = Math.log10(fHz);
+        const dist = logF - (-8.5);
+        const logSens = -15.5 + 3.0 * dist * dist;
+        const x = getX(fHz);
+        const y = getY(Math.pow(10, logSens));
+        if (fHz === 1e-9) gCtx.moveTo(x, y);
+        else gCtx.lineTo(x, y);
+    }
+    gCtx.lineTo(getX(1e-7), getY(1e-14));
+    gCtx.lineTo(getX(1e-9), getY(1e-14));
+    gCtx.closePath();
+    gCtx.fill();
+    gCtx.stroke();
+    gCtx.fillStyle = "rgba(167, 139, 250, 0.4)";
+    gCtx.font = "7px 'Fira Code', monospace";
+    gCtx.textAlign = "left";
+    gCtx.fillText("PTA", getX(1.2e-9), getY(1e-14.8));
+    gCtx.restore();
+    
+    // 2. LISA
+    gCtx.save();
+    gCtx.fillStyle = "rgba(16, 185, 129, 0.05)";
+    gCtx.strokeStyle = "rgba(16, 185, 129, 0.15)";
+    gCtx.beginPath();
+    for (let fHz = 1e-5; fHz <= 1e-1; fHz *= 1.3) {
+        const logF = Math.log10(fHz);
+        const dist = logF - (-3.0);
+        const logSens = -21.0 + 3.0 * dist * dist;
+        const x = getX(fHz);
+        const y = getY(Math.pow(10, logSens));
+        if (fHz === 1e-5) gCtx.moveTo(x, y);
+        else gCtx.lineTo(x, y);
+    }
+    gCtx.lineTo(getX(1e-1), getY(1e-14));
+    gCtx.lineTo(getX(1e-5), getY(1e-14));
+    gCtx.closePath();
+    gCtx.fill();
+    gCtx.stroke();
+    gCtx.fillStyle = "rgba(16, 185, 129, 0.4)";
+    gCtx.font = "7px 'Fira Code', monospace";
+    gCtx.textAlign = "center";
+    gCtx.fillText("LISA", getX(1e-3), getY(1e-18));
+    gCtx.restore();
+    
+    // 3. LIGO
+    gCtx.save();
+    gCtx.fillStyle = "rgba(34, 211, 238, 0.05)";
+    gCtx.strokeStyle = "rgba(34, 211, 238, 0.15)";
+    gCtx.beginPath();
+    for (let fHz = 10; fHz <= 2000; fHz *= 1.3) {
+        const logF = Math.log10(fHz);
+        const dist = logF - 2.0;
+        const logSens = -23.0 + 4.0 * dist * dist;
+        const x = getX(fHz);
+        const y = getY(Math.pow(10, logSens));
+        if (fHz === 10) gCtx.moveTo(x, y);
+        else gCtx.lineTo(x, y);
+    }
+    gCtx.lineTo(getX(2000), getY(1e-14));
+    gCtx.lineTo(getX(10), getY(1e-14));
+    gCtx.closePath();
+    gCtx.fill();
+    gCtx.stroke();
+    gCtx.fillStyle = "rgba(34, 211, 238, 0.4)";
+    gCtx.font = "7px 'Fira Code', monospace";
+    gCtx.textAlign = "center";
+    gCtx.fillText("LIGO/Virgo", getX(100), getY(1e-19.5));
+    gCtx.restore();
+    
+    // Draw the theoretical strain curve
+    gCtx.save();
+    gCtx.strokeStyle = "#10b981";
+    gCtx.shadowColor = "#10b981";
+    gCtx.shadowBlur = 6;
+    gCtx.lineWidth = 2;
+    gCtx.beginPath();
+    
+    for (let fHz = 1e-9; fHz <= 1e3; fHz *= 1.15) {
+        let h_f = (gmu * Math.pow(lMpc, 2.0/3.0)) / (dL * Math.pow(fHz, 1.0/3.0)) * 1.5e-3;
+        if (h_f > 1e-15) h_f = 1e-15;
+        if (h_f < 1e-30) h_f = 1e-30;
+        
+        const x = getX(fHz);
+        const y = getY(h_f);
+        if (fHz === 1e-9) gCtx.moveTo(x, y);
+        else gCtx.lineTo(x, y);
+    }
+    gCtx.stroke();
+    gCtx.restore();
+    
+    // Single point marker at 1 Hz
+    const markerF = 1.0;
+    let markerH = (gmu * Math.pow(lMpc, 2.0/3.0)) / (dL * Math.pow(markerF, 1.0/3.0)) * 1.5e-3;
+    if (markerH > 1e-15) markerH = 1e-15;
+    if (markerH < 1e-30) markerH = 1e-30;
+    
+    const mX = getX(markerF);
+    const mY = getY(markerH);
+    
+    gCtx.save();
+    gCtx.fillStyle = "#ffffff";
+    gCtx.shadowColor = "#ffffff";
+    gCtx.shadowBlur = 8;
+    gCtx.beginPath();
+    gCtx.arc(mX, mY, 4, 0, Math.PI * 2);
+    gCtx.fill();
+    gCtx.restore();
+}
+
+// Bind Cosmology events
+document.getElementById("cosmo-gmu-log").addEventListener("input", runCosmologyEngine);
+document.getElementById("cosmo-length").addEventListener("input", runCosmologyEngine);
+document.getElementById("cosmo-dist").addEventListener("input", runCosmologyEngine);
+document.getElementById("cosmo-z").addEventListener("input", runCosmologyEngine);
+document.getElementById("cosmo-w0").addEventListener("input", runCosmologyEngine);
+document.getElementById("cosmo-beta").addEventListener("input", runCosmologyEngine);
+
 // --- 9. Initialization ---
 window.onload = () => {
     resizeCanvas();
@@ -1616,6 +2011,7 @@ window.onload = () => {
     runScatteringEngine();
     runHolographyEngine();
     runDiagnosticsEngine();
+    runCosmologyEngine();
     
     handlePresetChange();
     drawStringSimulation();
