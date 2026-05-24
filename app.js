@@ -1,6 +1,8 @@
 /**
- * Superstring Hub Core Application
- * Handles database UI rendering, interactive solvers, and real-time canvas physics animations.
+ * Superstring Hub Core Application (v1.1)
+ * Handles database UI rendering, tab navigation, interactive solvers,
+ * real-time Canvas-based string vibration simulation, and the
+ * Particle Assembly Lab + Theoretical Diagnostics engines.
  */
 
 // --- 1. Database (Ported from superstring_db/data.py) ---
@@ -169,6 +171,7 @@ const THEORIES_DB = {
 };
 
 // --- 2. State & DOM References ---
+let activeTab = "explorer";
 let activeTheory = "Type_IIB";
 const canvas = document.getElementById("string-canvas");
 const ctx = canvas.getContext("2d");
@@ -184,14 +187,44 @@ const presets = {
     winding_mode: { type: "closed", nl: 0.5, nr: 1.5, sector: "NS", desc: "압축된 원주 차원을 감고(winding) 있는 진동: 공간이 작게 휘어짐에 따라 끈 자체가 둥글게 원 형태의 4차원에 단단히 감겨 있는 위상학적 요소를 묘사합니다.", m2: 1.25, mass: "1.118 M_s" }
 };
 
-// --- 3. UI Interaction: Theory Explorer ---
+// --- 3. Tab Switching Logic (v1.1) ---
+function initTabs() {
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const tabId = btn.getAttribute("data-tab");
+            activeTab = tabId;
+            
+            // Toggle active tab buttons
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b === btn));
+            
+            // Toggle left panels
+            document.querySelectorAll(".left-panel .subpanel-content").forEach(panel => {
+                panel.classList.toggle("active", panel.id === `left-${tabId}`);
+            });
+            
+            // Toggle right panels
+            document.querySelectorAll(".right-panel .subpanel-content").forEach(panel => {
+                panel.classList.toggle("active", panel.id === `right-${tabId}`);
+            });
+            
+            // Execute related calculations immediately
+            if (tabId === "assembly") {
+                runAssemblyEngine();
+            } else if (tabId === "diagnostics") {
+                runDiagnosticsEngine();
+            }
+        });
+    });
+}
+
+// --- 4. Theory Explorer rendering ---
 function updateTheoryUI(theoryId) {
     const theory = THEORIES_DB[theoryId];
     if (!theory) return;
 
     activeTheory = theoryId;
     
-    // Update active tab styling
+    // Update active tab button styling
     document.querySelectorAll(".theory-btn").forEach(btn => {
         btn.classList.toggle("active", btn.getAttribute("data-theory") === theoryId);
     });
@@ -251,7 +284,7 @@ function updateTheoryUI(theoryId) {
     }
 }
 
-// Add event listeners to theory buttons
+// Add event listeners to theory buttons in explorer
 document.querySelectorAll(".theory-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-theory");
@@ -259,9 +292,8 @@ document.querySelectorAll(".theory-btn").forEach(btn => {
     });
 });
 
-// --- 4. Interactive Math Solvers ---
+// --- 5. Interactive Math Solvers (Tab 1) ---
 
-// 4.1 String Spectrum Calculator
 function runSpectrumCalc() {
     const alpha = parseFloat(document.getElementById("spec-alpha").value) || 1.0;
     const type = document.getElementById("spec-type").value;
@@ -293,7 +325,6 @@ function runSpectrumCalc() {
         const nL = parseFloat(document.getElementById("spec-nl").value) || 0;
         const nR = parseFloat(document.getElementById("spec-nr").value) || 0;
         
-        // Level matching check
         const isMatched = Math.abs((nL - a) - (nR - a)) < 1e-9;
         const massSq = (4.0 / alpha) * (nL - a);
         
@@ -307,21 +338,15 @@ function runSpectrumCalc() {
             resultText = `질량 제곱 M² = ${massSq.toFixed(4)} GeV²\n물리 질량 M  = ${mass.toFixed(4)} GeV\n상태: ${massSq === 0 ? "무질량 중력자/딜라톤/Kalb-Ramond" : "질량성 닫힌끈 가진 입자"}\n수준 일치: 성공 (N_L = N_R = ${nL})`;
         }
     }
-    
     document.getElementById("spec-result").innerText = resultText;
 }
 
-// 4.2 Compactification and T-Duality
 function runCompactificationCalc() {
     const R = parseFloat(document.getElementById("comp-r").value) || 2.0;
     const n = parseInt(document.getElementById("comp-n").value) || 0;
     const w = parseInt(document.getElementById("comp-w").value) || 0;
-    
-    // Constants
     const alpha_prime = 1.0;
     
-    // Formula: M^2 = n^2 / R^2 + w^2 * R^2 / alpha'^2 + (2 / alpha') * (N_L + N_R - a_L - a_R)
-    // For simplicity, we assume the lowest oscillator excitation satisfying level matching N_L - N_R = n * w
     let N_L = 0.5;
     let N_R = 0.5;
     const prod = n * w;
@@ -335,11 +360,10 @@ function runCompactificationCalc() {
     
     const kk_contrib = (n / R) ** 2;
     const winding_contrib = (w * R / alpha_prime) ** 2;
-    const osc_contrib = (2.0 / alpha_prime) * (N_L + N_R - 1.0); // assume a=0.5 (NS-NS)
+    const osc_contrib = (2.0 / alpha_prime) * (N_L + N_R - 1.0);
     
     const massSq = kk_contrib + winding_contrib + osc_contrib;
     const mass = Math.sqrt(massSq);
-    
     const dualR = alpha_prime / R;
     
     document.getElementById("comp-r-val").innerText = R.toFixed(2) + " l_s";
@@ -351,11 +375,9 @@ function runCompactificationCalc() {
     resHtml += `  ↳ 끈 진동자 기여: ${osc_contrib.toFixed(4)} GeV²`;
     
     document.getElementById("comp-result").innerText = resHtml;
-    
     document.getElementById("t-duality-note").innerText = `T-이중성 관계: 반경 R' = ${dualR.toFixed(2)} l_s에서 모드 n=${w}, w=${n}일 때 질량은 ${mass.toFixed(4)} GeV로 완벽히 대칭을 이룹니다.`;
 }
 
-// 4.3 Calabi-Yau generations calculator
 function runCYCalc() {
     const h11 = parseInt(document.getElementById("cy-h11").value);
     const h21 = parseInt(document.getElementById("cy-h21").value);
@@ -368,13 +390,12 @@ function runCYCalc() {
     
     let res = `오일러 지표 (Euler Characteristic) χ = ${chi}\n`;
     res += `입자 세대 수 (Fermion Generations) = ${gen} 세대\n\n`;
-    res += `물리적 결과: Heterotic E8xE8을 본 칼라비-야우 다양체에 압축화하면 E8 하나가 SU(3) 홀로노미에 의해 깨져 E6 GUT 그룹이 되며, `;
-    res += `4차원상에 정확히 ${gen} 세대의 페르미온 입자(표준모형의 전자, 쿼크 등의 세대 구조)가 출현합니다.`;
+    res += `물리적 결과: Heterotic E8xE8을 본 칼라비-야우 다양체에 압축화하면 E8 하나가 SU(3) 홀로노미에 의해 깨져 E6 GUT 그룹이 되며, 4차원상에 정확히 ${gen} 세대의 페르미온 입자가 출현합니다.`;
     
     document.getElementById("cy-result").innerText = res;
 }
 
-// Register all listeners for calculators
+// Bind Tab 1 events
 document.getElementById("spec-alpha").addEventListener("input", runSpectrumCalc);
 document.getElementById("spec-type").addEventListener("change", runSpectrumCalc);
 document.getElementById("spec-sector").addEventListener("change", runSpectrumCalc);
@@ -390,11 +411,288 @@ document.getElementById("cy-h11").addEventListener("input", runCYCalc);
 document.getElementById("cy-h21").addEventListener("input", runCYCalc);
 
 
-// --- 5. Real-Time Physics Canvas Animation ---
+// --- 6. Particle Assembly Lab Engine (Tab 2) ---
+
+function checkGsoProjection(sector, N) {
+    const sec = sector.toUpperCase();
+    if (sec.includes("NS")) {
+        // NS sector: requires N to be k + 0.5 (half-integer)
+        return Math.abs((N % 1.0) - 0.5) < 1e-9;
+    } else {
+        // R sector: requires N to be integer
+        return Math.abs((N % 1.0) - 0.0) < 1e-9;
+    }
+}
+
+function runAssemblyEngine() {
+    const theory = document.getElementById("asm-theory").value;
+    const sector = document.getElementById("asm-sector").value;
+    const nl = parseFloat(document.getElementById("asm-nl").value);
+    const nr = parseFloat(document.getElementById("asm-nr").value);
+    const n = parseInt(document.getElementById("asm-n").value) || 0;
+    const w = parseInt(document.getElementById("asm-w").value) || 0;
+    const R = parseFloat(document.getElementById("asm-r").value) || 1.0;
+    const susy = parseFloat(document.getElementById("asm-susy").value) || 0.0;
+    
+    document.getElementById("asm-nl-val").innerText = nl;
+    document.getElementById("asm-nr-val").innerText = nr;
+    document.getElementById("asm-r-val").innerText = R.toFixed(1) + " l_s";
+    document.getElementById("asm-susy-val").innerText = susy.toFixed(1) + " GeV";
+    
+    const alpha_prime = 1.0;
+    const isClosed = !sector.includes("Open") && theory !== "Type_I";
+    
+    const a_L = sector.split("-")[0].includes("NS") ? 0.5 : 0.0;
+    const a_R = sector.split("-")[sector.split("-").length - 1].includes("NS") ? 0.5 : 0.0;
+    
+    // GSO projection check
+    const gso_l = checkGsoProjection(sector.split("-")[0], nl);
+    const gso_r = checkGsoProjection(sector.split("-")[sector.split("-").length - 1], nr);
+    const gsoPassed = gso_l && gso_r;
+    
+    // Vibrational mass
+    let massSqVib = 0;
+    if (isClosed) {
+        massSqVib = (4.0 / alpha_prime) * (nl - a_L);
+    } else {
+        massSqVib = (1.0 / alpha_prime) * (nl - a_L);
+    }
+    
+    // Compactification contributions
+    const kk_contrib = (n / R) ** 2;
+    const winding_contrib = (w * R / alpha_prime) ** 2;
+    const susy_contrib = susy ** 2;
+    
+    const totalMassSq = massSqVib + kk_contrib + winding_contrib + susy_contrib;
+    const isTachyon = totalMassSq < 0;
+    const physicalMass = isTachyon ? `i · ${Math.sqrt(Math.abs(totalMassSq)).toFixed(3)}` : Math.sqrt(totalMassSq).toFixed(3);
+    
+    // Update Result UI
+    document.getElementById("asm-res-m2").innerText = totalMassSq.toFixed(3) + " GeV²";
+    document.getElementById("asm-res-mass").innerText = physicalMass + " GeV";
+    
+    const gsoBadge = document.getElementById("asm-res-gso");
+    if (gsoPassed) {
+        gsoBadge.innerText = "GSO 통과";
+        gsoBadge.style.background = "#10b981";
+    } else {
+        gsoBadge.innerText = "GSO 필터링됨";
+        gsoBadge.style.background = "#ef4444";
+    }
+    
+    // Identify state
+    let particleName = "조합된 가진 상태 (Assembled String Resonance)";
+    let spin = 1.0;
+    let rep = "Gauge Group Adjoint";
+    let desc = "기본 진동 및 소형차원 모멘텀 모드가 결합된 질량성 끈 여흥 상태입니다.";
+    
+    if (Math.abs(massSqVib) < 1e-9 && n === 0 && w === 0) {
+        if (isClosed) {
+            if (a_L === 0.5 && a_R === 0.5) {
+                particleName = "중력자 (Graviton)";
+                spin = 2.0;
+                rep = "4D 중력 싱글렛 (Singlet)";
+                desc = "닫힌 끈의 무질량 기저 상태(NS-NS sector)로 시공간 기하학 요동을 조율하는 중력의 매개 입자입니다.";
+            } else if (a_L === 0.0 && a_R === 0.0) {
+                particleName = "Ramond-Ramond 폼 게이지";
+                spin = 1.0;
+                rep = "4D 싱글렛";
+                desc = "R-R sector의 무질량 게이지 대칭 성분으로, D-브레인의 하전 전하를 보장하는 미립자 형태입니다.";
+            }
+        } else {
+            if (a_L === 0.5) {
+                particleName = "광자/글루온 (Gauge Boson)";
+                spin = 1.0;
+                rep = "GUT 게이지 결합 표현";
+                desc = "열린 끈의 무질량 기저 보손 상태로 상호작용의 게이지 전기력을 매개하는 매개 입자입니다.";
+            } else {
+                particleName = "쿼크/렙톤 페르미온";
+                spin = 0.5;
+                rep = "게이지 27 혹은 기본 표현";
+                desc = "Ramond sector 열린 끈의 무질량 페르미온 상태로 우리 우주의 일반적인 질량성 물질을 구성합니다.";
+            }
+        }
+    }
+    
+    if (isTachyon) {
+        particleName = "타키온 (Tachyon)";
+        spin = 0.0;
+        rep = "불안정 상태";
+        desc = "질량 제곱이 음수이며 진공 기저 상태의 붕괴(Tachyon Condensation)를 나타내는 비물리적 가상 입자입니다. GSO 투영에 의해 필터링됩니다.";
+    }
+    
+    document.getElementById("asm-res-name").innerText = particleName;
+    document.getElementById("asm-res-spin").innerText = spin.toFixed(1);
+    document.getElementById("asm-res-rep").innerText = "게이지 대칭 표현: " + rep;
+    document.getElementById("asm-res-desc").innerText = desc;
+    
+    const stableLabel = document.getElementById("asm-res-stable");
+    if (isTachyon) {
+        stableLabel.innerText = "불안정 (Tachyon)";
+        stableLabel.style.color = "#ef4444";
+    } else if (!gsoPassed) {
+        stableLabel.innerText = "비물리적 (GSO 차단)";
+        stableLabel.style.color = "#f59e0b";
+    } else {
+        stableLabel.innerText = "안정 (Stable)";
+        stableLabel.style.color = "#10b981";
+    }
+    
+    // Draw GUT Breaking Tree
+    const gutTree = document.getElementById("asm-gut-tree");
+    gutTree.innerHTML = "";
+    
+    const path = [
+        { group: "E8 x E8 (10차원 초대칭 헤테로틱 게이지군)", cls: "active-root" },
+        { group: "➔ E6 x SU(3)_holonomy (칼라비-야우 다양체 진동면 매핑)", cls: "" },
+        { group: "  ➔ SO(10) x U(1) (E6 대칭성 대수적 분해)", cls: "" },
+        { group: "    ➔ SU(5) x U(1) (최소 대통합 이론 GUT 단계)", cls: "" },
+        { group: "      ➔ SU(3)_C x SU(2)_L x U(1)_Y (현대 저에너지 표준모형)", cls: "sm-leaf" }
+    ];
+    
+    path.forEach(node => {
+        const div = document.createElement("div");
+        div.className = `gut-node ${node.cls}`;
+        div.innerText = node.group;
+        gutTree.appendChild(div);
+    });
+}
+
+// Bind Tab 2 events
+document.getElementById("asm-theory").addEventListener("change", () => {
+    // Dynamically adjust sectors based on theory
+    const th = document.getElementById("asm-theory").value;
+    const sect = document.getElementById("asm-sector");
+    
+    if (th === "Type_I") {
+        sect.innerHTML = `
+            <option value="NS">NS 보손 섹터 (Open)</option>
+            <option value="R">R 페르미온 섹터 (Open)</option>
+            <option value="NS-NS">NS-NS 닫힌 끈 섹터</option>
+        `;
+    } else if (th.startsWith("Heterotic")) {
+        sect.innerHTML = `
+            <option value="NS-NS">NS-NS 보손 섹터 (Closed)</option>
+            <option value="R">R 페르미온 섹터 (Right-movers)</option>
+        `;
+    } else {
+        sect.innerHTML = `
+            <option value="NS-NS">NS-NS 보손 섹터 (Closed)</option>
+            <option value="R-R">R-R 보손 섹터 (Closed)</option>
+            <option value="NS-R">NS-R 페르미온 섹터 (Closed)</option>
+            <option value="R-NS">R-NS 페르미온 섹터 (Closed)</option>
+        `;
+    }
+    runAssemblyEngine();
+});
+document.getElementById("asm-sector").addEventListener("change", runAssemblyEngine);
+document.getElementById("asm-nl").addEventListener("input", runAssemblyEngine);
+document.getElementById("asm-nr").addEventListener("input", runAssemblyEngine);
+document.getElementById("asm-n").addEventListener("input", runAssemblyEngine);
+document.getElementById("asm-w").addEventListener("input", runAssemblyEngine);
+document.getElementById("asm-r").addEventListener("input", runAssemblyEngine);
+document.getElementById("asm-susy").addEventListener("input", runAssemblyEngine);
+
+
+// --- 7. Theoretical Diagnostics Engine (Tab 3) ---
+
+function runDiagnosticsEngine() {
+    const D = parseInt(document.getElementById("diag-dims").value);
+    const gauge = document.getElementById("diag-gauge").value;
+    
+    document.getElementById("diag-dims-val").innerText = D + "차원";
+    
+    // Perform checks
+    const checks = [
+        {
+            name: "시공간 임계 차원 검사 (Critical Spacetime Dimension)",
+            passed: D === 10,
+            error: D !== 10 ? `임계 차원 붕괴: 현재 ${D}차원 설정입니다.` : "",
+            exp: D === 10 ? "등각 이상 변칙(Conformal Anomaly)과 유령 상태(Ghost State)가 완전히 제거되는 유일한 임계차원 D=10을 만족합니다." 
+                          : "임계 차원 D=10이 아니면 세계면의 등각 대칭성(Weyl Symmetry)이 깨져 양자 붕괴가 발생하며 질량 계산이 무의미해집니다."
+        },
+        {
+            name: "Green-Schwarz 게이지 변칙 상쇄 검사 (Anomaly Cancellation)",
+            passed: gauge.toUpperCase().replace(/\s/g, "") === "SO(32)" || gauge.toUpperCase().replace(/\s/g, "") === "E8XE8" || gauge.toUpperCase().replace(/\s/g, "") === "E8*E8",
+            error: !(gauge.toUpperCase().replace(/\s/g, "") === "SO(32)" || gauge.toUpperCase().replace(/\s/g, "") === "E8XE8" || gauge.toUpperCase().replace(/\s/g, "") === "E8*E8") 
+                   ? `양자 게이지 변칙 발생: 게이지군 ${gauge}는 10D Green-Schwarz 상쇄를 만족하지 않습니다.` : "",
+            exp: (gauge.toUpperCase().replace(/\s/g, "") === "SO(32)" || gauge.toUpperCase().replace(/\s/g, "") === "E8XE8" || gauge.toUpperCase().replace(/\s/g, "") === "E8*E8")
+                 ? "10차원 N=1 초대칭 이론에서 발생하는 게이지 및 중력 합성 변칙이 해당 게이지군 하에서 대수적으로 상쇄되어 진공이 완전무결합니다."
+                 : "게이지군이 SO(32) 또는 E8 x E8이 아니면 중력-게이지 양자 변칙으로 인해 등가원리가 붕괴하고 광자가 가상 질량을 가지는 파멸적 오류가 발생합니다."
+        },
+        {
+            name: "닫힌 끈 수준 일치 조건 검사 (Level Matching)",
+            passed: true, // evaluated dynamically based on particle lab
+            error: "",
+            exp: "닫힌 끈의 물리적 상태는 세계면 위에서 좌진동과 우진동 에너지 레벨이 정확히 일치하여 고유 회전 매개변수화의 모순이 없는 상태여야 합니다."
+        },
+        {
+            name: "GSO 초대칭 투영 검사 (GSO Projection check)",
+            passed: true,
+            error: "",
+            exp: "가토-스탠저-올리브(GSO) 투영을 통해 세계면의 불안정한 타키온 및 고스트 모드가 완전히 지워져, 시공간 초대칭(Space-time SUSY)이 보존되는 물리적 상태를 보증합니다."
+        }
+    ];
+
+    // Get dynamic state from Tab 2 for Level Matching and GSO in diagnostic checks
+    const sector = document.getElementById("asm-sector").value;
+    const nl = parseFloat(document.getElementById("asm-nl").value);
+    const nr = parseFloat(document.getElementById("asm-nr").value);
+    const n = parseInt(document.getElementById("asm-n").value) || 0;
+    const w = parseInt(document.getElementById("asm-w").value) || 0;
+    
+    const a_L = sector.split("-")[0].includes("NS") ? 0.5 : 0.0;
+    const a_R = sector.split("-")[sector.split("-").length - 1].includes("NS") ? 0.5 : 0.0;
+    
+    const actual_diff = (nl - a_L) - (nr - a_R);
+    const expected_diff = n * w;
+    const levelMatched = Math.abs(actual_diff - expected_diff) < 1e-9;
+    
+    checks[2].passed = levelMatched;
+    if (!levelMatched) {
+        checks[2].error = `수준 불일치: 좌진동(N_L - a_L)과 우진동(N_R - a_R)의 차이(${actual_diff})가 n * w (${expected_diff})와 다릅니다.`;
+        checks[2].exp += " 이 조건이 무너지면 끈의 폐곡선 연속성이 파괴되어 4차원에 물리적 입자 상태를 형성할 수 없게 됩니다.";
+    }
+
+    const gso_l = checkGsoProjection(sector.split("-")[0], nl);
+    const gso_r = checkGsoProjection(sector.split("-")[sector.split("-").length - 1], nr);
+    const gsoPassed = gso_l && gso_r;
+    
+    checks[3].passed = gsoPassed;
+    if (!gsoPassed) {
+        checks[3].error = "GSO 차단: 설정된 끈 진동은 GSO 투영 필터링 조건에 탈락하여 시공간 초대칭에 어긋납니다.";
+        checks[3].exp += " 초끈 이론이 안정적인 상태를 유지하려면 이 필터를 통해 비물리적 타키온 진동을 걸러내고 무질량 페르미온을 남겨야 합니다.";
+    }
+
+    // Render diagnostic cards
+    const container = document.getElementById("diag-checklist-container");
+    container.innerHTML = "";
+    
+    checks.forEach(chk => {
+        const card = document.createElement("div");
+        card.className = `diag-card ${chk.passed ? 'passed' : 'failed'}`;
+        
+        card.innerHTML = `
+            <div class="diag-header">
+                <span class="diag-title">${chk.name}</span>
+                <span class="diag-status-badge ${chk.passed ? 'pass' : 'fail'}">${chk.passed ? 'PASS' : 'FAIL'}</span>
+            </div>
+            ${!chk.passed ? `<div class="diag-error-msg">⚠️ ${chk.error}</div>` : ''}
+            <p class="diag-explanation">${chk.exp}</p>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Bind Tab 3 events
+document.getElementById("diag-dims").addEventListener("input", runDiagnosticsEngine);
+document.getElementById("diag-gauge").addEventListener("input", runDiagnosticsEngine);
+
+
+// --- 8. Real-Time String Animation (Canvas Engine) ---
 let animationFrameId = null;
 let time = 0;
 
-// Resize canvas properly
 function resizeCanvas() {
     const rect = canvas.parentNode.getBoundingClientRect();
     canvas.width = rect.width * window.devicePixelRatio;
@@ -417,7 +715,7 @@ for (let i = 0; i < 30; i++) {
 }
 
 function drawCosmicBackground() {
-    ctx.fillStyle = "rgba(3, 3, 8, 0.2)"; // trail effect
+    ctx.fillStyle = "rgba(3, 3, 8, 0.25)"; // trail effect
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Draw subtle stars
@@ -433,6 +731,10 @@ function drawCosmicBackground() {
 }
 
 function drawStringSimulation() {
+    drawStringSimulationFrame();
+}
+
+function drawStringSimulationFrame() {
     drawCosmicBackground();
     
     const W = canvas.width;
@@ -440,220 +742,257 @@ function drawStringSimulation() {
     const cx = W / 2;
     const cy = H / 2;
     
-    const presetKey = document.getElementById("particle-preset").value;
-    const preset = presets[presetKey];
-    
     time += 0.04;
-    
-    // Global Glow Styling
     ctx.shadowBlur = 15;
     
-    if (preset.type === "open") {
-        // --- OPEN STRING: Standing Waves between two D-branes ---
-        ctx.shadowColor = presetKey === "tachyon" ? "rgba(239, 68, 68, 0.8)" : "rgba(34, 211, 238, 0.8)";
-        ctx.strokeStyle = presetKey === "tachyon" ? "#ef4444" : "#22d3ee";
-        ctx.lineWidth = 3;
+    if (activeTab === "explorer") {
+        // --- TAB 1: Classic Explorer Presets ---
+        const presetKey = document.getElementById("particle-preset").value;
+        const preset = presets[presetKey];
         
-        // Draw two D-branes as vertical glowing lines
-        const leftBraneX = cx - 180;
-        const rightBraneX = cx + 180;
-        
-        ctx.save();
-        ctx.shadowBlur = 8;
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(leftBraneX, cy - 80);
-        ctx.lineTo(leftBraneX, cy + 80);
-        ctx.moveTo(rightBraneX, cy - 80);
-        ctx.lineTo(rightBraneX, cy + 80);
-        ctx.stroke();
-        
-        // Brane text labels
-        ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
-        ctx.font = "10px Inter";
-        ctx.fillText("D-Brane (L)", leftBraneX - 60, cy - 85);
-        ctx.fillText("D-Brane (R)", rightBraneX - 10, cy - 85);
-        ctx.restore();
+        if (preset.type === "open") {
+            ctx.shadowColor = presetKey === "tachyon" ? "rgba(239, 68, 68, 0.8)" : "rgba(34, 211, 238, 0.8)";
+            ctx.strokeStyle = presetKey === "tachyon" ? "#ef4444" : "#22d3ee";
+            ctx.lineWidth = 3.5;
+            
+            const leftBraneX = cx - 180;
+            const rightBraneX = cx + 180;
+            
+            ctx.save();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(leftBraneX, cy - 80);
+            ctx.lineTo(leftBraneX, cy + 80);
+            ctx.moveTo(rightBraneX, cy - 80);
+            ctx.lineTo(rightBraneX, cy + 80);
+            ctx.stroke();
+            ctx.restore();
 
-        // Calculate wave equation
-        const harmonic = preset.n * 2; // harmonic modes
-        ctx.beginPath();
-        
-        const steps = 120;
-        for (let i = 0; i <= steps; i++) {
-            const frac = i / steps;
-            const x = leftBraneX + frac * (rightBraneX - leftBraneX);
-            
-            // Standing wave formula: y = A * sin(k*pi*x/L) * cos(omega*t)
-            let y = 0;
-            if (presetKey === "tachyon") {
-                // Tachyon shows unstable growing/exponential breathing
-                const breath = 15 * Math.sin(time) * Math.cosh(0.8 * Math.sin(time * 0.4));
-                y = cy + breath * Math.sin(Math.PI * frac);
-            } else {
-                // Standard harmonic standing wave
-                const amp = 30 * Math.cos(time * 1.5);
-                y = cy + amp * Math.sin(harmonic * Math.PI * frac);
+            const harmonic = preset.n * 2;
+            ctx.beginPath();
+            const steps = 120;
+            for (let i = 0; i <= steps; i++) {
+                const frac = i / steps;
+                const x = leftBraneX + frac * (rightBraneX - leftBraneX);
+                let y = cy;
+                
+                if (presetKey === "tachyon") {
+                    const breath = 15 * Math.sin(time) * Math.cosh(0.8 * Math.sin(time * 0.4));
+                    y = cy + breath * Math.sin(Math.PI * frac);
+                } else {
+                    const amp = 32 * Math.cos(time * 1.5);
+                    y = cy + amp * Math.sin(harmonic * Math.PI * frac);
+                }
+                
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
             }
+            ctx.stroke();
             
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-        
-    } else if (presetKey === "kk_mode") {
-        // --- KK MODE: Wave wrapping with momentum around the compact circle ---
-        ctx.shadowColor = "rgba(167, 139, 250, 0.8)";
-        ctx.strokeStyle = "#a78bfa";
-        ctx.lineWidth = 3;
-        
-        // Compact dimension visualization: Circle
-        const R = 80;
-        ctx.beginPath();
-        for (let i = 0; i <= 150; i++) {
-            const angle = (i / 150) * Math.PI * 2;
-            
-            // KK momentum introduces a traveling phase wave along the circle
-            // r(θ) = R + A * sin(n * θ - ω * t)
-            const n = 4; // Momentum harmonic number
-            const amp = 8 * Math.sin(n * angle - time * 2);
-            const currentR = R + amp;
-            
-            const x = cx + currentR * Math.cos(angle);
-            const y = cy + currentR * Math.sin(angle);
-            
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
-        ctx.closePath();
-        ctx.stroke();
-        
-        // Compact dimension guide circle
-        ctx.save();
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
-        ctx.beginPath();
-        ctx.arc(cx, cy, R, 0, Math.PI * 2);
-        ctx.stroke();
-        ctx.restore();
-        
-    } else if (presetKey === "winding_mode") {
-        // --- WINDING MODE: A string winding around a cylinder cylinder ---
-        ctx.shadowColor = "rgba(6, 182, 212, 0.8)";
-        ctx.strokeStyle = "#06b6d4";
-        ctx.lineWidth = 3;
-        
-        // Draw cylinder background
-        ctx.save();
-        ctx.shadowBlur = 0;
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
-        ctx.lineWidth = 1;
-        
-        const cylW = 100;
-        const cylH = 180;
-        ctx.beginPath();
-        // Cylinder bounds
-        ctx.ellipse(cx, cy - cylH/2, cylW, 20, 0, 0, Math.PI * 2);
-        ctx.ellipse(cx, cy + cylH/2, cylW, 20, 0, 0, Math.PI * 2);
-        ctx.moveTo(cx - cylW, cy - cylH/2);
-        ctx.lineTo(cx - cylW, cy + cylH/2);
-        ctx.moveTo(cx + cylW, cy - cylH/2);
-        ctx.lineTo(cx + cylW, cy + cylH/2);
-        ctx.stroke();
-        ctx.restore();
-        
-        // Winding string (Helix) winding w=3 times
-        ctx.beginPath();
-        const helixSteps = 300;
-        const w = 3; // winding number
-        
-        for (let i = 0; i <= helixSteps; i++) {
-            const frac = i / helixSteps;
-            const hY = cy - cylH/2 + frac * cylH;
-            
-            // angle wrapping with time pulsation
-            const angle = frac * Math.PI * 2 * w + time * 0.3;
-            // Radius of cylinder deforming
-            const r = cylW + 5 * Math.sin(angle * 3 + time * 1.5);
-            
-            const hX = cx + r * Math.cos(angle);
-            // apply isometric visual tilt
-            const finalY = hY + 12 * Math.sin(angle);
-            
-            // Draw back part thinner, front part thicker for pseudo-3D
-            const isFront = Math.sin(angle) > 0;
-            ctx.lineWidth = isFront ? 3.5 : 1.5;
-            ctx.strokeStyle = isFront ? "#06b6d4" : "rgba(6, 182, 212, 0.3)";
-            
-            if (i === 0) ctx.moveTo(hX, finalY);
-            else {
-                ctx.lineTo(hX, finalY);
-                // Flush line segment to ensure width change looks decent
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(hX, finalY);
+        } else if (presetKey === "kk_mode") {
+            ctx.shadowColor = "rgba(167, 139, 250, 0.8)";
+            ctx.strokeStyle = "#a78bfa";
+            ctx.lineWidth = 3.5;
+            const R = 80;
+            ctx.beginPath();
+            for (let i = 0; i <= 150; i++) {
+                const angle = (i / 150) * Math.PI * 2;
+                const n = 4;
+                const amp = 8 * Math.sin(n * angle - time * 2);
+                const currentR = R + amp;
+                const x = cx + currentR * Math.cos(angle);
+                const y = cy + currentR * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
             }
+            ctx.closePath();
+            ctx.stroke();
+            
+        } else if (presetKey === "winding_mode") {
+            ctx.shadowColor = "rgba(6, 182, 212, 0.8)";
+            ctx.strokeStyle = "#06b6d4";
+            ctx.lineWidth = 3;
+            
+            const cylW = 100;
+            const cylH = 180;
+            ctx.save();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+            ctx.beginPath();
+            ctx.ellipse(cx, cy - cylH/2, cylW, 20, 0, 0, Math.PI * 2);
+            ctx.ellipse(cx, cy + cylH/2, cylW, 20, 0, 0, Math.PI * 2);
+            ctx.moveTo(cx - cylW, cy - cylH/2);
+            ctx.lineTo(cx - cylW, cy + cylH/2);
+            ctx.moveTo(cx + cylW, cy - cylH/2);
+            ctx.lineTo(cx + cylW, cy + cylH/2);
+            ctx.stroke();
+            ctx.restore();
+            
+            ctx.beginPath();
+            const helixSteps = 300;
+            const w = 3;
+            for (let i = 0; i <= helixSteps; i++) {
+                const frac = i / helixSteps;
+                const hY = cy - cylH/2 + frac * cylH;
+                const angle = frac * Math.PI * 2 * w + time * 0.3;
+                const r = cylW + 6 * Math.sin(angle * 3 + time * 1.5);
+                const hX = cx + r * Math.cos(angle);
+                const finalY = hY + 12 * Math.sin(angle);
+                
+                const isFront = Math.sin(angle) > 0;
+                ctx.lineWidth = isFront ? 3.5 : 1.5;
+                ctx.strokeStyle = isFront ? "#06b6d4" : "rgba(6, 182, 212, 0.35)";
+                
+                if (i === 0) ctx.moveTo(hX, finalY);
+                else {
+                    ctx.lineTo(hX, finalY);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(hX, finalY);
+                }
+            }
+            ctx.stroke();
+            
+        } else {
+            // Closed String loop deforming (Graviton / Dilaton)
+            ctx.shadowColor = presetKey === "dilaton" ? "rgba(16, 185, 129, 0.8)" : "rgba(124, 58, 237, 0.8)";
+            ctx.strokeStyle = presetKey === "dilaton" ? "#10b981" : "#7c3aed";
+            ctx.lineWidth = 4;
+            const R = 80;
+            ctx.beginPath();
+            const steps = 160;
+            for (let i = 0; i <= steps; i++) {
+                const angle = (i / steps) * Math.PI * 2;
+                let currentR = R;
+                if (presetKey === "dilaton") {
+                    currentR = R + 14 * Math.cos(time * 1.8);
+                } else {
+                    const leftMode = 8 * Math.sin(2 * angle - time * 1.5);
+                    const rightMode = 8 * Math.sin(2 * angle + time * 1.5);
+                    currentR = R + leftMode + rightMode;
+                }
+                const x = cx + currentR * Math.cos(angle);
+                const y = cy + currentR * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
         }
-        ctx.stroke();
-        
     } else {
-        // --- CLOSED STRING: Pulsating/deforming loop (Graviton / Dilaton) ---
-        ctx.shadowColor = presetKey === "dilaton" ? "rgba(16, 185, 129, 0.8)" : "rgba(124, 58, 237, 0.8)";
-        ctx.strokeStyle = presetKey === "dilaton" ? "#10b981" : "#7c3aed";
+        // --- TAB 2 & 3: Interactive Physics String (renders dynamic Custom Vibrations) ---
+        const sector = document.getElementById("asm-sector").value;
+        const nl = parseFloat(document.getElementById("asm-nl").value);
+        const nr = parseFloat(document.getElementById("asm-nr").value);
+        const n = parseInt(document.getElementById("asm-n").value) || 0;
+        const w = parseInt(document.getElementById("asm-w").value) || 0;
+        const R_param = parseFloat(document.getElementById("asm-r").value) || 1.0;
+        
+        const isClosed = !sector.includes("Open") && document.getElementById("asm-theory").value !== "Type_I";
+        
         ctx.lineWidth = 3.5;
         
-        const R = 80;
-        ctx.beginPath();
-        
-        const steps = 160;
-        for (let i = 0; i <= steps; i++) {
-            const angle = (i / steps) * Math.PI * 2;
+        if (!isClosed) {
+            // Open String: standing waves with endpoint branes
+            ctx.shadowColor = "rgba(6, 182, 212, 0.8)";
+            ctx.strokeStyle = "#06b6d4";
             
-            let currentR = R;
+            const leftBraneX = cx - 180;
+            const rightBraneX = cx + 180;
             
-            if (presetKey === "dilaton") {
-                // Dilaton is the radial breathing scalar mode: r(t) = R + A * cos(ω*t)
-                currentR = R + 14 * Math.cos(time * 1.8);
-            } else {
-                // Graviton has spin-2 transverse deforming waves:
-                // Excitations left and right combined
-                const leftMode = 8 * Math.sin(2 * angle - time * 1.5);
-                const rightMode = 8 * Math.sin(2 * angle + time * 1.5);
-                currentR = R + leftMode + rightMode;
+            ctx.save();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+            ctx.beginPath();
+            ctx.moveTo(leftBraneX, cy - 70);
+            ctx.lineTo(leftBraneX, cy + 70);
+            ctx.moveTo(rightBraneX, cy - 70);
+            ctx.lineTo(rightBraneX, cy + 70);
+            ctx.stroke();
+            ctx.restore();
+            
+            ctx.beginPath();
+            const steps = 100;
+            const harmonic = nl * 2 || 1;
+            for (let i = 0; i <= steps; i++) {
+                const frac = i / steps;
+                const x = leftBraneX + frac * (rightBraneX - leftBraneX);
+                const amp = 30 * Math.cos(time * 1.6);
+                const y = cy + amp * Math.sin(harmonic * Math.PI * frac);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
             }
+            ctx.stroke();
+        } else {
+            // Closed String deforming loop with custom Fourier components and KK momentum
+            ctx.shadowColor = "rgba(124, 58, 237, 0.8)";
+            ctx.strokeStyle = "#7c3aed";
             
-            const x = cx + currentR * Math.cos(angle);
-            const y = cy + currentR * Math.sin(angle);
+            const baseRadius = 80;
+            ctx.beginPath();
+            const steps = 180;
+            for (let i = 0; i <= steps; i++) {
+                const angle = (i / steps) * Math.PI * 2;
+                
+                // Vibrational Left and Right waves
+                const lHarm = Math.max(1, Math.round(nl * 2));
+                const rHarm = Math.max(1, Math.round(nr * 2));
+                const leftWave = 8 * Math.sin(lHarm * angle - time * 1.5);
+                const rightWave = 8 * Math.sin(rHarm * angle + time * 1.5);
+                
+                // KK momentum traveling envelope
+                const kkWave = n !== 0 ? 6 * Math.sin(n * angle - time * 2.5) : 0;
+                
+                // Winding envelope wrapping
+                const windWave = w !== 0 ? 6 * Math.sin(w * angle) : 0;
+                
+                const currentR = baseRadius + leftWave + rightWave + kkWave + windWave;
+                const x = cx + currentR * Math.cos(angle);
+                const y = cy + currentR * Math.sin(angle);
+                
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
             
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
+            // Draw compactified boundary if winding is present
+            if (w !== 0 || n !== 0) {
+                ctx.save();
+                ctx.shadowBlur = 0;
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
+                ctx.beginPath();
+                ctx.arc(cx, cy, baseRadius, 0, Math.PI*2);
+                ctx.stroke();
+                ctx.restore();
+            }
         }
-        ctx.closePath();
-        ctx.stroke();
     }
     
-    animationFrameId = requestAnimationFrame(drawStringSimulation);
+    animationFrameId = requestAnimationFrame(drawStringSimulationFrame);
 }
 
-// Handle Preset Changes
+// Handle Preset Changes in Tab 1
 function handlePresetChange() {
     const key = document.getElementById("particle-preset").value;
     const preset = presets[key];
     if (!preset) return;
     
-    // Update labels
     document.getElementById("sim-mass-sq").innerText = preset.m2.toFixed(2) + " M_s²";
     document.getElementById("sim-mass").innerText = preset.mass;
-    document.getElementById("sim-freq").innerText = key === "tachyon" ? "폭발적 요동" : (key === "photon" || key === "graviton" ? "1.0x (안정)" : "1.8x (고에너지)");
+    document.getElementById("sim-freq").innerText = key === "tachyon" ? "불안정 진동" : (key === "photon" || key === "graviton" ? "1.0x (안정)" : "1.8x (고에너지)");
     document.getElementById("canvas-desc").innerText = preset.desc;
 }
-
 document.getElementById("particle-preset").addEventListener("change", handlePresetChange);
 
-// --- 6. Initialization ---
+// --- 9. Initialization ---
 window.onload = () => {
     resizeCanvas();
+    initTabs();
+    
+    // Select default explorer values
     updateTheoryUI("Type_IIB");
     
     // Initial runs
@@ -661,11 +1000,14 @@ window.onload = () => {
     runCompactificationCalc();
     runCYCalc();
     
+    // Rerun dynamic checks for other tabs
+    runAssemblyEngine();
+    runDiagnosticsEngine();
+    
     handlePresetChange();
     drawStringSimulation();
 };
 
-// Canvas resize on window changes
 window.addEventListener("resize", () => {
     resizeCanvas();
 });

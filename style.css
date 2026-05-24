@@ -630,3 +630,232 @@ body {
     50% { opacity: 1; box-shadow: 0 0 12px var(--accent-glow); }
     100% { opacity: 0.6; box-shadow: 0 0 4px var(--accent-glow); }
 }
+
+/* --- New Simulator and Diagnostics Styles (v1.1) --- */
+
+/* Tab Navigation Header Bar */
+.tab-navigation {
+    display: flex;
+    gap: 12px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: rgba(15, 10, 30, 0.4);
+    border: 1px solid rgba(124, 58, 237, 0.15);
+    margin-bottom: 8px;
+}
+
+.tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-main);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+    border-color: rgba(124, 58, 237, 0.4);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.15);
+}
+
+/* Switchable Subpanel Layouts */
+.subpanel-content {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.subpanel-content.active {
+    display: flex;
+}
+
+/* Particle Assembly Lab Card */
+.assembled-particle-card {
+    background: rgba(255, 255, 255, 0.015);
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px dashed rgba(124, 58, 237, 0.2);
+}
+
+.asm-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.asm-name-row h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #22d3ee !important;
+    border-left: none !important;
+    padding-left: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.asm-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.asm-spec-item {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.asm-spec-item .label {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.asm-spec-item .value {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* GUT Breaking Tree */
+.gut-tree {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.gut-node {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    padding-left: 10px;
+    border-left: 2px solid rgba(124, 58, 237, 0.2);
+}
+
+.gut-node.active-root {
+    color: #a78bfa;
+    font-weight: 600;
+}
+
+.gut-node.sm-leaf {
+    color: #34d399;
+    font-weight: 600;
+    border-left-color: #34d399;
+}
+
+/* Diagnostics Cards */
+.diagnostics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.diag-card {
+    background: rgba(10, 10, 22, 0.5);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--card-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.diag-card.passed {
+    border-color: rgba(16, 185, 129, 0.25);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.02) 0%, rgba(10, 10, 22, 0.5) 100%);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.03);
+}
+
+.diag-card.failed {
+    border-color: rgba(239, 68, 68, 0.25);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.02) 0%, rgba(10, 10, 22, 0.5) 100%);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.03);
+}
+
+.diag-card:hover {
+    transform: translateY(-2px);
+}
+
+.diag-card.passed:hover {
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.1);
+}
+
+.diag-card.failed:hover {
+    border-color: rgba(239, 68, 68, 0.5);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.1);
+}
+
+.diag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.diag-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.diag-status-badge {
+    padding: 2px 8px;
+    border-radius: 9999px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.diag-status-badge.pass {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+}
+
+.diag-status-badge.fail {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+.diag-error-msg {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.08);
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border: 1px dashed rgba(239, 68, 68, 0.15);
+    line-height: 1.4;
+}
+
+.diag-explanation {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}

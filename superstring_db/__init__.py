@@ -16,6 +16,8 @@ from .solvers import (
     analyze_cy_generations
 )
 from .export import export_to_json, export_to_sqlite, export_all
+from .simulator import StringParticleSimulator, ParticleState
+from .diagnostics import run_full_diagnostics
 
 __all__ = [
     "StringUnits",
@@ -39,7 +41,10 @@ __all__ = [
     "analyze_cy_generations",
     "export_to_json",
     "export_to_sqlite",
-    "export_all"
+    "export_all",
+    "StringParticleSimulator",
+    "ParticleState",
+    "run_full_diagnostics"
 ]
 
 __version__ = "1.0.0"
