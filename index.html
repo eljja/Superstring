@@ -37,6 +37,7 @@
             <button class="tab-btn" data-tab="scattering">💥 입자 산란 연구소 (Scattering Lab)</button>
             <button class="tab-btn" data-tab="holography">🔮 홀로그래피 & 블랙홀 (Holography & BH)</button>
             <button class="tab-btn" data-tab="cosmology">🪐 우주끈 & 우주론 (Cosmic Cosmology)</button>
+            <button class="tab-btn" data-tab="dualities">🔗 M-이론 & 이중성 (M-Theory & Dualities)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
         </div>
 
@@ -336,6 +337,63 @@
                             <label>허블 파라미터 (β)</label>
                             <input type="range" id="cosmo-beta" min="0.01" max="0.5" step="0.01" value="0.05">
                             <span class="range-val" id="cosmo-beta-val">0.05</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 7: M-Theory Dualities Left -->
+                <div id="left-dualities" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🔗 M-이론 & 초대칭 이중성 설정</h2>
+                    </div>
+                    <p class="section-desc">끈 이론의 강결합/약결합(S-이중성) 및 거시/미시 반경(T-이중성) 공간을 결합하여, 5대 초끈 이론을 11차원 M-이론으로 매끄럽게 통합 분석합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>이중성 매개변수 & 변환</h3>
+                        <div class="input-item">
+                            <label>출발 기점 초끈 이론 (Starting Theory)</label>
+                            <select id="dual-theory" class="glass-input" style="width:100%; padding:8px; background:rgba(15,23,42,0.6); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); border-radius:6px; font-family:'Inter', sans-serif; font-size:12px;">
+                                <option value="Type_IIA">Type IIA (폐곡선, 비키랄)</option>
+                                <option value="Type_IIB">Type IIB (폐곡선, 키랄)</option>
+                                <option value="Type_I">Type I (개방현/폐곡선 혼합)</option>
+                                <option value="Heterotic_SO32">Heterotic SO(32)</option>
+                                <option value="Heterotic_E8xE8">Heterotic E8 x E8</option>
+                            </select>
+                        </div>
+                        
+                        <div class="inputs-grid" style="margin-top: 10px;">
+                            <div class="input-item">
+                                <label>끈 결합 상수 (log₁₀ g_s)</label>
+                                <input type="range" id="dual-gs-log" min="-3.0" max="3.0" step="0.1" value="0.0">
+                                <span class="range-val" id="dual-gs-val">g_s = 1.00</span>
+                            </div>
+                            <div class="input-item">
+                                <label>압축 차원 반경 R (l_s 단위)</label>
+                                <input type="range" id="dual-radius" min="0.1" max="10.0" step="0.1" value="1.0">
+                                <span class="range-val" id="dual-radius-val">R = 1.0 l_s</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 8px; margin-top: 12px;">
+                            <button id="btn-t-duality" class="glass-btn" style="flex:1; padding:8px; font-size:11px; background:rgba(6,182,212,0.12); border:1px solid rgba(6,182,212,0.3); border-radius:6px; color:#22d3ee; cursor:pointer; font-weight:bold; transition:all 0.2s;">T-이중성 변환 (R ↔ 1/R)</button>
+                            <button id="btn-s-duality" class="glass-btn" style="flex:1; padding:8px; font-size:11px; background:rgba(167,139,250,0.12); border:1px solid rgba(167,139,250,0.3); border-radius:6px; color:#c084fc; cursor:pointer; font-weight:bold; transition:all 0.2s;">S-이중성 변환 (g_s ↔ 1/g_s)</button>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>11D BFSS 비가환 행렬 역학</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">BFSS 행렬 모델에서 물리 좌표는 가환하지 않는 Hermitian 행렬들로 매핑되며, 양자 거품 공간의 거시적 fuzzy 막을 생성합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>행렬 크기 (N × N)</label>
+                                <input type="range" id="dual-matrix-n" min="2" max="100" step="1" value="16">
+                                <span class="range-val" id="dual-matrix-n-val">16 × 16</span>
+                            </div>
+                            <div class="input-item">
+                                <label>비가환 매개변수 (θ)</label>
+                                <input type="range" id="dual-theta" min="0.01" max="1.0" step="0.01" value="0.2">
+                                <span class="range-val" id="dual-theta-val">0.20</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -765,6 +823,56 @@
                             
                             <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; font-family: 'Fira Code', monospace;" id="cosmo-status-desc">
                                 Cosmological Status...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 7: M-Theory Dualities Right -->
+                <div id="right-dualities" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 Duality Pentagon Web & Matrix Energy</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>Superstring Duality Web (T/S-Dualities)</h3>
+                        <p class="section-desc">5대 초끈 이론과 11차원 M-이론을 연결하는 강결합/약결합(S) 및 공간반경(T) 이중성 거미줄 맵입니다. 중심점은 비섭동 11D M-이론 차원을 나타냅니다.</p>
+                        <div class="canvas-wrapper glass-card" style="height: 180px; margin-top: 8px; border: 1px solid rgba(167, 139, 250, 0.25);">
+                            <canvas id="m-theory-web-canvas"></canvas>
+                        </div>
+                        <div class="solver-result" id="dual-web-result" style="font-size:11px; padding: 10px; font-family: 'Fira Code', monospace; white-space: pre-wrap; line-height: 1.4; border-color: rgba(167, 139, 250, 0.2); background: rgba(167, 139, 250, 0.05); color:#e9d5ff;">
+                            이중성 웹 로딩 중...
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>BFSS Nonperturbative Matrix Mechanics</h3>
+                        <p class="section-desc">행렬 비가환성 $[X_i, X_j] \neq 0$에 의해 11차원 속 양자 거품 공간에서 부풀어 올라 동적으로 안정화되는 Fuzzy Sphere 막의 물리량입니다.</p>
+                        
+                        <div class="assembled-particle-card" style="border-color: rgba(167, 139, 250, 0.3);">
+                            <div class="asm-spec-grid">
+                                <div class="asm-spec-item">
+                                    <span class="label">행렬 대수 차원 (N)</span>
+                                    <span class="value" id="dual-res-n" style="color: #22d3ee;">16</span>
+                                </div>
+                                <div class="asm-spec-item">
+                                    <span class="label">Fuzzy 막 반경 (R_fuzzy)</span>
+                                    <span class="value" id="dual-res-radius" style="color: #a78bfa;">0.000 l_s</span>
+                                </div>
+                            </div>
+                            <div class="asm-spec-grid" style="margin-top: 10px;">
+                                <div class="asm-spec-item">
+                                    <span class="label">Matrix 상호작용 에너지 (E)</span>
+                                    <span class="value" id="dual-res-energy" style="color: #10b981;">0.0000 e_s</span>
+                                </div>
+                                <div class="asm-spec-item">
+                                    <span class="label">11D M-이론 차원 반경 (R₁₁)</span>
+                                    <span class="value" id="dual-res-r11" style="color: #f59e0b;">0.0000 l_s</span>
+                                </div>
+                            </div>
+                            
+                            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; font-family: 'Fira Code', monospace;" id="dual-status-desc">
+                                M-Theory Status...
                             </p>
                         </div>
                     </div>

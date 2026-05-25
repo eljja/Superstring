@@ -221,6 +221,8 @@ function initTabs() {
                 canvasDesc.innerText = "이론적 검증 및 진단 라이브 모니터: 설정된 매개변수 하에서 끈의 무결성 및 등각 변칙 붕괴 파동을 감지하고 상태를 점검합니다.";
             } else if (tabId === "cosmology") {
                 canvasDesc.innerText = "우주끈 & 우주론 연구소: 우주 거대 루프의 Cusp 진동 및 시공간을 흔드는 중력파 버스트 파동, 그리고 KKLT 인플레이션의 CMB 전천 편평도를 시각화합니다.";
+            } else if (tabId === "dualities") {
+                canvasDesc.innerText = "M-이론 & 이중성 연구소: 11차원 비가환 BFSS 행렬 역학에 의해 진공에서 안정화된 Fuzzy Sphere 막(membrane)을 시각화합니다.";
             }
             
             // Execute related calculations immediately
@@ -234,6 +236,8 @@ function initTabs() {
                 runDiagnosticsEngine();
             } else if (tabId === "cosmology") {
                 runCosmologyEngine();
+            } else if (tabId === "dualities") {
+                runDualitiesEngine();
             }
         });
     });
@@ -1243,6 +1247,85 @@ function drawStringSimulationFrame() {
         }
         ctx.restore();
         
+    } else if (activeTab === "dualities") {
+        // --- TAB 7: M-Theory Dualities (3D Fuzzy Sphere Noncommutative Membrane) ---
+        ctx.save();
+        
+        const N = parseInt(document.getElementById("dual-matrix-n").value) || 16;
+        const theta = parseFloat(document.getElementById("dual-theta").value) || 0.2;
+        
+        // Compute active fuzzy radius in screen pixels
+        const expectedRFuzzy = theta * Math.sqrt((N * N - 1) / 4.0);
+        const screenR = Math.min(180, Math.max(40, 55 + expectedRFuzzy * 12));
+        
+        // Accretion disk/gravity lensing glow behind the membrane
+        const memGrad = ctx.createRadialGradient(cx, cy, screenR * 0.4, cx, cy, screenR * 1.8);
+        memGrad.addColorStop(0, "rgba(8, 8, 16, 1)");
+        memGrad.addColorStop(0.3, "rgba(167, 139, 250, 0.12)"); // glowing purple
+        memGrad.addColorStop(0.6, "rgba(34, 211, 238, 0.05)");  // cyan edge
+        memGrad.addColorStop(1.0, "rgba(3, 3, 8, 0)");
+        ctx.fillStyle = memGrad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, screenR * 1.8, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Renders the 3D rotating fuzzy sphere coordinate shell
+        const numPoints = Math.min(600, Math.max(100, N * 8));
+        const rotX = time * 0.18;
+        const rotY = time * 0.25;
+        
+        ctx.shadowBlur = 8;
+        
+        // Golden spiral distribution of points on a sphere
+        for (let i = 0; i < numPoints; i++) {
+            const yOffset = 1.0 - (i / (numPoints - 1)) * 2.0; 
+            const radiusAtY = Math.sqrt(1.0 - yOffset * yOffset);
+            const goldenAngle = i * 2.39996323; 
+            const phi = goldenAngle + rotY;
+            const thetaAngle = Math.acos(yOffset);
+            
+            // Physical coordinates
+            const x3d = screenR * Math.sin(thetaAngle) * Math.cos(phi);
+            const y3d = screenR * yOffset;
+            const z3d = screenR * Math.sin(thetaAngle) * Math.sin(phi);
+            
+            // Rotate around X-axis
+            const cosX = Math.cos(rotX);
+            const sinX = Math.sin(rotX);
+            const rotY3d = y3d * cosX - z3d * sinX;
+            const rotZ3d = y3d * sinX + z3d * cosX;
+            
+            // Screen projection coordinates
+            const projX = cx + x3d + rotZ3d * 0.3;
+            const projY = cy + rotY3d - rotZ3d * 0.12;
+            
+            // Add quantum fluctuations representing coordinate noncommutativity [X_i, X_j] != 0!
+            const fluctAmp = 6.0 * theta * Math.sin(time * 4.5 + i);
+            const finalX = projX + (Math.random() - 0.5) * fluctAmp;
+            const finalY = projY + (Math.random() - 0.5) * fluctAmp;
+            
+            const isFront = rotZ3d >= -10;
+            
+            if (isFront) {
+                ctx.fillStyle = i % 2 === 0 ? "#a78bfa" : "#22d3ee"; 
+                ctx.shadowColor = i % 2 === 0 ? "#a78bfa" : "#22d3ee";
+                ctx.beginPath();
+                const pointSize = Math.max(1.5, Math.min(4.5, 4.0 - N * 0.02));
+                ctx.arc(finalX, finalY, pointSize, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                ctx.fillStyle = "rgba(167, 139, 250, 0.25)";
+                ctx.shadowBlur = 0;
+                ctx.beginPath();
+                ctx.arc(finalX, finalY, 1.2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 8;
+            }
+        }
+        
+        ctx.shadowBlur = 0;
+        ctx.restore();
+        
     } else {
         // --- TAB 2 & 3: Interactive Physics String (renders dynamic Custom Vibrations) ---
         const sector = document.getElementById("asm-sector").value;
@@ -1993,6 +2076,336 @@ document.getElementById("cosmo-z").addEventListener("input", runCosmologyEngine)
 document.getElementById("cosmo-w0").addEventListener("input", runCosmologyEngine);
 document.getElementById("cosmo-beta").addEventListener("input", runCosmologyEngine);
 
+// --- 8.8 M-Theory Dualities Tab Solver & Web Graph ---
+function runDualitiesEngine() {
+    const theory = document.getElementById("dual-theory").value;
+    const gmuLog = parseFloat(document.getElementById("dual-gs-log").value) || 0.0;
+    const R = parseFloat(document.getElementById("dual-radius").value) || 1.0;
+    
+    const N = parseInt(document.getElementById("dual-matrix-n").value) || 16;
+    const theta = parseFloat(document.getElementById("dual-theta").value) || 0.2;
+    
+    const g_s = Math.pow(10, gmuLog);
+    document.getElementById("dual-gs-val").innerText = `g_s = ${g_s.toFixed(2)}`;
+    document.getElementById("dual-radius-val").innerText = `R = ${R.toFixed(1)} l_s`;
+    
+    document.getElementById("dual-matrix-n-val").innerText = `${N} × ${N}`;
+    document.getElementById("dual-theta-val").innerText = theta.toFixed(2);
+    
+    const dual_g = 1.0 / g_s;
+    const dual_R = 1.0 / R;
+    
+    const t_dual_map = {
+        "Type_IIA": "Type_IIB",
+        "Type_IIB": "Type_IIA",
+        "Type_I": "None",
+        "Heterotic_SO32": "Heterotic_E8xE8",
+        "Heterotic_E8xE8": "Heterotic_SO32"
+    };
+    
+    const s_dual_map = {
+        "Type_IIA": "None (Type IIA S-duality opens 11D M-Theory)",
+        "Type_IIB": "Type_IIB (Self-Dual)",
+        "Type_I": "Heterotic_SO32",
+        "Heterotic_SO32": "Type_I",
+        "Heterotic_E8xE8": "None"
+    };
+    
+    let activeRegime = "";
+    let desc = "";
+    if (theory === "Type_IIA" && g_s > 5.0) {
+        activeRegime = "11D M-Theory (Strongly Coupled Type IIA)";
+        desc = `Type IIA 결합 상수가 강해짐에 따라(g_s=${g_s.toFixed(2)}) ${g_s.toFixed(1)} l_s 반경의 11번째 공간 차원이 크게 발현되어 11차원 초중력/M-이론으로 대통합됩니다.`;
+    } else if (theory === "Type_IIB" && g_s > 5.0) {
+        activeRegime = "S-Dual Type IIB (S-Duality Active)";
+        desc = `Type IIB 결합 상수가 강해짐에 따라 상쌍대성(S-Duality)이 동작하여, 결합 상수 g_s'=${dual_g.toFixed(4)}를 가지는 가벼운 기본 끈(F1)과 무거운 D1-브레인의 역할이 반전된 가상 약결합 IIB 이론과 완벽하게 매치됩니다.`;
+    } else if (theory === "Type_I" && g_s > 5.0) {
+        activeRegime = "SO(32) Heterotic (Strongly Coupled Type I)";
+        desc = `Type I 개방현 이론의 강결합 한계는 상쌍대성에 의해 결합 상수 g_s'=${dual_g.toFixed(4)}를 가진 Heterotic SO(32) 폐곡선 이론의 약결합 한계로 매핑됩니다.`;
+    } else if (theory === "Heterotic_SO32" && g_s > 5.0) {
+        activeRegime = "Type I (Strongly Coupled Heterotic SO(32))";
+        desc = `Heterotic SO(32) 폐곡선 이론의 강결합 한계는 상쌍대성에 의해 결합 상수 g_s'=${dual_g.toFixed(4)}인 Type I 개방현 이론의 약결합 한계로 완벽히 상쇄 매핑됩니다.`;
+    } else if (R < 0.3) {
+        const target = t_dual_map[theory];
+        activeRegime = `T-Dual ${target} (Small Radius Limit)`;
+        desc = `압축 반경 R=${R.toFixed(3)} l_s가 스트링 스케일(R < 1)보다 훨씬 작아짐에 따라 T-이중성이 활성화되어, 반경 R'=${dual_R.toFixed(2)} l_s를 가진 ${target}와 모든 양자 질량 스펙트럼이 엄밀하게 동등해집니다.`;
+    } else {
+        activeRegime = `Perturbative 10D ${theory}`;
+        desc = `약결합 및 거시적 차원 반경 영역에 위치하며, 기존 ${theory} 초대칭적 끈 섭동 이론의 테두리 안에서 안정적인 물리 상태가 기술됩니다.`;
+    }
+    
+    let webText = `초대칭 이중성 변환 결과 분석:\n`;
+    webText += `  • 기점 이론:             ${theory}\n`;
+    webText += `  • 현재 결합 상수 g_s:     ${g_s.toFixed(4)} (S-Dual g_s': ${dual_g.toFixed(4)})\n`;
+    webText += `  • 압축 반경 R:           ${R.toFixed(2)} l_s (T-Dual R': ${dual_R.toFixed(2)} l_s)\n`;
+    webText += `  • 활성 물리 영역:         ${activeRegime}\n`;
+    webText += `  • ↳ 결과: ${desc}`;
+    document.getElementById("dual-web-result").innerText = webText;
+    
+    // Fuzzy sphere math
+    const rFuzzy = theta * Math.sqrt((N * N - 1) / 4.0);
+    const energy = N * (N * N - 1) / 8.0 * Math.pow(theta, 4);
+    const r11 = theory === "Type_IIA" ? g_s : 0.0;
+    
+    document.getElementById("dual-res-n").innerText = N;
+    document.getElementById("dual-res-radius").innerText = `${rFuzzy.toFixed(4)} l_s`;
+    document.getElementById("dual-res-energy").innerText = `${energy.toExponential(4)} e_s`;
+    document.getElementById("dual-res-r11").innerText = r11 > 0 ? `${r11.toFixed(3)} l_s` : "0.000 l_s (11D Dimension Compacted)";
+    
+    let matrixStatus = "";
+    if (N < 8) {
+        matrixStatus = "양자 불연속 행렬 위상 (Discrete SU(2) Matrix state active)";
+    } else if (N < 40) {
+        matrixStatus = "초차원 fuzzy 막 진동상 (Stabilized quantum non-commutative membrane)";
+    } else {
+        matrixStatus = "반클래식 기하학적 2-브레인 수렴 (Classical continuous M2-brane continuum limit reached!)";
+    }
+    document.getElementById("dual-status-desc").innerText = matrixStatus;
+    
+    drawDualityWeb(theory, g_s, R);
+}
+
+function drawDualityWeb(activeTheory, gs, R) {
+    const canvas = document.getElementById("m-theory-web-canvas");
+    if (!canvas) return;
+    const wCtx = canvas.getContext("2d");
+    
+    const rect = canvas.parentNode.getBoundingClientRect();
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
+    
+    const w = canvas.width;
+    const h = canvas.height;
+    const cx = w / 2;
+    const cy = h / 2 - 5;
+    const radius = Math.min(w, h) * 0.36;
+    
+    wCtx.fillStyle = "#030308";
+    wCtx.fillRect(0, 0, w, h);
+    
+    // Pentagon theories mapping
+    const theories = [
+        { id: "Heterotic_E8xE8", name: "E8×E8 Het", angle: -Math.PI / 2 },
+        { id: "Type_IIA", name: "Type IIA", angle: -Math.PI / 2 + (2 * Math.PI) / 5 },
+        { id: "Type_IIB", name: "Type IIB", angle: -Math.PI / 2 + (4 * Math.PI) / 5 },
+        { id: "Type_I", name: "Type I", angle: -Math.PI / 2 + (6 * Math.PI) / 5 },
+        { id: "Heterotic_SO32", name: "SO(32) Het", angle: -Math.PI / 2 + (8 * Math.PI) / 5 }
+    ];
+    
+    // Draw duality lines
+    wCtx.lineWidth = 1;
+    
+    // S-Duality lines: Type I <-> SO(32)
+    const tI = theories.find(t => t.id === "Type_I");
+    const tSO = theories.find(t => t.id === "Heterotic_SO32");
+    wCtx.strokeStyle = "rgba(167, 139, 250, 0.45)"; // purple
+    wCtx.beginPath();
+    wCtx.moveTo(cx + radius * Math.cos(tI.angle), cy + radius * Math.sin(tI.angle));
+    wCtx.lineTo(cx + radius * Math.cos(tSO.angle), cy + radius * Math.sin(tSO.angle));
+    wCtx.stroke();
+    
+    // T-Duality lines: IIA <-> IIB, SO(32) <-> E8xE8
+    const tIIA = theories.find(t => t.id === "Type_IIA");
+    const tIIB = theories.find(t => t.id === "Type_IIB");
+    const tE8 = theories.find(t => t.id === "Heterotic_E8xE8");
+    wCtx.strokeStyle = "rgba(6, 182, 212, 0.45)"; // cyan
+    wCtx.beginPath();
+    wCtx.moveTo(cx + radius * Math.cos(tIIA.angle), cy + radius * Math.sin(tIIA.angle));
+    wCtx.lineTo(cx + radius * Math.cos(tIIB.angle), cy + radius * Math.sin(tIIB.angle));
+    wCtx.moveTo(cx + radius * Math.cos(tSO.angle), cy + radius * Math.sin(tSO.angle));
+    wCtx.lineTo(cx + radius * Math.cos(tE8.angle), cy + radius * Math.sin(tE8.angle));
+    wCtx.stroke();
+    
+    // 11D M-Theory pathways: from E8xE8 and IIA to the center
+    wCtx.strokeStyle = "rgba(245, 158, 11, 0.3)"; // amber
+    wCtx.beginPath();
+    wCtx.moveTo(cx, cy);
+    wCtx.lineTo(cx + radius * Math.cos(tIIA.angle), cy + radius * Math.sin(tIIA.angle));
+    wCtx.moveTo(cx, cy);
+    wCtx.lineTo(cx + radius * Math.cos(tE8.angle), cy + radius * Math.sin(tE8.angle));
+    wCtx.stroke();
+    
+    // Draw theories vertices
+    theories.forEach(t => {
+        const x = cx + radius * Math.cos(t.angle);
+        const y = cy + radius * Math.sin(t.angle);
+        const isActive = t.id === activeTheory;
+        
+        wCtx.save();
+        wCtx.fillStyle = isActive ? "#ffffff" : "rgba(255, 255, 255, 0.15)";
+        wCtx.shadowColor = isActive ? "#a78bfa" : "transparent";
+        wCtx.shadowBlur = isActive ? 10 : 0;
+        wCtx.beginPath();
+        wCtx.arc(x, y, isActive ? 6 : 4, 0, Math.PI * 2);
+        wCtx.fill();
+        wCtx.restore();
+        
+        wCtx.fillStyle = isActive ? "#a78bfa" : "rgba(255, 255, 255, 0.45)";
+        wCtx.font = "8px 'Fira Code', monospace";
+        wCtx.textAlign = Math.cos(t.angle) > 0.1 ? "left" : (Math.cos(t.angle) < -0.1 ? "right" : "center");
+        wCtx.textBaseline = Math.sin(t.angle) > 0.1 ? "top" : (Math.sin(t.angle) < -0.1 ? "bottom" : "middle");
+        const xOffset = Math.cos(t.angle) * 8;
+        const yOffset = Math.sin(t.angle) * 8;
+        wCtx.fillText(t.name, x + xOffset, y + yOffset);
+    });
+    
+    // Draw 11D M-Theory Center node
+    const isMTheoryActive = activeTheory === "Type_IIA" && gs > 5.0;
+    wCtx.save();
+    wCtx.fillStyle = isMTheoryActive ? "#f59e0b" : "rgba(245, 158, 11, 0.25)";
+    wCtx.shadowColor = isMTheoryActive ? "#f59e0b" : "transparent";
+    wCtx.shadowBlur = isMTheoryActive ? 15 : 0;
+    wCtx.beginPath();
+    wCtx.arc(cx, cy, 7, 0, Math.PI * 2);
+    wCtx.fill();
+    wCtx.restore();
+    
+    wCtx.fillStyle = isMTheoryActive ? "#f59e0b" : "rgba(245, 158, 11, 0.6)";
+    wCtx.font = "bold 9px 'Fira Code', monospace";
+    wCtx.textAlign = "center";
+    wCtx.fillText("11D M-Theory", cx, cy - 10);
+    
+    // Calculate active moving marker coordinates
+    let mx = cx;
+    let my = cy;
+    
+    const activeVertex = theories.find(t => t.id === activeTheory);
+    if (activeVertex) {
+        const vx = cx + radius * Math.cos(activeVertex.angle);
+        const vy = cy + radius * Math.sin(activeVertex.angle);
+        
+        if (activeTheory === "Type_IIA") {
+            if (gs > 1.0) {
+                // Strong coupling Type IIA slides toward 11D M-Theory at center
+                const frac = Math.min(1.0, Math.max(0.0, Math.log10(gs) / 3.0));
+                mx = vx + frac * (cx - vx);
+                my = vy + frac * (cy - vy);
+            } else if (R < 1.0) {
+                // Small radius Type IIA slides toward T-dual Type IIB along the perimeter
+                const targetVertex = theories.find(t => t.id === "Type_IIB");
+                const tx = cx + radius * Math.cos(targetVertex.angle);
+                const ty = cy + radius * Math.sin(targetVertex.angle);
+                const frac = Math.min(1.0, Math.max(0.0, -Math.log10(R) / 1.0));
+                mx = vx + frac * (tx - vx);
+                my = vy + frac * (ty - vy);
+            } else {
+                mx = vx;
+                my = vy;
+            }
+        } else if (activeTheory === "Type_IIB") {
+            if (R < 1.0) {
+                // Small radius Type IIB slides toward T-dual Type IIA along the perimeter
+                const targetVertex = theories.find(t => t.id === "Type_IIA");
+                const tx = cx + radius * Math.cos(targetVertex.angle);
+                const ty = cy + radius * Math.sin(targetVertex.angle);
+                const frac = Math.min(1.0, Math.max(0.0, -Math.log10(R) / 1.0));
+                mx = vx + frac * (tx - vx);
+                my = vy + frac * (ty - vy);
+            } else if (gs > 1.0) {
+                // Self-duality Type IIB loops back to IIB
+                const frac = Math.min(1.0, Math.max(0.0, Math.log10(gs) / 3.0));
+                mx = vx - frac * 12 * Math.cos(activeVertex.angle);
+                my = vy - frac * 12 * Math.sin(activeVertex.angle);
+            } else {
+                mx = vx;
+                my = vy;
+            }
+        } else if (activeTheory === "Type_I") {
+            if (gs > 1.0) {
+                // Strong coupling Type I slides toward Heterotic SO(32)
+                const targetVertex = theories.find(t => t.id === "Heterotic_SO32");
+                const tx = cx + radius * Math.cos(targetVertex.angle);
+                const ty = cy + radius * Math.sin(targetVertex.angle);
+                const frac = Math.min(1.0, Math.max(0.0, Math.log10(gs) / 3.0));
+                mx = vx + frac * (tx - vx);
+                my = vy + frac * (ty - vy);
+            } else {
+                mx = vx;
+                my = vy;
+            }
+        } else if (activeTheory === "Heterotic_SO32") {
+            if (gs > 1.0) {
+                // Strong coupling SO(32) Het slides toward S-dual Type I
+                const targetVertex = theories.find(t => t.id === "Type_I");
+                const tx = cx + radius * Math.cos(targetVertex.angle);
+                const ty = cy + radius * Math.sin(targetVertex.angle);
+                const frac = Math.min(1.0, Math.max(0.0, Math.log10(gs) / 3.0));
+                mx = vx + frac * (tx - vx);
+                my = vy + frac * (ty - vy);
+            } else if (R < 1.0) {
+                // Small radius SO(32) Het T-duals to E8xE8 Het
+                const targetVertex = theories.find(t => t.id === "Heterotic_E8xE8");
+                const tx = cx + radius * Math.cos(targetVertex.angle);
+                const ty = cy + radius * Math.sin(targetVertex.angle);
+                const frac = Math.min(1.0, Math.max(0.0, -Math.log10(R) / 1.0));
+                mx = vx + frac * (tx - vx);
+                my = vy + frac * (ty - vy);
+            } else {
+                mx = vx;
+                my = vy;
+            }
+        } else if (activeTheory === "Heterotic_E8xE8") {
+            if (R < 1.0) {
+                // Small radius E8xE8 Het T-duals to SO(32) Het
+                const targetVertex = theories.find(t => t.id === "Heterotic_SO32");
+                const tx = cx + radius * Math.cos(targetVertex.angle);
+                const ty = cy + radius * Math.sin(targetVertex.angle);
+                const frac = Math.min(1.0, Math.max(0.0, -Math.log10(R) / 1.0));
+                mx = vx + frac * (tx - vx);
+                my = vy + frac * (ty - vy);
+            } else if (gs > 1.0) {
+                // Strong coupling Heterotic E8xE8 opens strongly coupled M-theory on cylinder
+                const frac = Math.min(1.0, Math.max(0.0, Math.log10(gs) / 3.0));
+                mx = vx + frac * (cx - vx);
+                my = vy + frac * (cy - vy);
+            } else {
+                mx = vx;
+                my = vy;
+            }
+        }
+    }
+    
+    // Draw active glowing pointer marker
+    wCtx.save();
+    wCtx.fillStyle = "#ffffff";
+    wCtx.shadowColor = "#22d3ee";
+    wCtx.shadowBlur = 10;
+    wCtx.beginPath();
+    wCtx.arc(mx, my, 5, 0, Math.PI * 2);
+    wCtx.fill();
+    wCtx.restore();
+    
+    // Outer pulsing ring
+    const pulseRad = 8 + 4 * Math.sin(time * 3.5);
+    wCtx.strokeStyle = "rgba(34, 211, 238, 0.4)";
+    wCtx.lineWidth = 1.5;
+    wCtx.beginPath();
+    wCtx.arc(mx, my, pulseRad, 0, Math.PI * 2);
+    wCtx.stroke();
+}
+
+// Bind Dualities events
+document.getElementById("dual-theory").addEventListener("change", runDualitiesEngine);
+document.getElementById("dual-gs-log").addEventListener("input", runDualitiesEngine);
+document.getElementById("dual-radius").addEventListener("input", runDualitiesEngine);
+document.getElementById("dual-matrix-n").addEventListener("input", runDualitiesEngine);
+document.getElementById("dual-theta").addEventListener("input", runDualitiesEngine);
+
+// Duality direct triggers
+document.getElementById("btn-t-duality").addEventListener("click", () => {
+    const rSlider = document.getElementById("dual-radius");
+    const R = parseFloat(rSlider.value) || 1.0;
+    rSlider.value = (1.0 / R).toFixed(1);
+    runDualitiesEngine();
+});
+
+document.getElementById("btn-s-duality").addEventListener("click", () => {
+    const gsLogSlider = document.getElementById("dual-gs-log");
+    const logG = parseFloat(gsLogSlider.value) || 0.0;
+    gsLogSlider.value = (-logG).toFixed(1);
+    runDualitiesEngine();
+});
+
 // --- 9. Initialization ---
 window.onload = () => {
     resizeCanvas();
@@ -2012,6 +2425,7 @@ window.onload = () => {
     runHolographyEngine();
     runDiagnosticsEngine();
     runCosmologyEngine();
+    runDualitiesEngine();
     
     handlePresetChange();
     drawStringSimulation();

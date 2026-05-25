@@ -32,6 +32,10 @@ from .cosmology import (
     calculate_cosmic_string_gw,
     calculate_kklt_inflation
 )
+from .dualities import (
+    calculate_duality_web,
+    calculate_bfss_matrix_model
+)
 
 __all__ = [
     "StringUnits",
@@ -66,7 +70,9 @@ __all__ = [
     "calculate_near_extremal_hawking",
     "calculate_adscft_dictionary",
     "calculate_cosmic_string_gw",
-    "calculate_kklt_inflation"
+    "calculate_kklt_inflation",
+    "calculate_duality_web",
+    "calculate_bfss_matrix_model"
 ]
 
 __version__ = "1.0.0"
