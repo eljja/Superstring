@@ -36,6 +36,10 @@ from .dualities import (
     calculate_duality_web,
     calculate_bfss_matrix_model
 )
+from .swampland import (
+    calculate_swampland_bounds,
+    calculate_kklt_potential_curve
+)
 
 __all__ = [
     "StringUnits",
@@ -72,7 +76,9 @@ __all__ = [
     "calculate_cosmic_string_gw",
     "calculate_kklt_inflation",
     "calculate_duality_web",
-    "calculate_bfss_matrix_model"
+    "calculate_bfss_matrix_model",
+    "calculate_swampland_bounds",
+    "calculate_kklt_potential_curve"
 ]
 
 __version__ = "1.0.0"

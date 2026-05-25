@@ -38,6 +38,7 @@
             <button class="tab-btn" data-tab="holography">🔮 홀로그래피 & 블랙홀 (Holography & BH)</button>
             <button class="tab-btn" data-tab="cosmology">🪐 우주끈 & 우주론 (Cosmic Cosmology)</button>
             <button class="tab-btn" data-tab="dualities">🔗 M-이론 & 이중성 (M-Theory & Dualities)</button>
+            <button class="tab-btn" data-tab="swampland">🏜️ 지형과 늪지대 (Landscape & Swampland)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
         </div>
 
@@ -393,6 +394,63 @@
                                 <label>비가환 매개변수 (θ)</label>
                                 <input type="range" id="dual-theta" min="0.01" max="1.0" step="0.01" value="0.2">
                                 <span class="range-val" id="dual-theta-val">0.20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 8: Landscape & Swampland Left -->
+                <div id="left-swampland" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🏜️ moduli 안정화 & 늪지대 설정</h2>
+                    </div>
+                    <p class="section-desc">초차원 컴팩트화(Compactification) 과정의 칼라비-야우 기하학 형태 변동(Kähler Modulus T)과 양자중력 섭동 조건의 일치성을 판별합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>모듈러스 굴림 & 거리 추측 (SDC)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>모듈러스 이동 거리 (Δφ)</label>
+                                <input type="range" id="swamp-roll" min="0.0" max="5.0" step="0.05" value="0.5">
+                                <span class="range-val" id="swamp-roll-val">0.50 M_pl</span>
+                            </div>
+                            <div class="input-item">
+                                <label>지수 감쇠 상수 (α)</label>
+                                <input type="range" id="swamp-alpha" min="0.2" max="2.5" step="0.05" value="1.0">
+                                <span class="range-val" id="swamp-alpha-val">1.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>KKLT moduli 안정화 & dS 추측</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>Kähler Modulus (T)</label>
+                                <input type="range" id="swamp-t-modulus" min="1.0" max="40.0" step="0.5" value="10.0">
+                                <span class="range-val" id="swamp-t-modulus-val">10.0</span>
+                            </div>
+                            <div class="input-item">
+                                <label>플럭스 장벽 세기 (W₀)</label>
+                                <input type="range" id="swamp-w0-flux" min="-3.0" max="0.0" step="0.1" value="-1.0">
+                                <span class="range-val" id="swamp-w0-flux-val">-1.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>약중력 추측 (Weak Gravity Conjecture)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">자연계의 모든 입자는 중력이 가장 약한 힘이어야 한다는 조건(q/m >= 1/sqrt(2))을 만족해야만 안정적으로 붕괴할 수 있습니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>테스트 전하량 (q)</label>
+                                <input type="range" id="swamp-charge" min="0.0" max="2.0" step="0.05" value="1.0">
+                                <span class="range-val" id="swamp-charge-val">1.00</span>
+                            </div>
+                            <div class="input-item">
+                                <label>테스트 질량 (m)</label>
+                                <input type="range" id="swamp-mass" min="0.05" max="2.0" step="0.05" value="1.0">
+                                <span class="range-val" id="swamp-mass-val">1.00 M_pl</span>
                             </div>
                         </div>
                     </div>
@@ -873,6 +931,51 @@
                             
                             <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; font-family: 'Fira Code', monospace;" id="dual-status-desc">
                                 M-Theory Status...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 8: Landscape & Swampland Right -->
+                <div id="right-swampland" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 Moduli Potential & Swampland Classifier</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>KKLT Moduli Stabilization Potential</h3>
+                        <p class="section-desc">칼라비-야우 체적을 조절하는 Kähler Modulus T의 잠재 에너지 V(T) 곡선입니다. 극솟값에서 모듈러스 필드가 고정되며 중력파 붕괴 늪지대로부터 탈출합니다.</p>
+                        <div class="canvas-wrapper glass-card" style="height: 180px; margin-top: 8px; border: 1px solid rgba(239, 68, 68, 0.25);">
+                            <canvas id="swampland-canvas"></canvas>
+                        </div>
+                        <div class="solver-result" id="swamp-potential-result" style="font-size:11px; padding: 10px; font-family: 'Fira Code', monospace; white-space: pre-wrap; line-height: 1.4; border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.05); color:#fca5a5;">
+                            모듈러스 잠재력 로딩 중...
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>QG Moduli Space Consistency Analysis</h3>
+                        <p class="section-desc">모듈러스 거리 추측(SDC)의 장거리 한계 및 약중력 추측(WGC) 질량비를 평가하여 진공의 물리적 실존성을 진단합니다.</p>
+                        
+                        <div class="assembled-particle-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">양자중력 일치성 평가 결과:</span>
+                                <span id="swamp-res-badge" style="font-family:'Fira Code', monospace; font-size:10px; font-weight:bold; padding: 3px 8px; border-radius: 4px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color:#10b981;">LANDSCAPE</span>
+                            </div>
+                            
+                            <div class="asm-spec-grid">
+                                <div class="asm-spec-item">
+                                    <span class="label">KK 타워 상태 질량 (M_tower)</span>
+                                    <span class="value" id="swamp-res-mass" style="color: #22d3ee;">1.0000 M_pl</span>
+                                </div>
+                                <div class="asm-spec-item">
+                                    <span class="label">테스트 전하/질량비 (q/m)</span>
+                                    <span class="value" id="swamp-res-wgc" style="color: #a78bfa;">1.0000</span>
+                                </div>
+                            </div>
+                            
+                            <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; font-family: 'Fira Code', monospace;" id="swamp-status-desc">
+                                Swampland Status...
                             </p>
                         </div>
                     </div>

@@ -223,6 +223,8 @@ function initTabs() {
                 canvasDesc.innerText = "우주끈 & 우주론 연구소: 우주 거대 루프의 Cusp 진동 및 시공간을 흔드는 중력파 버스트 파동, 그리고 KKLT 인플레이션의 CMB 전천 편평도를 시각화합니다.";
             } else if (tabId === "dualities") {
                 canvasDesc.innerText = "M-이론 & 이중성 연구소: 11차원 비가환 BFSS 행렬 역학에 의해 진공에서 안정화된 Fuzzy Sphere 막(membrane)을 시각화합니다.";
+            } else if (tabId === "swampland") {
+                canvasDesc.innerText = "지형과 늪지대 연구소: 컴팩트화 moduli 공간 상의 양자중력 포텐셜을 따라 구르는 모듈러스(Modulus) 구슬과, 장거리 한계(Δφ > 1) 돌파 시 쏟아져 내리는 지수 감쇠 KK 파티클 타워를 묘사합니다.";
             }
             
             // Execute related calculations immediately
@@ -238,6 +240,8 @@ function initTabs() {
                 runCosmologyEngine();
             } else if (tabId === "dualities") {
                 runDualitiesEngine();
+            } else if (tabId === "swampland") {
+                runSwamplandEngine();
             }
         });
     });
@@ -1326,6 +1330,91 @@ function drawStringSimulationFrame() {
         ctx.shadowBlur = 0;
         ctx.restore();
         
+    } else if (activeTab === "swampland") {
+        // --- TAB 8: Landscape & Swampland (Rolling Moduli Potential & KK Tower Rain) ---
+        ctx.save();
+        
+        const roll = parseFloat(document.getElementById("swamp-roll").value) || 0.5;
+        const T = parseFloat(document.getElementById("swamp-t-modulus").value) || 10.0;
+        
+        // Background color shift if Swampland is active (flashes subtle reddish overlay)
+        const isSwamplandActive = roll > 1.0;
+        if (isSwamplandActive) {
+            ctx.fillStyle = "rgba(239, 68, 68, 0.035)"; 
+            ctx.fillRect(0, 0, W, H);
+        }
+        
+        // 1. Draw 2D potential energy curve V(phi)
+        const xMin = cx - 180;
+        const xMax = cx + 180;
+        const curveY = (xVal) => {
+            const phi = (xVal - cx) / 100.0; 
+            return cy + 20 + 35 * Math.sin(phi * 2.8) + 10 * phi * phi;
+        };
+        
+        ctx.strokeStyle = isSwamplandActive ? "rgba(239, 68, 68, 0.6)" : "rgba(16, 185, 129, 0.6)";
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        for (let x = xMin; x <= xMax; x += 2) {
+            const y = curveY(x);
+            if (x === xMin) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        
+        // Draw the Swampland critical boundary lines at delta_phi = 1.0 (corresponds to x = cx + 100)
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = "rgba(239, 68, 68, 0.35)";
+        ctx.beginPath();
+        ctx.moveTo(cx + 100, cy - 80);
+        ctx.lineTo(cx + 100, cy + 80);
+        ctx.stroke();
+        
+        ctx.fillStyle = "rgba(239, 68, 68, 0.4)";
+        ctx.font = "8px 'Fira Code', monospace";
+        ctx.fillText("SWAMPLAND LIMIT (1.0 M_pl)", cx + 106, cy - 65);
+        ctx.restore();
+        
+        // 2. Draw rolling Moduli marble at position phi = roll (x = cx + roll * 100)
+        const marbleX = cx + roll * 100;
+        const marbleY = curveY(marbleX);
+        
+        // Glowing halo for the marble
+        ctx.save();
+        ctx.fillStyle = isSwamplandActive ? "rgba(239, 68, 68, 0.15)" : "rgba(34, 211, 238, 0.15)";
+        ctx.beginPath();
+        ctx.arc(marbleX, marbleY - 6, 16, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        
+        // Drawing marble ball
+        ctx.fillStyle = isSwamplandActive ? "#fca5a5" : "#22d3ee";
+        ctx.shadowColor = isSwamplandActive ? "#ef4444" : "#22d3ee";
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(marbleX, marbleY - 6, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // 3. Cascading light particle rain representing tower states descending!
+        if (isSwamplandActive) {
+            const density = Math.min(25, Math.floor((roll - 1.0) * 12));
+            for (let i = 0; i < density; i++) {
+                if (Math.random() > 0.6) {
+                    const px = cx - 180 + Math.random() * 360;
+                    const py = cy - 80 + Math.random() * 160;
+                    
+                    ctx.fillStyle = `rgba(239, 68, 68, ${Math.random() * 0.7 + 0.3})`;
+                    ctx.beginPath();
+                    ctx.arc(px, py + (time * 60) % 20, Math.random() * 1.5 + 0.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+        
+        ctx.restore();
+        
     } else {
         // --- TAB 2 & 3: Interactive Physics String (renders dynamic Custom Vibrations) ---
         const sector = document.getElementById("asm-sector").value;
@@ -2406,6 +2495,235 @@ document.getElementById("btn-s-duality").addEventListener("click", () => {
     runDualitiesEngine();
 });
 
+// --- 8.9 Moduli Stabilization & Swampland Tab Solver & Potential Curve ---
+function runSwamplandEngine() {
+    const roll = parseFloat(document.getElementById("swamp-roll").value) || 0.5;
+    const alpha = parseFloat(document.getElementById("swamp-alpha").value) || 1.0;
+    
+    const T = parseFloat(document.getElementById("swamp-t-modulus").value) || 10.0;
+    const w0 = parseFloat(document.getElementById("swamp-w0-flux").value) || -1.0;
+    
+    const charge = parseFloat(document.getElementById("swamp-charge").value) || 1.0;
+    const mass = parseFloat(document.getElementById("swamp-mass").value) || 1.0;
+    
+    document.getElementById("swamp-roll-val").innerText = `${roll.toFixed(2)} M_pl`;
+    document.getElementById("swamp-alpha-val").innerText = alpha.toFixed(2);
+    document.getElementById("swamp-t-modulus-val").innerText = T.toFixed(1);
+    document.getElementById("swamp-w0-flux-val").innerText = w0.toFixed(1);
+    document.getElementById("swamp-charge-val").innerText = charge.toFixed(2);
+    document.getElementById("swamp-mass-val").innerText = `${mass.toFixed(2)} M_pl`;
+    
+    // 1. Swampland Distance Conjecture (SDC)
+    const massFraction = Math.exp(-alpha * roll);
+    const isSdcActive = roll > 1.0;
+    
+    // 2. Weak Gravity Conjecture (WGC)
+    const wgcLimit = 0.7071;
+    const ratio = charge / mass;
+    const isWgcCompliant = ratio >= wgcLimit;
+    
+    // 3. KKLT Potential calculation
+    const a = 0.1;
+    const A = 1.0;
+    const exp_factor = Math.exp(-a * T);
+    const bracket = (a * T * A * exp_factor / 3.0) + w0 + A * exp_factor;
+    const V_val = (a * A * exp_factor / (T * T)) * bracket;
+    
+    // Derivatives numerical
+    const h = 0.001;
+    const get_V = (x) => {
+        const exp = Math.exp(-a * x);
+        return (a * A * exp / (x * x)) * ((a * x * A * exp / 3.0) + w0 + exp);
+    };
+    const V_plus = get_V(T + h);
+    const V_minus = get_V(T - h);
+    const v_prime = (V_plus - V_minus) / (2.0 * h);
+    const v_double_prime = (V_plus - 2.0 * V_val + V_minus) / (h * h);
+    
+    // de Sitter Swampland Conjecture check
+    let isDscViolated = false;
+    if (V_val > 0) {
+        const slope_ratio = Math.abs(v_prime) / V_val;
+        const curve_ratio = v_double_prime / V_val;
+        if (slope_ratio < 1.0 && curve_ratio > -1.0) {
+            isDscViolated = true;
+        }
+    }
+    const isStabilized = Math.abs(v_prime) < 1e-4 && v_double_prime > 0.0;
+    
+    // Update DOM Fields
+    document.getElementById("swamp-res-mass").innerText = `${massFraction.toFixed(4)} M_pl`;
+    document.getElementById("swamp-res-wgc").innerText = ratio.toFixed(4);
+    
+    let statusMsg = "";
+    const isSwampland = isSdcActive || !isWgcCompliant;
+    const badge = document.getElementById("swamp-res-badge");
+    if (isSwampland) {
+        badge.innerText = "SWAMPLAND";
+        badge.style.background = "rgba(239, 68, 68, 0.15)";
+        badge.style.borderColor = "#ef4444";
+        badge.style.color = "#f87171";
+        if (isSdcActive && !isWgcCompliant) {
+            statusMsg = "EFT가 늪지대(Swampland)에 빠졌습니다: 대형 장 롤링(Delta phi > 1)으로 타워 질량이 급락하였으며, q/m 비가 WGC(q/m < 0.707) 제한을 위반했습니다.";
+        } else if (isSdcActive) {
+            statusMsg = "EFT가 늪지대에 빠졌습니다: 장 구동 거리가 플랑크 한계(1.0 M_pl)를 초과해 무한 입자 타워가 흘러내려와 저에너지 기술이 붕괴합니다.";
+        } else {
+            statusMsg = "EFT가 늪지대에 빠졌습니다: 테스트 입자의 전하/질량비(q/m)가 극대 블랙홀 한계(0.707) 미만으로 WGC를 위반했습니다.";
+        }
+    } else {
+        badge.innerText = "LANDSCAPE";
+        badge.style.background = "rgba(16, 185, 129, 0.15)";
+        badge.style.borderColor = "#10b981";
+        badge.style.color = "#34d399";
+        statusMsg = "EFT가 Landscape(지형)에 위치합니다: 모듈러스 거리가 한계 내에 있어 KK 상태가 안정적이며 q/m 비가 극대 블랙홀 제한을 만족합니다.";
+    }
+    document.getElementById("swamp-status-desc").innerText = statusMsg;
+    
+    let potentialText = `KKLT Potential Stabilization Metrics:\n`;
+    potentialText += `  • T-modulus 체적:         ${T.toFixed(2)}\n`;
+    potentialText += `  • 진공 잠재 에너지 V(T):   ${V_val.toExponential(4)} V_pl\n`;
+    potentialText += `  • 1차 미분 V'(T):         ${v_prime.toExponential(4)}\n`;
+    potentialText += `  • 2차 미분 V''(T):        ${v_double_prime.toExponential(4)}\n`;
+    potentialText += `  • moduli 고정 상태:       ${isStabilized ? "안정화 고정됨 (STABILIZED)" : "요동 중 (UNSTABILIZED)"}\n`;
+    potentialText += `  • dS Swampland 위반 여부: ${isDscViolated ? "위반 (stable de Sitter 존재)" : "만족 (stable dS 배제)"}`;
+    document.getElementById("swamp-potential-result").innerText = potentialText;
+    
+    drawSwamplandPotentialCurve(T, w0, V_val);
+}
+
+function drawSwamplandPotentialCurve(activeT, w0, activeV) {
+    const canvas = document.getElementById("swampland-canvas");
+    if (!canvas) return;
+    const sCtx = canvas.getContext("2d");
+    
+    const rect = canvas.parentNode.getBoundingClientRect();
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
+    
+    const w = canvas.width;
+    const h = canvas.height;
+    
+    sCtx.fillStyle = "#030308";
+    sCtx.fillRect(0, 0, w, h);
+    
+    const padLeft = 50;
+    const padRight = 15;
+    const padTop = 15;
+    const padBottom = 20;
+    const pW = w - padLeft - padRight;
+    const pH = h - padTop - padBottom;
+    
+    const tMin = 1.0;
+    const tMax = 35.0;
+    
+    const a = 0.1;
+    const A = 1.0;
+    const V_func = (x) => {
+        const exp = Math.exp(-a * x);
+        return (a * A * exp / (x * x)) * ((a * x * A * exp / 3.0) + w0 + exp);
+    };
+    
+    // Find potential range dynamically
+    let minV = 0;
+    let maxV = -Infinity;
+    for (let x = tMin; x <= tMax; x += 0.5) {
+        const v = V_func(x);
+        if (v < minV) minV = v;
+        if (v > maxV) maxV = v;
+    }
+    if (maxV === -Infinity) maxV = 1e-4;
+    if (minV === 0) minV = -1e-4;
+    
+    // Add small buffer to top/bottom
+    const spanV = maxV - minV;
+    const scaleMinV = minV - spanV * 0.08;
+    const scaleMaxV = maxV + spanV * 0.08;
+    
+    function getX(tVal) {
+        const frac = (tVal - tMin) / (tMax - tMin);
+        return padLeft + frac * pW;
+    }
+    function getY(vVal) {
+        const frac = (vVal - scaleMinV) / (scaleMaxV - scaleMinV);
+        return padTop + (1.0 - frac) * pH;
+    }
+    
+    // Draw grid
+    sCtx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+    sCtx.lineWidth = 1;
+    sCtx.fillStyle = "rgba(255, 255, 255, 0.35)";
+    sCtx.font = "8px 'Fira Code', monospace";
+    
+    // Horizontal zero-energy line
+    const zeroY = getY(0.0);
+    if (zeroY >= padTop && zeroY <= h - padBottom) {
+        sCtx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+        sCtx.beginPath();
+        sCtx.moveTo(padLeft, zeroY);
+        sCtx.lineTo(w - padRight, zeroY);
+        sCtx.stroke();
+    }
+    
+    // T-modulus axis labels
+    sCtx.textAlign = "center";
+    sCtx.textBaseline = "top";
+    [5, 15, 25, 35].forEach(tVal => {
+        const x = getX(tVal);
+        sCtx.beginPath();
+        sCtx.moveTo(x, padTop);
+        sCtx.lineTo(x, h - padBottom);
+        sCtx.stroke();
+        sCtx.fillText(`T=${tVal}`, x, h - padBottom + 4);
+    });
+    
+    // Potential axis labels
+    sCtx.textAlign = "right";
+    sCtx.textBaseline = "middle";
+    [scaleMinV, (scaleMinV + scaleMaxV)/2.0, scaleMaxV].forEach(vVal => {
+        const y = getY(vVal);
+        sCtx.fillText(vVal.toExponential(1), padLeft - 6, y);
+    });
+    
+    // Draw potential curve V(T)
+    sCtx.save();
+    sCtx.strokeStyle = "#ef4444"; // glowing red
+    sCtx.shadowColor = "#ef4444";
+    sCtx.shadowBlur = 6;
+    sCtx.lineWidth = 2;
+    sCtx.beginPath();
+    
+    for (let x = tMin; x <= tMax; x += 0.25) {
+        const v = V_func(x);
+        const px = getX(x);
+        const py = getY(v);
+        if (x === tMin) sCtx.moveTo(px, py);
+        else sCtx.lineTo(px, py);
+    }
+    sCtx.stroke();
+    sCtx.restore();
+    
+    // Active moduli point marker
+    const mX = getX(activeT);
+    const mY = getY(activeV);
+    
+    sCtx.save();
+    sCtx.fillStyle = "#ffffff";
+    sCtx.shadowColor = "#ffffff";
+    sCtx.shadowBlur = 8;
+    sCtx.beginPath();
+    sCtx.arc(mX, mY, 4.5, 0, Math.PI * 2);
+    sCtx.fill();
+    sCtx.restore();
+}
+
+// Bind Swampland events
+document.getElementById("swamp-roll").addEventListener("input", runSwamplandEngine);
+document.getElementById("swamp-alpha").addEventListener("input", runSwamplandEngine);
+document.getElementById("swamp-t-modulus").addEventListener("input", runSwamplandEngine);
+document.getElementById("swamp-w0-flux").addEventListener("input", runSwamplandEngine);
+document.getElementById("swamp-charge").addEventListener("input", runSwamplandEngine);
+document.getElementById("swamp-mass").addEventListener("input", runSwamplandEngine);
+
 // --- 9. Initialization ---
 window.onload = () => {
     resizeCanvas();
@@ -2426,6 +2744,7 @@ window.onload = () => {
     runDiagnosticsEngine();
     runCosmologyEngine();
     runDualitiesEngine();
+    runSwamplandEngine();
     
     handlePresetChange();
     drawStringSimulation();
