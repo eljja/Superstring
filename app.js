@@ -225,6 +225,8 @@ function initTabs() {
                 canvasDesc.innerText = "M-이론 & 이중성 연구소: 11차원 비가환 BFSS 행렬 역학에 의해 진공에서 안정화된 Fuzzy Sphere 막(membrane)을 시각화합니다.";
             } else if (tabId === "swampland") {
                 canvasDesc.innerText = "지형과 늪지대 연구소: 컴팩트화 moduli 공간 상의 양자중력 포텐셜을 따라 구르는 모듈러스(Modulus) 구슬과, 장거리 한계(Δφ > 1) 돌파 시 쏟아져 내리는 지수 감쇠 KK 파티클 타워를 묘사합니다.";
+            } else if (tabId === "standard-model") {
+                canvasDesc.innerText = "기본입자 유도 연구소: 칼라비-야우 다양체의 몫 위상구조 아래 교차하는 3쌍의 D-막들과 그 교차점에 구속되어 진동하는 3세대의 표준 모형 쿼크/렙톤 상태를 시각화합니다.";
             }
             
             // Execute related calculations immediately
@@ -242,6 +244,8 @@ function initTabs() {
                 runDualitiesEngine();
             } else if (tabId === "swampland") {
                 runSwamplandEngine();
+            } else if (tabId === "standard-model") {
+                runStandardModelEngine();
             }
         });
     });
@@ -1398,19 +1402,155 @@ function drawStringSimulationFrame() {
         ctx.shadowBlur = 0;
         
         // 3. Cascading light particle rain representing tower states descending!
-        if (isSwamplandActive) {
-            const density = Math.min(25, Math.floor((roll - 1.0) * 12));
-            for (let i = 0; i < density; i++) {
-                if (Math.random() > 0.6) {
-                    const px = cx - 180 + Math.random() * 360;
-                    const py = cy - 80 + Math.random() * 160;
-                    
-                    ctx.fillStyle = `rgba(239, 68, 68, ${Math.random() * 0.7 + 0.3})`;
-                    ctx.beginPath();
-                    ctx.arc(px, py + (time * 60) % 20, Math.random() * 1.5 + 0.5, 0, Math.PI * 2);
-                    ctx.fill();
-                }
+        }
+        
+        ctx.restore();
+        
+    } else if (activeTab === "standard-model") {
+        // --- TAB 9: Standard Model Lab (3D Intersecting D-Branes & Zero-Modes) ---
+        ctx.save();
+        
+        const h11 = parseInt(document.getElementById("sm-h11").value) || 6;
+        const h21 = parseInt(document.getElementById("sm-h21").value) || 15;
+        const G = parseInt(document.getElementById("sm-group-order").value) || 3;
+        const area = parseFloat(document.getElementById("sm-instanton-area").value) || 1.5;
+        
+        const generations = Math.round(Math.abs(h11 - h21) / G);
+        const isStandard = (generations === 3 && G >= 3);
+        
+        // 1. Draw 3 Intersecting D-Brane Planes in 3D Projection
+        const angleSpeed = time * 0.2;
+        const drawBrane = (rotAngle, color, opacity, offset) => {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(rotAngle);
+            ctx.fillStyle = color;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            
+            // Draw transparent diamond representing D-brane plane
+            ctx.beginPath();
+            ctx.moveTo(-160, -30 + offset);
+            ctx.lineTo(0, -90 + offset);
+            ctx.lineTo(160, 30 + offset);
+            ctx.lineTo(0, 90 + offset);
+            ctx.closePath();
+            
+            ctx.globalAlpha = opacity;
+            ctx.fill();
+            ctx.globalAlpha = opacity * 2.5;
+            ctx.stroke();
+            ctx.restore();
+        };
+
+        // We draw three intersecting D-branes with different rotation angles
+        if (isStandard) {
+            drawBrane(0.3 + Math.sin(angleSpeed) * 0.05, "rgba(124, 58, 237, 0.05)", 0.12, -20);  // Brane A (Violet)
+            drawBrane(-0.6 + Math.cos(angleSpeed * 0.8) * 0.05, "rgba(6, 182, 212, 0.05)", 0.12, 0); // Brane B (Cyan)
+            drawBrane(1.2 + Math.sin(angleSpeed * 1.2) * 0.05, "rgba(16, 185, 129, 0.05)", 0.08, 20); // Brane C (Mint)
+        } else {
+            // Unstable chaotic branes for non-standard vacuum
+            const chaos = Math.sin(time * 3.0) * 0.15;
+            drawBrane(0.3 + chaos, "rgba(239, 68, 68, 0.07)", 0.18, -30);
+            drawBrane(-0.6 - chaos, "rgba(245, 158, 11, 0.07)", 0.18, 10);
+        }
+        
+        // 2. Draw localized particles at D-brane intersection points (Zero-Modes)
+        const numIntersectionPoints = isStandard ? 3 : Math.min(6, Math.max(1, generations));
+        const colors = isStandard ? ["#a78bfa", "#22d3ee", "#34d399"] : ["#f87171", "#fbbf24", "#f472b6"];
+        
+        const getIntersectionCoords = (idx) => {
+            if (isStandard) {
+                const angles = [0, Math.PI * 2 / 3, Math.PI * 4 / 3];
+                const r = 85 + 10 * Math.sin(time * 1.5 + idx);
+                return {
+                    x: cx + r * Math.cos(angles[idx] + angleSpeed * 0.3),
+                    y: cy + r * Math.sin(angles[idx] + angleSpeed * 0.3)
+                };
+            } else {
+                const seed = idx * 2.3;
+                const r = 60 + 35 * Math.sin(time * 2.0 + seed);
+                return {
+                    x: cx + r * Math.cos(time * 0.5 + seed),
+                    y: cy + r * Math.sin(time * 0.5 + seed)
+                };
             }
+        };
+
+        const points = [];
+        for (let i = 0; i < numIntersectionPoints; i++) {
+            const pt = getIntersectionCoords(i);
+            points.push(pt);
+            
+            ctx.save();
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = colors[i % colors.length];
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, isStandard ? 7 : 9, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 9px 'Fira Code', monospace";
+            ctx.textAlign = "center";
+            const labelText = isStandard ? `Gen ${i+1}` : `Exotic ${i+1}`;
+            ctx.fillText(labelText, pt.x, pt.y - 12);
+            ctx.restore();
+        }
+        
+        // 3. Draw vibrating open strings connecting these intersecting points
+        ctx.save();
+        ctx.shadowBlur = 8;
+        for (let i = 0; i < points.length; i++) {
+            for (let j = i + 1; j < points.length; j++) {
+                const ptA = points[i];
+                const ptB = points[j];
+                
+                ctx.strokeStyle = isStandard ? "rgba(34, 211, 238, 0.45)" : "rgba(239, 68, 68, 0.45)";
+                ctx.shadowColor = isStandard ? "#22d3ee" : "#ef4444";
+                ctx.lineWidth = isStandard ? 2.0 : 1.0;
+                
+                ctx.beginPath();
+                const steps = 60;
+                const dx = ptB.x - ptA.x;
+                const dy = ptB.y - ptA.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                const angle = Math.atan2(dy, dx);
+                
+                ctx.moveTo(ptA.x, ptA.y);
+                for (let k = 0; k <= steps; k++) {
+                    const frac = k / steps;
+                    const lx = ptA.x + frac * dx;
+                    const ly = ptA.y + frac * dy;
+                    
+                    const waveAmp = (isStandard ? 10 : 18) * Math.sin(frac * Math.PI) * Math.sin(time * 3.0 + frac * Math.PI * 4);
+                    const px = lx - waveAmp * Math.sin(angle);
+                    const py = ly + waveAmp * Math.cos(angle);
+                    
+                    ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+        }
+        ctx.restore();
+
+        // 4. Special tachyonic cloud overlay if not standard vacuum
+        if (!isStandard) {
+            ctx.save();
+            ctx.fillStyle = "rgba(239, 68, 68, 0.015)";
+            ctx.beginPath();
+            ctx.arc(cx, cy, 140 + 20 * Math.sin(time * 4.0), 0, Math.PI * 2);
+            ctx.fill();
+            
+            if (Math.random() > 0.4) {
+                const spx = cx - 120 + Math.random() * 240;
+                const spy = cy - 80 + Math.random() * 160;
+                ctx.fillStyle = "rgba(245, 158, 11, 0.7)";
+                ctx.beginPath();
+                ctx.arc(spx, spy, Math.random() * 2.5 + 0.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
         }
         
         ctx.restore();
@@ -2716,6 +2856,343 @@ function drawSwamplandPotentialCurve(activeT, w0, activeV) {
     sCtx.restore();
 }
 
+// --- 8.10 Standard Model Lab Tab Solver & Mass Spectrum Chart ---
+function runStandardModelEngine() {
+    const h11 = parseInt(document.getElementById("sm-h11").value) || 6;
+    const h21 = parseInt(document.getElementById("sm-h21").value) || 15;
+    const G = parseInt(document.getElementById("sm-group-order").value) || 3;
+    const area = parseFloat(document.getElementById("sm-instanton-area").value) || 1.5;
+
+    document.getElementById("sm-h11-val").innerText = h11;
+    document.getElementById("sm-h21-val").innerText = h21;
+    document.getElementById("sm-group-order-val").innerText = G;
+    document.getElementById("sm-instanton-area-val").innerText = area.toFixed(2);
+
+    const generationsFloat = Math.abs(h11 - h21) / G;
+    const generations = Math.round(generationsFloat);
+
+    let gaugeGroup = "";
+    let gaugeDesc = "";
+    let isSM = false;
+
+    if (generations === 3 && G >= 3) {
+        gaugeGroup = "SU(3)_C x SU(2)_L x U(1)_Y";
+        gaugeDesc = "표준 모형(Standard Model) 게이지 대칭: 이산 대칭군 G에 의한 윌슨 라인 플럭스가 E6 GUT 대칭을 성공적으로 깨뜨려 강력 SU(3), 약력 SU(2), 전자기약력 U(1)만을 남겨두었습니다.";
+        isSM = true;
+    } else if (G === 1) {
+        gaugeGroup = "E6";
+        gaugeDesc = "E6 대통합 이론(GUT) 대칭 유지: 윌슨 라인이 활성화되지 않아 차원 축소 이후에도 E6 대칭이 그대로 보존되어 있고 양자 자외선 불안정성이 큽니다.";
+    } else if (G === 2) {
+        gaugeGroup = "SO(10) x U(1)";
+        gaugeDesc = "SO(10) GUT 대칭과 추가 U(1): 윌슨 라인 대칭 깨짐이 불완전하여 표준 모형보다 넓은 SO(10) 대칭과 초대칭 액시온 결합이 잔존합니다.";
+    } else {
+        if (generations % 2 === 0) {
+            gaugeGroup = "SU(5) x U(1)_X";
+            gaugeDesc = "플립된 SU(5) 대칭: 윌슨 라인이 게이지 대칭을 SU(5)와 초대칭 U(1)으로 분류하였으나, Weinberg 각도와 물리적 쿼크 결합이 조화롭지 않습니다.";
+        } else {
+            gaugeGroup = "SU(4) x SU(2) x SU(2)";
+            gaugeDesc = "Pati-Salam 대칭: 렙톤 수와 색상이 통합된 게이지 상태이지만 표준 모형의 3세대 키랄 페르미온을 온전히 설명하지 못합니다.";
+        }
+    }
+
+    const badge = document.getElementById("sm-gauge-badge");
+    if (badge) badge.innerText = gaugeGroup;
+    const descEl = document.getElementById("sm-gauge-desc");
+    if (descEl) descEl.innerText = gaugeDesc;
+
+    if (badge) {
+        if (isSM) {
+            badge.style.background = "rgba(167, 139, 250, 0.15)";
+            badge.style.borderColor = "#a78bfa";
+            badge.style.color = "#c084fc";
+            badge.style.textShadow = "0 0 10px rgba(167, 139, 250, 0.5)";
+        } else {
+            badge.style.background = "rgba(239, 68, 68, 0.15)";
+            badge.style.borderColor = "#ef4444";
+            badge.style.color = "#f87171";
+            badge.style.textShadow = "none";
+        }
+    }
+
+    const c_e = [3.5, 2.0, 0.5];
+    const c_u = [4.2, 1.8, 0.0];
+    const c_d = [3.8, 2.2, 0.8];
+    
+    let scale_e = 3.0;
+    let scale_u = 173.0;
+    let scale_d = 5.0;
+
+    let m_e = scale_e * Math.exp(-c_e[0] * area);
+    let m_mu = scale_e * Math.exp(-c_e[1] * area);
+    let m_tau = scale_e * Math.exp(-c_e[2] * area);
+
+    let m_u = scale_u * Math.exp(-c_u[0] * area);
+    let m_c = scale_u * Math.exp(-c_u[1] * area);
+    let m_t = scale_u * Math.exp(-c_u[2] * area);
+
+    let m_d = scale_d * Math.exp(-c_d[0] * area);
+    let m_s = scale_d * Math.exp(-c_d[1] * area);
+    let m_b = scale_d * Math.exp(-c_d[2] * area);
+
+    if (!isSM) {
+        const exotic_mult = Math.abs(generations - 3) + 1.5;
+        m_e *= exotic_mult * 10;
+        m_mu *= exotic_mult * 5;
+        m_tau *= exotic_mult;
+        m_u *= exotic_mult * 20;
+        m_c *= exotic_mult * 10;
+        m_t /= exotic_mult;
+        m_d *= exotic_mult * 15;
+        m_s *= exotic_mult * 8;
+        m_b *= exotic_mult * 2;
+    }
+
+    const v_vev = 246.0;
+    const ye = document.getElementById("sm-y-e"); if (ye) ye.innerText = (m_e / v_vev).toExponential(4);
+    const ymu = document.getElementById("sm-y-mu"); if (ymu) ymu.innerText = (m_mu / v_vev).toExponential(4);
+    const ytau = document.getElementById("sm-y-tau"); if (ytau) ytau.innerText = (m_tau / v_vev).toExponential(4);
+    const ytop = document.getElementById("sm-y-top"); if (ytop) ytop.innerText = (m_t / v_vev).toFixed(4);
+
+    const theta_cabibbo = 0.22;
+    const theta_12 = theta_cabibbo * (1.5 / area);
+    const theta_23 = 0.04 * (1.5 / area);
+    const theta_13 = 0.0035 * (1.5 / area);
+
+    const ckm = {
+        Vud: Math.cos(theta_12),
+        Vus: Math.sin(theta_12),
+        Vcd: -Math.sin(theta_12),
+        Vcs: Math.cos(theta_12),
+        Vtd: theta_12 * theta_23,
+        Vtb: 1.0 - (theta_23 * theta_23) / 2.0
+    };
+
+    const vud = document.getElementById("sm-vud"); if (vud) vud.innerText = Math.abs(ckm.Vud).toFixed(4);
+    const vus = document.getElementById("sm-vus"); if (vus) vus.innerText = Math.abs(ckm.Vus).toFixed(4);
+    const vcd = document.getElementById("sm-vcd"); if (vcd) vcd.innerText = Math.abs(ckm.Vcd).toFixed(4);
+    const vcs = document.getElementById("sm-vcs"); if (vcs) vcs.innerText = Math.abs(ckm.Vcs).toFixed(4);
+    const vtd = document.getElementById("sm-vtd"); if (vtd) vtd.innerText = Math.abs(ckm.Vtd).toFixed(4);
+    const vtb = document.getElementById("sm-vtb"); if (vtb) vtb.innerText = Math.abs(ckm.Vtb).toFixed(4);
+
+    const container = document.getElementById("sm-particle-container");
+    if (container) {
+        container.innerHTML = "";
+        
+        const displayParticles = [
+            { name: "Electron (e)", mass: m_e, type: "Lepton", gen: 1 },
+            { name: "Muon (μ)", mass: m_mu, type: "Lepton", gen: 2 },
+            { name: "Tau (τ)", mass: m_tau, type: "Lepton", gen: 3 },
+            { name: "Up (u)", mass: m_u, type: "Up-Quark", gen: 1 },
+            { name: "Charm (c)", mass: m_c, type: "Up-Quark", gen: 2 },
+            { name: "Top (t)", mass: m_t, type: "Up-Quark", gen: 3 },
+            { name: "Down (d)", mass: m_d, type: "Down-Quark", gen: 1 },
+            { name: "Strange (s)", mass: m_s, type: "Down-Quark", gen: 2 },
+            { name: "Bottom (b)", mass: m_b, type: "Down-Quark", gen: 3 }
+        ];
+
+        displayParticles.forEach(p => {
+            const card = document.createElement("div");
+            card.className = `sm-particle-card ${isSM ? 'success-glowing' : 'exotic-glowing'}`;
+            
+            let massText = "";
+            if (p.mass < 1e-3) {
+                massText = `${(p.mass * 1e6).toFixed(2)} eV`;
+            } else if (p.mass < 1.0) {
+                massText = `${(p.mass * 1000).toFixed(2)} MeV`;
+            } else {
+                massText = `${p.mass.toFixed(2)} GeV`;
+            }
+
+            let typeLabelColor = "";
+            if (p.type === "Lepton") typeLabelColor = "#22d3ee";
+            else if (p.type === "Up-Quark") typeLabelColor = "#a78bfa";
+            else typeLabelColor = "#818cf8";
+
+            card.innerHTML = `
+                <div class="p-name" style="color: ${typeLabelColor};">${p.name}</div>
+                <div class="p-mass">${massText}</div>
+                <div class="p-charge" style="font-size: 7.5px;">세대: ${p.gen} | ${p.type}</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    drawSmMassChart(m_e, m_mu, m_tau, m_u, m_c, m_t, m_d, m_s, m_b, isSM);
+}
+
+function drawSmMassChart(m_e, m_mu, m_tau, m_u, m_c, m_t, m_d, m_s, m_b, isSM) {
+    const canvas = document.getElementById("sm-mass-canvas");
+    if (!canvas) return;
+    const mCtx = canvas.getContext("2d");
+    
+    const rect = canvas.parentNode.getBoundingClientRect();
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
+    
+    const w = canvas.width;
+    const h = canvas.height;
+    
+    mCtx.fillStyle = "#030308";
+    mCtx.fillRect(0, 0, w, h);
+    
+    const padLeft = 55;
+    const padRight = 15;
+    const padTop = 15;
+    const padBottom = 25;
+    const pW = w - padLeft - padRight;
+    const pH = h - padTop - padBottom;
+    
+    const logMin = -4;
+    const logMax = 3;
+    
+    function getY(massVal) {
+        const logVal = Math.log10(massVal);
+        const clampedLog = Math.max(logMin, Math.min(logMax, logVal));
+        const frac = (clampedLog - logMin) / (logMax - logMin);
+        return padTop + (1.0 - frac) * pH;
+    }
+
+    mCtx.save();
+    mCtx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+    mCtx.fillStyle = "rgba(255, 255, 255, 0.4)";
+    mCtx.font = "8px 'Fira Code', monospace";
+    mCtx.textAlign = "right";
+    
+    for (let exp = logMin; exp <= logMax; exp++) {
+        const massVal = Math.pow(10, exp);
+        const y = getY(massVal);
+        
+        mCtx.beginPath();
+        mCtx.moveTo(padLeft, y);
+        mCtx.lineTo(w - padRight, y);
+        mCtx.stroke();
+        
+        let label = "";
+        if (exp === -4) label = "100 keV";
+        else if (exp === -3) label = "1 MeV";
+        else if (exp === 0) label = "1 GeV";
+        else if (exp === 3) label = "1 TeV";
+        else label = `10^${exp} GeV`;
+        
+        mCtx.fillText(label, padLeft - 8, y + 3);
+    }
+    mCtx.restore();
+
+    const series = [
+        {
+            name: "Leptons",
+            color: "#22d3ee",
+            data: [
+                { gen: 1, mass: m_e, label: "e" },
+                { gen: 2, mass: m_mu, label: "μ" },
+                { gen: 3, mass: m_tau, label: "τ" }
+            ]
+        },
+        {
+            name: "Quarks Up",
+            color: "#a78bfa",
+            data: [
+                { gen: 1, mass: m_u, label: "u" },
+                { gen: 2, mass: m_c, label: "c" },
+                { gen: 3, mass: m_t, label: "t" }
+            ]
+        },
+        {
+            name: "Quarks Down",
+            color: "#818cf8",
+            data: [
+                { gen: 1, mass: m_d, label: "d" },
+                { gen: 2, mass: m_s, label: "s" },
+                { gen: 3, mass: m_b, label: "b" }
+            ]
+        }
+    ];
+
+    function getX(gen) {
+        const frac = (gen - 1) / 2.0;
+        return padLeft + 0.15 * pW + frac * (pW * 0.7);
+    }
+
+    series.forEach(s => {
+        mCtx.save();
+        mCtx.strokeStyle = s.color;
+        mCtx.lineWidth = 1.5;
+        mCtx.setLineDash(isSM ? [] : [2, 2]);
+        mCtx.beginPath();
+        s.data.forEach((d, idx) => {
+            const x = getX(d.gen);
+            const y = getY(d.mass);
+            if (idx === 0) mCtx.moveTo(x, y);
+            else mCtx.lineTo(x, y);
+        });
+        mCtx.stroke();
+        mCtx.restore();
+    });
+
+    series.forEach(s => {
+        s.data.forEach(d => {
+            const x = getX(d.gen);
+            const y = getY(d.mass);
+            
+            mCtx.save();
+            mCtx.fillStyle = s.color;
+            mCtx.shadowColor = s.color;
+            mCtx.shadowBlur = isSM ? 8 : 0;
+            mCtx.beginPath();
+            mCtx.arc(x, y, 4.5, 0, Math.PI * 2);
+            mCtx.fill();
+            
+            mCtx.fillStyle = "#ffffff";
+            mCtx.font = "bold 9px 'Fira Code', monospace";
+            mCtx.textAlign = "center";
+            mCtx.fillText(d.label, x, y - 8);
+            mCtx.restore();
+        });
+    });
+
+    mCtx.save();
+    mCtx.fillStyle = "rgba(255, 255, 255, 0.4)";
+    mCtx.font = "8px 'Inter', sans-serif";
+    mCtx.textAlign = "center";
+    mCtx.fillText("1세대", getX(1), h - 8);
+    mCtx.fillText("2세대", getX(2), h - 8);
+    mCtx.fillText("3세대", getX(3), h - 8);
+    mCtx.restore();
+}
+
+function renderVacuumCandidates() {
+    const listContainer = document.getElementById("vacuum-candidates-list");
+    if (!listContainer) return;
+    listContainer.innerHTML = "";
+    
+    const candidates = [
+        { name: "Tian-Yau Manifold", h11: 6, h21: 15, G: 3, desc: "Classic 3-generation CY quotient under Z3 symmetry." },
+        { name: "Schimmrig Manifold", h11: 9, h21: 36, G: 9, desc: "Symmetric CY quotient under Z3 x Z3 symmetry." },
+        { name: "Aspinwall-Morrison CY", h11: 11, h21: 26, G: 5, desc: "Hypersurface in weighted projective space under Z5." },
+        { name: "Candelas Three-Gen", h11: 19, h21: 46, G: 9, desc: "Hypersurface quotient showing rich Wilson breaking." }
+    ];
+    
+    candidates.forEach((cand, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "vacuum-cand-btn" + (idx === 0 ? " active" : "");
+        btn.innerHTML = `
+            <h4>${cand.name}</h4>
+            <p>h¹'¹=${cand.h11}, h²'¹=${cand.h21}, |G|=${cand.G} | ${cand.desc}</p>
+        `;
+        btn.addEventListener("click", () => {
+            document.getElementById("sm-h11").value = cand.h11;
+            document.getElementById("sm-h21").value = cand.h21;
+            document.getElementById("sm-group-order").value = cand.G;
+            
+            document.querySelectorAll(".vacuum-cand-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            
+            runStandardModelEngine();
+        });
+        listContainer.appendChild(btn);
+    });
+}
+
 // Bind Swampland events
 document.getElementById("swamp-roll").addEventListener("input", runSwamplandEngine);
 document.getElementById("swamp-alpha").addEventListener("input", runSwamplandEngine);
@@ -2723,6 +3200,19 @@ document.getElementById("swamp-t-modulus").addEventListener("input", runSwamplan
 document.getElementById("swamp-w0-flux").addEventListener("input", runSwamplandEngine);
 document.getElementById("swamp-charge").addEventListener("input", runSwamplandEngine);
 document.getElementById("swamp-mass").addEventListener("input", runSwamplandEngine);
+
+// Bind Standard Model events
+document.getElementById("sm-h11").addEventListener("input", runStandardModelEngine);
+document.getElementById("sm-h21").addEventListener("input", runStandardModelEngine);
+document.getElementById("sm-group-order").addEventListener("input", runStandardModelEngine);
+document.getElementById("sm-instanton-area").addEventListener("input", runStandardModelEngine);
+
+document.getElementById("btn-search-vacuum").addEventListener("click", () => {
+    const firstCandBtn = document.querySelector(".vacuum-cand-btn");
+    if (firstCandBtn) {
+        firstCandBtn.click();
+    }
+});
 
 // --- 9. Initialization ---
 window.onload = () => {
@@ -2745,6 +3235,10 @@ window.onload = () => {
     runCosmologyEngine();
     runDualitiesEngine();
     runSwamplandEngine();
+    
+    // Initial Standard Model Lab run
+    renderVacuumCandidates();
+    runStandardModelEngine();
     
     handlePresetChange();
     drawStringSimulation();

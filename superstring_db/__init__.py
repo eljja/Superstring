@@ -40,6 +40,10 @@ from .swampland import (
     calculate_swampland_bounds,
     calculate_kklt_potential_curve
 )
+from .standard_model import (
+    select_standard_model_vacuum,
+    find_matching_vacua_candidates
+)
 
 __all__ = [
     "StringUnits",
@@ -78,7 +82,9 @@ __all__ = [
     "calculate_duality_web",
     "calculate_bfss_matrix_model",
     "calculate_swampland_bounds",
-    "calculate_kklt_potential_curve"
+    "calculate_kklt_potential_curve",
+    "select_standard_model_vacuum",
+    "find_matching_vacua_candidates"
 ]
 
 __version__ = "1.0.0"

@@ -902,3 +902,101 @@ body {
     background: linear-gradient(to right, #6d28d9, #c084fc);
     box-shadow: 0 0 8px rgba(192, 132, 252, 0.5);
 }
+
+/* --- Standard Model Lab Styles (Phase VII) --- */
+#sm-mass-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.vacuum-cand-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-align: left;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.vacuum-cand-btn:hover {
+    background: rgba(167, 139, 250, 0.1);
+    border-color: rgba(167, 139, 250, 0.4);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.2);
+    transform: translateY(-2px);
+}
+
+.vacuum-cand-btn.active {
+    background: rgba(167, 139, 250, 0.15);
+    border-color: rgba(167, 139, 250, 0.6);
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.3);
+}
+
+.vacuum-cand-btn h4 {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: #c084fc;
+}
+
+.vacuum-cand-btn p {
+    font-size: 9px;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+.sm-particle-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.sm-particle-card.success-glowing {
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.15);
+}
+
+.sm-particle-card.success-glowing:hover {
+    border-color: rgba(167, 139, 250, 0.6);
+    box-shadow: 0 0 15px rgba(167, 139, 250, 0.3);
+    transform: scale(1.03);
+}
+
+.sm-particle-card.exotic-glowing {
+    border-color: rgba(239, 68, 68, 0.3);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
+}
+
+.sm-particle-card.exotic-glowing:hover {
+    border-color: rgba(239, 68, 68, 0.6);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+    transform: scale(1.03);
+}
+
+.sm-particle-card .p-name {
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.sm-particle-card .p-mass {
+    font-family: 'Fira Code', monospace;
+    font-size: 9px;
+    color: var(--secondary-glow);
+}
+
+.sm-particle-card .p-charge {
+    font-size: 8px;
+    color: var(--text-muted);
+}
+

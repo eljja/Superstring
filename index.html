@@ -39,6 +39,7 @@
             <button class="tab-btn" data-tab="cosmology">🪐 우주끈 & 우주론 (Cosmic Cosmology)</button>
             <button class="tab-btn" data-tab="dualities">🔗 M-이론 & 이중성 (M-Theory & Dualities)</button>
             <button class="tab-btn" data-tab="swampland">🏜️ 지형과 늪지대 (Landscape & Swampland)</button>
+            <button class="tab-btn" data-tab="standard-model">⚛️ 기본입자 유도 (Standard Model Lab)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
         </div>
 
@@ -453,6 +454,63 @@
                                 <span class="range-val" id="swamp-mass-val">1.00 M_pl</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 9: Standard Model Derivation Left -->
+                <div id="left-standard-model" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>⚛️ 기본입자 유도 및 진공 선택</h2>
+                    </div>
+                    <p class="section-desc">초끈이론의 10차원 콤팩트화 기하학에서 3세대 쿼크와 렙톤 및 표준 모형 게이지 대칭이 자연스럽게 도출되는 진공을 탐색하고 유도합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>칼라비-야우 기하학 Hodge 수</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">Hodge 수 h¹'¹과 h²'¹은 6차원 다양체의 차원 구멍을 결정하며, 오일러 지수 χ = 2(h¹'¹ - h²'¹)를 도출합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>Hodge Number h¹'¹ (Kähler)</label>
+                                <input type="range" id="sm-h11" min="1" max="100" step="1" value="6">
+                                <span class="range-val" id="sm-h11-val">6</span>
+                            </div>
+                            <div class="input-item">
+                                <label>Hodge Number h²'¹ (Complex)</label>
+                                <input type="range" id="sm-h21" min="1" max="100" step="1" value="15">
+                                <span class="range-val" id="sm-h21-val">15</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>윌슨 라인 (Wilson Line) 이산 이중군</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">비자명 통로에 걸린 게이지 플럭스 대칭군 |G|의 위상학적 몫(Quotient) 구조가 세대 수 N_gen = |h¹'¹ - h²'¹| / |G|를 결정합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>이산 대칭군 크기 (|G|)</label>
+                                <input type="range" id="sm-group-order" min="1" max="20" step="1" value="3">
+                                <span class="range-val" id="sm-group-order-val">3</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>교차 D-막 세계면 인스턴톤</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">두 D-막 사이의 세계면 인스턴톤 감김 면적 A_inst가 유카와 결합 Y ∝ exp(-A/α')을 지수함수적으로 억제해 3세대 극단적 질량 차이를 생성합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>인스턴톤 면적 (A_inst)</label>
+                                <input type="range" id="sm-instanton-area" min="0.1" max="10.0" step="0.1" value="1.5">
+                                <span class="range-val" id="sm-instanton-area-val">1.50</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn" id="btn-search-vacuum" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #a78bfa, #8b5cf6); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        🔍 최적 표준 모형 진공 자동 탐색 (Search Vacua)
+                    </button>
+                    
+                    <div id="vacuum-candidates-list" style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+                        <!-- JS에서 동적 후보 버튼 배치 -->
                     </div>
                 </div>
 
@@ -977,6 +1035,64 @@
                             <p style="font-size: 10px; color: var(--text-muted); line-height: 1.5; margin-top: 10px; font-family: 'Fira Code', monospace;" id="swamp-status-desc">
                                 Swampland Status...
                             </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 9: Standard Model Derivation Right -->
+                <div id="right-standard-model" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 표준 모형 페르미온 스펙트럼</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>유도된 게이지 대칭군 (Gauge Symmetry)</h3>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">최종 통합 대칭군:</span>
+                            <span id="sm-gauge-badge" style="font-family:'Fira Code', monospace; font-size:11px; font-weight:bold; padding: 4px 10px; border-radius: 6px; background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.3); color:#a78bfa; text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);">SU(3) x SU(2) x U(1)</span>
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-muted); line-height: 1.5; font-family: 'Fira Code', monospace;" id="sm-gauge-desc">
+                            표준 모형 게이지 대칭 로딩 중...
+                        </p>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>3세대 질량 로그 스펙트럼 (GeV Scale)</h3>
+                        <p class="section-desc">초끈의 D-막 교차 거리로부터 유도된 페르미온 질량입니다. 1세대(e, u, d)에서 3세대(τ, t, b)로 갈수록 인스턴톤 억제 거리가 감소해 질량이 지수함수적으로 무거워집니다.</p>
+                        <div class="canvas-wrapper glass-card" style="height: 180px; margin-top: 8px; border: 1px solid rgba(167, 139, 250, 0.25);">
+                            <canvas id="sm-mass-canvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>유카와 결합도 & CKM 혼합 매트릭스</h3>
+                        <div class="assembled-particle-card" style="border-color: rgba(167, 139, 250, 0.3);">
+                            <div class="asm-spec-grid" style="grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 10px;">
+                                <div class="asm-spec-item" style="border-right: 1px solid rgba(255,255,255,0.05); padding-right: 5px;">
+                                    <span class="label" style="font-weight: bold; color: var(--text-muted);">Yukawa Couplings (Y)</span>
+                                    <div style="font-family:'Fira Code', monospace; line-height: 1.4; margin-top: 5px;">
+                                        Electron Y_e: <span id="sm-y-e" style="color: #22d3ee;">0.0000</span><br>
+                                        Muon Y_μ: <span id="sm-y-mu" style="color: #22d3ee;">0.0000</span><br>
+                                        Tau Y_τ: <span id="sm-y-tau" style="color: #22d3ee;">0.0000</span><br>
+                                        Top Quark Y_t: <span id="sm-y-top" style="color: #a78bfa; font-weight: bold;">0.0000</span>
+                                    </div>
+                                </div>
+                                <div class="asm-spec-item" style="padding-left: 5px;">
+                                    <span class="label" style="font-weight: bold; color: var(--text-muted);">CKM Mixing (V_ij)</span>
+                                    <div style="font-family:'Fira Code', monospace; line-height: 1.4; margin-top: 5px;">
+                                        V_ud: <span id="sm-vud" style="color: #34d399;">0.0000</span> | V_us: <span id="sm-vus" style="color: #34d399;">0.0000</span><br>
+                                        V_cd: <span id="sm-vcd" style="color: #34d399;">0.0000</span> | V_cs: <span id="sm-vcs" style="color: #34d399;">0.0000</span><br>
+                                        V_td: <span id="sm-vtd" style="color: #f472b6;">0.0000</span> | V_tb: <span id="sm-vtb" style="color: #f472b6; font-weight: bold;">0.0000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>유도된 기본입자 스펙트럼 (3 Generations)</h3>
+                        <div class="sm-particle-grid" id="sm-particle-container" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;">
+                            <!-- JS에서 페르미온 세대 카드 동적 생성 -->
                         </div>
                     </div>
                 </div>
