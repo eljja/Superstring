@@ -227,6 +227,8 @@ function initTabs() {
                 canvasDesc.innerText = "지형과 늪지대 연구소: 컴팩트화 moduli 공간 상의 양자중력 포텐셜을 따라 구르는 모듈러스(Modulus) 구슬과, 장거리 한계(Δφ > 1) 돌파 시 쏟아져 내리는 지수 감쇠 KK 파티클 타워를 묘사합니다.";
             } else if (tabId === "standard-model") {
                 canvasDesc.innerText = "기본입자 유도 연구소: 칼라비-야우 다양체의 몫 위상구조 아래 교차하는 3쌍의 D-막들과 그 교차점에 구속되어 진동하는 3세대의 표준 모형 쿼크/렙톤 상태를 시각화합니다.";
+            } else if (tabId === "higgs") {
+                canvasDesc.innerText = "힉스 & 중성미자 연구소: 자발적 대칭성 깨짐(EWSB)을 설명하는 3D 힉스 멕시칸 햇 퍼텐셜과 진공 기댓값(VEV) 상태를 시각화합니다.";
             }
             
             // Execute related calculations immediately
@@ -246,6 +248,8 @@ function initTabs() {
                 runSwamplandEngine();
             } else if (tabId === "standard-model") {
                 runStandardModelEngine();
+            } else if (tabId === "higgs") {
+                if (typeof runHiggsEngine === 'function') runHiggsEngine();
             }
         });
     });
@@ -1034,7 +1038,7 @@ function drawStringSimulationFrame() {
             }
             ctx.stroke();
         }
-        }
+
         ctx.restore();
         
     } else if (activeTab === "holography") {
@@ -1401,9 +1405,8 @@ function drawStringSimulationFrame() {
         ctx.fill();
         ctx.shadowBlur = 0;
         
-        // 3. Cascading light particle rain representing tower states descending!
-        }
         
+
         ctx.restore();
         
     } else if (activeTab === "standard-model") {
@@ -1551,6 +1554,75 @@ function drawStringSimulationFrame() {
                 ctx.fill();
             }
             ctx.restore();
+        }
+        
+        ctx.restore();
+        
+    } else if (activeTab === "higgs") {
+        // --- TAB 10: Higgs & Neutrinos (Mexican Hat 3D Potential) ---
+        ctx.save();
+        
+        const isBroken = document.getElementById("res-higgs-status") && document.getElementById("res-higgs-status").innerText.includes("Active");
+        
+        // Render 3D Mexican Hat Potential or Parabola
+        ctx.translate(cx, cy + 20);
+        
+        const gridLines = 15;
+        const radius = 180;
+        
+        ctx.strokeStyle = isBroken ? "rgba(245, 158, 11, 0.4)" : "rgba(56, 189, 248, 0.4)";
+        ctx.lineWidth = 1.0;
+        
+        for (let i = 0; i < gridLines; i++) {
+            const angle = (Math.PI * 2 * i) / gridLines + time * 0.2;
+            
+            ctx.beginPath();
+            for (let r = 0; r <= radius; r += 10) {
+                const x = r * Math.cos(angle);
+                const y_base = r * Math.sin(angle) * 0.4; // isometric tilt
+                
+                let z = 0;
+                if (isBroken) {
+                    // Mexican hat shape: V(r) = -mu^2 r^2 + lambda r^4
+                    const scaled_r = r / 40.0;
+                    z = -20 * (scaled_r * scaled_r) + 1.2 * (Math.pow(scaled_r, 4));
+                } else {
+                    // Parabola: V(r) = mu^2 r^2
+                    const scaled_r = r / 30.0;
+                    z = 5 * (scaled_r * scaled_r);
+                }
+                
+                const y = y_base - z * 3;
+                
+                if (r === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+        
+        // Draw the scalar field vacuum expectation value (Marble)
+        if (isBroken) {
+            const vev_radius = 40.0 * Math.sqrt(20.0 / (2.0 * 1.2)); // Minimum of the hat
+            const vev_angle = time * 0.5;
+            const mx = vev_radius * Math.cos(vev_angle);
+            const my_base = vev_radius * Math.sin(vev_angle) * 0.4;
+            const mz = -20 * Math.pow(vev_radius/40, 2) + 1.2 * Math.pow(vev_radius/40, 4);
+            const my = my_base - mz * 3;
+            
+            ctx.fillStyle = "#fbbf24";
+            ctx.shadowColor = "#f59e0b";
+            ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.arc(mx, my, 8, 0, Math.PI * 2);
+            ctx.fill();
+        } else {
+            // Sits at the origin
+            ctx.fillStyle = "#38bdf8";
+            ctx.shadowColor = "#0ea5e9";
+            ctx.shadowBlur = 15;
+            ctx.beginPath();
+            ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.fill();
         }
         
         ctx.restore();
@@ -2204,7 +2276,7 @@ function drawGwSpectrum(gmu, lMpc, dL) {
     gCtx.fillStyle = "rgba(167, 139, 250, 0.4)";
     gCtx.font = "7px 'Fira Code', monospace";
     gCtx.textAlign = "left";
-    gCtx.fillText("PTA", getX(1.2e-9), getY(1e-14.8));
+    gCtx.fillText("PTA", getX(1.2e-9), getY(Math.pow(10, -14.8)));
     gCtx.restore();
     
     // 2. LISA
@@ -2254,7 +2326,7 @@ function drawGwSpectrum(gmu, lMpc, dL) {
     gCtx.fillStyle = "rgba(34, 211, 238, 0.4)";
     gCtx.font = "7px 'Fira Code', monospace";
     gCtx.textAlign = "center";
-    gCtx.fillText("LIGO/Virgo", getX(100), getY(1e-19.5));
+    gCtx.fillText("LIGO/Virgo", getX(100), getY(Math.pow(10, -19.5)));
     gCtx.restore();
     
     // Draw the theoretical strain curve
@@ -3214,7 +3286,90 @@ document.getElementById("btn-search-vacuum").addEventListener("click", () => {
     }
 });
 
-// --- 9. Initialization ---
+// --- 10. Higgs & Neutrinos Engine ---
+function runHiggsEngine() {
+    const susyScale = parseFloat(document.getElementById("higgs-susy-scale").value) || 2000;
+    const lambda = parseFloat(document.getElementById("higgs-lambda").value) || 0.13;
+    const majoranaLog = parseFloat(document.getElementById("higgs-majorana-log").value) || 14.0;
+    const diracArea = parseFloat(document.getElementById("higgs-dirac-area").value) || 1.5;
+    
+    // Update value displays
+    if (document.getElementById("higgs-susy-scale-val")) {
+        document.getElementById("higgs-susy-scale-val").innerText = susyScale + " GeV";
+        document.getElementById("higgs-lambda-val").innerText = lambda.toFixed(2);
+        document.getElementById("higgs-majorana-val").innerText = "10^" + majoranaLog.toFixed(1) + " GeV";
+        document.getElementById("higgs-dirac-area-val").innerText = diracArea.toFixed(2);
+    }
+    
+    // EWSB Calculation (Toy Physics Model)
+    const baseMuSq = lambda * (246.0 * 246.0);
+    const tuningFactor = 2000.0 / susyScale;
+    const muSq = baseMuSq * tuningFactor;
+    
+    let isBroken = muSq > 0;
+    let vev = isBroken ? Math.sqrt(muSq / lambda) : 0.0;
+    let higgsMass = isBroken ? Math.sqrt(2 * muSq) : (muSq < 0 ? Math.sqrt(-muSq) : 0.0);
+    
+    // Update UI
+    if (document.getElementById("res-higgs-status")) {
+        const statEl = document.getElementById("res-higgs-status");
+        statEl.innerText = isBroken ? "Symmetry Broken (EWSB Active)" : "Symmetry Restored";
+        statEl.style.color = isBroken ? "#10b981" : "#ef4444";
+        
+        document.getElementById("res-higgs-vev").innerText = vev.toFixed(2) + " GeV";
+        document.getElementById("res-higgs-mass").innerText = higgsMass.toFixed(2) + " GeV";
+        document.getElementById("res-higgs-musq").innerText = muSq.toExponential(2) + " GeV²";
+    }
+    
+    // Seesaw Neutrino Calculation
+    const mR = Math.pow(10, majoranaLog);
+    const v = 246.0;
+    
+    const y1 = 0.01 * Math.exp(-diracArea);
+    const y2 = 0.1 * Math.exp(-diracArea * 0.5);
+    const y3 = 1.0 * Math.exp(-diracArea * 0.1);
+    
+    const md1 = y1 * v;
+    const md2 = y2 * v;
+    const md3 = y3 * v;
+    
+    // Convert to eV: 1 GeV = 1e9 eV
+    const mnu1 = (Math.pow(md1, 2) / mR) * 1e9;
+    const mnu2 = (Math.pow(md2, 2) / mR) * 1e9;
+    const mnu3 = (Math.pow(md3, 2) / mR) * 1e9;
+    
+    const dm21 = Math.pow(mnu2, 2) - Math.pow(mnu1, 2);
+    const dm32 = Math.pow(mnu3, 2) - Math.pow(mnu2, 2);
+    
+    if (document.getElementById("res-nu1-mass")) {
+        document.getElementById("res-nu1-mass").innerText = mnu1.toExponential(2) + " eV";
+        document.getElementById("res-nu2-mass").innerText = mnu2.toExponential(2) + " eV";
+        document.getElementById("res-nu3-mass").innerText = mnu3.toExponential(2) + " eV";
+        
+        document.getElementById("res-nu-dm21").innerText = dm21.toExponential(2) + " eV²";
+        document.getElementById("res-nu-dm32").innerText = dm32.toExponential(2) + " eV²";
+        
+        let t12 = 33.0 + (majoranaLog - 14.0) * 2.0;
+        let t23 = 45.0 + (majoranaLog - 14.0) * 1.5;
+        let t13 = 8.5 + (majoranaLog - 14.0) * 0.5;
+        
+        document.getElementById("res-pmns-12").innerText = "θ₁₂ = " + t12.toFixed(1) + "°";
+        document.getElementById("res-pmns-23").innerText = "θ₂₃ = " + t23.toFixed(1) + "°";
+        document.getElementById("res-pmns-13").innerText = "θ₁₃ = " + t13.toFixed(1) + "°";
+    }
+}
+
+if (document.getElementById("btn-calc-higgs")) {
+    document.getElementById("btn-calc-higgs").addEventListener("click", runHiggsEngine);
+}
+// Attach range inputs to auto calculation
+['higgs-susy-scale', 'higgs-lambda', 'higgs-majorana-log', 'higgs-dirac-area'].forEach(id => {
+    if(document.getElementById(id)) {
+        document.getElementById(id).addEventListener('input', runHiggsEngine);
+    }
+});
+
+// --- 11. Initialization ---
 window.onload = () => {
     resizeCanvas();
     initTabs();
@@ -3239,6 +3394,9 @@ window.onload = () => {
     // Initial Standard Model Lab run
     renderVacuumCandidates();
     runStandardModelEngine();
+    
+    // Initial Higgs Lab run
+    if (typeof runHiggsEngine === 'function') runHiggsEngine();
     
     handlePresetChange();
     drawStringSimulation();

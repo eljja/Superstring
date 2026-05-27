@@ -41,6 +41,7 @@
             <button class="tab-btn" data-tab="swampland">🏜️ 지형과 늪지대 (Landscape & Swampland)</button>
             <button class="tab-btn" data-tab="standard-model">⚛️ 기본입자 유도 (Standard Model Lab)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
+            <button class="tab-btn" data-tab="higgs">☀️ 힉스 & 중성미자 (Higgs & Neutrinos)</button>
         </div>
 
         <!-- Main Dashboard Layout -->
@@ -540,6 +541,52 @@
                             </p>
                         </div>
                     </div>
+                </div>
+
+                <!-- Tab Content 10: Higgs & Neutrinos Left -->
+                <div id="left-higgs" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>☀️ 힉스 메커니즘 & 시소 메커니즘</h2>
+                    </div>
+                    <p class="section-desc">초끈이론의 초중력 퍼텐셜을 통해 힉스장의 자발적 대칭성 깨짐(EWSB)을 유도하고, 무거운 마조라나 끈 스케일 입자를 통한 중성미자 시소 메커니즘을 시뮬레이션합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>전자기약력 대칭성 깨짐 (EWSB)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">초대칭(SUSY) 붕괴 스케일이 힉스 퍼텐셜의 형태(Mexican Hat)를 결정하여 W/Z 보손과 페르미온에 질량을 부여합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>SUSY 붕괴 스케일 (GeV)</label>
+                                <input type="range" id="higgs-susy-scale" min="100" max="10000" step="100" value="2000">
+                                <span class="range-val" id="higgs-susy-scale-val">2000 GeV</span>
+                            </div>
+                            <div class="input-item">
+                                <label>힉스 자가 결합 상수 (λ)</label>
+                                <input type="range" id="higgs-lambda" min="0.01" max="1.0" step="0.01" value="0.13">
+                                <span class="range-val" id="higgs-lambda-val">0.13</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>우-카이럴 중성미자 시소 메커니즘</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">끈 스케일의 무거운 마조라나 중성미자 질량(M_R)이 표준 모형의 중성미자 질량을 eV 스케일로 극한으로 낮춥니다 (m_ν = m_D² / M_R).</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>마조라나 질량 M_R (10^X GeV)</label>
+                                <input type="range" id="higgs-majorana-log" min="10" max="16" step="0.1" value="14.0">
+                                <span class="range-val" id="higgs-majorana-val">10^14.0 GeV</span>
+                            </div>
+                            <div class="input-item">
+                                <label>디랙 결합 인스턴톤 면적</label>
+                                <input type="range" id="higgs-dirac-area" min="0.5" max="5.0" step="0.1" value="1.5">
+                                <span class="range-val" id="higgs-dirac-area-val">1.50</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="action-btn" id="btn-calc-higgs" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        🌟 힉스 진공 및 중성미자 질량 유도
+                    </button>
                 </div>
             </section>
 
@@ -1105,6 +1152,89 @@
                     
                     <div class="diagnostics-grid" id="diag-checklist-container">
                         <!-- JS에서 동적 체크카드 렌더링 -->
+                    </div>
+                </div>
+
+                <!-- Tab Content 10: Higgs & Neutrinos Right -->
+                <div id="right-higgs" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 힉스 진공 기댓값 및 중성미자 스펙트럼</h2>
+                    </div>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>힉스 매커니즘 결과 (Higgs Sector)</h3>
+                        <div class="asm-spec-grid" style="margin-top:10px;">
+                            <div class="asm-spec-item">
+                                <span class="label">퍼텐셜 상태</span>
+                                <span class="value" id="res-higgs-status" style="color:#f59e0b; font-weight:bold;">대기 중...</span>
+                            </div>
+                            <div class="asm-spec-item">
+                                <span class="label">진공 기댓값 (VEV, v)</span>
+                                <span class="value" id="res-higgs-vev">0.00 GeV</span>
+                            </div>
+                            <div class="asm-spec-item">
+                                <span class="label">물리적 힉스 질량 (m_H)</span>
+                                <span class="value" id="res-higgs-mass">0.00 GeV</span>
+                            </div>
+                            <div class="asm-spec-item">
+                                <span class="label">μ² 파라미터</span>
+                                <span class="value" id="res-higgs-musq">0.00 GeV²</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>시소 메커니즘 결과 (Neutrino Sector)</h3>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 10px;">
+                            <div class="particle-card" style="flex:1;">
+                                <div class="card-header" style="background: rgba(245,158,11,0.2);">
+                                    <span class="p-symbol" style="color: #f59e0b;">ν₁</span>
+                                    <span class="p-name">가벼운 중성미자 1</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="p-stat"><span class="lbl">질량</span><span class="val" id="res-nu1-mass">0.00 eV</span></div>
+                                </div>
+                            </div>
+                            <div class="particle-card" style="flex:1;">
+                                <div class="card-header" style="background: rgba(245,158,11,0.2);">
+                                    <span class="p-symbol" style="color: #f59e0b;">ν₂</span>
+                                    <span class="p-name">가벼운 중성미자 2</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="p-stat"><span class="lbl">질량</span><span class="val" id="res-nu2-mass">0.00 eV</span></div>
+                                </div>
+                            </div>
+                            <div class="particle-card" style="flex:1;">
+                                <div class="card-header" style="background: rgba(245,158,11,0.2);">
+                                    <span class="p-symbol" style="color: #f59e0b;">ν₃</span>
+                                    <span class="p-name">가벼운 중성미자 3</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="p-stat"><span class="lbl">질량</span><span class="val" id="res-nu3-mass">0.00 eV</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="asm-spec-grid" style="margin-top:15px;">
+                            <div class="asm-spec-item">
+                                <span class="label">태양 진동 (Δm²_21)</span>
+                                <span class="value" id="res-nu-dm21">0.00 eV²</span>
+                            </div>
+                            <div class="asm-spec-item">
+                                <span class="label">대기 진동 (Δm²_32)</span>
+                                <span class="value" id="res-nu-dm32">0.00 eV²</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                            <span style="font-size: 11px; color: var(--text-muted);">PMNS 혼합 행렬 각도 (근사)</span>
+                            <div style="display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; font-size: 12px; color: #e2e8f0; margin-top: 5px;">
+                                <span id="res-pmns-12">θ₁₂ = 0.0°</span>
+                                <span id="res-pmns-23">θ₂₃ = 0.0°</span>
+                                <span id="res-pmns-13">θ₁₃ = 0.0°</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

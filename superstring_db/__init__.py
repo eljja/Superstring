@@ -44,6 +44,10 @@ from .standard_model import (
     select_standard_model_vacuum,
     find_matching_vacua_candidates
 )
+from .higgs_neutrino import (
+    solve_ewsb_and_higgs,
+    solve_seesaw_neutrinos
+)
 
 __all__ = [
     "StringUnits",
@@ -84,7 +88,9 @@ __all__ = [
     "calculate_swampland_bounds",
     "calculate_kklt_potential_curve",
     "select_standard_model_vacuum",
-    "find_matching_vacua_candidates"
+    "find_matching_vacua_candidates",
+    "solve_ewsb_and_higgs",
+    "solve_seesaw_neutrinos"
 ]
 
 __version__ = "1.0.0"
