@@ -229,8 +229,10 @@
                             <div class="input-item">
                                 <label>궤적 절편 (α₀)</label>
                                 <select id="scat-alpha-zero">
-                                    <option value="-1.0" selected>타키온 보손 (-1.0)</option>
-                                    <option value="0.0">무질량 벡터 (0.0)</option>
+                                    <option value="-1.0" selected>타키온 보손 (Open, α₀=-1.0)</option>
+                                    <option value="0.0">무질량 벡터 (Open, α₀=0.0)</option>
+                                    <option value="1.0">열린 보손끈 (Open, α₀=1.0)</option>
+                                    <option value="2.0">닫힌 보손끈 (Closed VS, α₀=2.0)</option>
                                 </select>
                             </div>
                         </div>
@@ -675,6 +677,21 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">10</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Higgs potential & Seesaw Mechanism</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">힉스 메커니즘 & 시소 메커니즘</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="11" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">11</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Anomaly Polynomial & Green-Schwarz</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">변칙 고분항 & 그린-슈워츠 기작</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="12" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">12</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Partition Functions & Modular Invariance</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">분배 함수 & 모듈러 불변성</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="13" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">13</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Gauge/Gravity Duality & Emergent Space</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">게이지/중력 이중성 & 창발 시공간</span>
                         </button>
                     </div>
                 </div>
@@ -1652,6 +1669,89 @@
                                     $$m_\nu \approx \frac{m_D^2}{M_R}$$
                                 </div>
                                 <p>여기서 $m_D$는 힉스와 결합하는 디랙(Dirac) 질량입니다. 디랙 질량이 약력 스케일인 $m_D \approx 100 \text{ GeV}$이고 마조라나 끈 질량이 $M_R \approx 10^{14} \text{ GeV}$ 근처일 때, 유도된 중성미자 질량은 $m_\nu \approx 0.1 \text{ eV}$가 되어 자연계의 태양 및 대기 중성미자 진동 실험값 범위를 정교하게 충족합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 11 -->
+                    <div class="chapter-content-card" data-ch-content="11" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(6, 182, 212, 0.3);">
+                            <h3 style="color: #06b6d4; font-size: 14px; margin-bottom: 8px;">Chapter 11: <span class="lang-text en">Anomaly Polynomial & Green-Schwarz Mechanism</span><span class="lang-text ko" style="display:none;">변칙 고분항 & 그린-슈워츠 기작</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>At 10 dimensions, chiral field theories suffer from **gauge and gravitational anomalies** which break gauge invariance at the one-loop quantum level. The anomalies are governed by an 8-form anomaly polynomial $I_8(R, F)$.</p>
+                                <p>The **Green-Schwarz Mechanism** (discovered in 1984) saves the theory from mathematical inconsistency. If the 8-form factorizes into a product of 4-forms:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #06b6d4;">
+                                    $$I_8 = \left( \text{tr} R^2 - c \, \text{tr} F^2 \right) \cdot \left( \text{tr} R^2 - c \, \text{tr} F^2 \right)$$
+                                </div>
+                                <p>then the anomaly can be canceled by adding a topological counterterm to the action: $S_{GS} \propto \int B_2 \wedge I_4$, where $B_2$ is the Kalb-Ramond 2-form. This factorization only works for gauge groups $SO(32)$ or $E_8 \times E_8$ (with $c = 1/30$), proving that superstring theory uniquely and beautifully determines the gauge groups of our universe.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>10차원의 카이럴 필드 이론은 1-루프 양자 효과 수준에서 게이지 불변성을 파괴하는 **게이지 및 중력 변칙(Anomalies)** 문제를 겪습니다. 이러한 양자 변칙은 8-폼 변칙 다항식 $I_8(R, F)$로 기술됩니다.</p>
+                                <p>1984년에 발견된 **그린-슈워츠 메커니즘(Green-Schwarz Mechanism)**은 이 치명적인 수학적 모순으로부터 초끈 이론을 구원했습니다. 만약 8-폼 변칙 다항식이 다음과 같이 두 4-폼의 곱으로 인수분해된다면:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #06b6d4;">
+                                    $$I_8 = \left( \text{tr} R^2 - c \, \text{tr} F^2 \right) \cdot \left( \text{tr} R^2 - c \, \text{tr} F^2 \right)$$
+                                </div>
+                                <p>Kalb-Ramond 2-폼 필드 $B_2$를 매개로 하는 위상학적 상쇄항 $S_{GS} \propto \int B_2 \wedge I_4$을 작용식에 추가함으로써 모든 양자 변칙을 무력화할 수 있습니다. 이 기가막힌 인수분해 조건은 오직 게이지 군이 $SO(32)$ 또는 $E_8 \times E_8$ (상수 $c = 1/30$)일 때만 성립하며, 이는 초끈 이론이 우리 우주의 게이지 군 대칭성을 물리적/수학적으로 유일하게 규정함을 보여주는 결정적 증거입니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 12 -->
+                    <div class="chapter-content-card" data-ch-content="12" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #a78bfa; font-size: 14px; margin-bottom: 8px;">Chapter 12: <span class="lang-text en">Partition Functions & Modular Invariance</span><span class="lang-text ko" style="display:none;">분배 함수 & 모듈러 불변성</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The one-loop quantum corrections of string theory are computed on a toroidal worldsheet parameterized by the complex modular parameter $\tau = \tau_1 + i \tau_2$. The one-loop **Partition Function** is:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #a78bfa;">
+                                    $$Z(\tau) = \int \frac{d^2 \tau}{\tau_2^2} \text{Tr} \left( q^{L_0 - c/24} \bar{q}^{\bar{L}_0 - \bar{c}/24} \right)$$
+                                </div>
+                                <p>where $q = e^{2\pi i \tau}$, and $L_0, \bar{L}_0$ are the Virasoro generators. The Dedekind eta function $\eta(\tau) = q^{1/24} \prod_{n=1}^\infty (1-q^n)$ acts as the fundamental building block for string excitations.</p>
+                                <p>For superstrings, modular invariance under the modular group $SL(2, \mathbb{Z})$ requires a delicate balance between boson and fermion loops. Jacobi's **Abstruse Identity** guarantees the exact cancellation of ultraviolet vacuum energy between bosons and fermions due to supersymmetry:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #a78bfa;">
+                                    $$\theta_3^4(\tau) - \theta_4^4(\tau) - \theta_2^4(\tau) = 0$$
+                                </div>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>초끈 이론의 1-루프 양자 보정은 복소 모듈러 매개변수 $\tau = \tau_1 + i \tau_2$로 특성화되는 토러스 세계면 상에서 계산됩니다. 1-루프 **분배 함수(Partition Function)**는 다음과 같습니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #a78bfa;">
+                                    $$Z(\tau) = \int \frac{d^2 \tau}{\tau_2^2} \text{Tr} \left( q^{L_0 - c/24} \bar{q}^{\bar{L}_0 - \bar{c}/24} \right)$$
+                                </div>
+                                <p>여기서 $q = e^{2\pi i \tau}$ 이며, $L_0, \bar{L}_0$은 비라소로 생성자입니다. 데데킨트 에타 함수 $\eta(\tau) = q^{1/24} \prod_{n=1}^\infty (1-q^n)$는 끈의 진동 모드를 생성하는 근본적인 수학적 뼈대 역할을 수행합니다.</p>
+                                <p>초끈의 분배 함수가 모듈러 군 $SL(2, \mathbb{Z})$ 변환 하에서 물리적으로 변하지 않는 **모듈러 불변성(Modular Invariance)**을 갖기 위해서는 보손과 페르미온 루프 간의 완벽한 상쇄가 요구됩니다. 야코비의 **난해한 항등식(Abstruse Identity)**은 초대칭에 의해 보손과 페르미온의 진공 에너지가 정확히 영(0)으로 상쇄됨을 입증하여 무한대 자외선 발산 문제를 원천적으로 해결합니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #a78bfa;">
+                                    $$\theta_3^4(\tau) - \theta_4^4(\tau) - \theta_2^4(\tau) = 0$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 13 -->
+                    <div class="chapter-content-card" data-ch-content="13" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #f472b6; font-size: 14px; margin-bottom: 8px;">Chapter 13: <span class="lang-text en">Gauge/Gravity Duality & Emergent Spacetime</span><span class="lang-text ko" style="display:none;">게이지/중력 이중성 & 창발 시공간</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The **AdS/CFT Duality** relates Type IIB superstring theory on $AdS_5 \times S^5$ with $\mathcal{N}=4$ Super Yang-Mills theory on the 4D boundary. The dictionary maps string parameters to gauge variables: $g_{YM}^2 = 4\pi g_s$ and $R^4/l_s^4 = g_{YM}^2 N = \lambda$.</p>
+                                <p>At large $N$ and strong coupling $\lambda \gg 1$, the quantum gauge theory becomes dual to weakly curved classical gravity, showing that spacetime itself is an **emergent** entity woven by boundary quantum entanglement.</p>
+                                <p>The precise relation between gravity and quantum entanglement is given by the **Ryu-Takayanagi formula**:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f472b6;">
+                                    $$S_A = \frac{\text{Area}(\gamma_A)}{4 G_N}$$
+                                </div>
+                                <p>which shows that the quantum entanglement entropy $S_A$ of a boundary subregion is exactly proportional to the area of the minimal surface $\gamma_A$ in the bulk gravity space. This leads to the profound realization that spacetime geometry is literally woven together by quantum entanglement ($ER = EPR$).</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>**AdS/CFT 이중성(Holographic Principle)**은 $AdS_5 \times S^5$ 시공간 상의 Type IIB 초끈 이론과 4차원 경계면 상의 $\mathcal{N}=4$ 양-밀스 게이지 이론 간의 등가성을 천명합니다. 이 홀로그래피 사전의 매핑 규칙은 다음과 같습니다: $g_{YM}^2 = 4\pi g_s$ 및 $R^4/l_s^4 = g_{YM}^2 N = \lambda$.</p>
+                                <p>게이지 색전하 $N$이 매우 크고 강결합 한계($\lambda \gg 1$)에 도달할 때, 강결합 양자 게이지 이론은 평평하고 약하게 휘어진 고전적 아인슈타인 초중력 공간으로 변환됩니다. 이는 우리가 인지하는 시공간 자체가 양자 상태들의 정보학적 얽힘으로부터 **창발(Emergent)**된 결과물임을 의미합니다.</p>
+                                <p>중력 시공간의 기하와 양자 정보 간의 연관성은 **류-타카야나기 공식(Ryu-Takayanagi Formula)**으로 확립됩니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f472b6;">
+                                    $$S_A = \frac{\text{Area}(\gamma_A)}{4 G_N}$$
+                                </div>
+                                <p>이 공식은 경계 영역 $A$의 양자 얽힘 엔트로피($S_A$)가 벌크 중력 공간 내부에 존재하는 극소 곡면 $\gamma_A$의 기하학적 면적과 정확히 일치함을 증명하며, 시공간의 기하학적 구조는 다름아닌 양자 얽힘으로 짜여진 직물($ER = EPR$)이라는 물리적 금자탑을 선사합니다.</p>
                             </div>
                         </div>
                     </div>
