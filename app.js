@@ -229,6 +229,8 @@ function initTabs() {
                 canvasDesc.innerText = "기본입자 유도 연구소: 칼라비-야우 다양체의 몫 위상구조 아래 교차하는 3쌍의 D-막들과 그 교차점에 구속되어 진동하는 3세대의 표준 모형 쿼크/렙톤 상태를 시각화합니다.";
             } else if (tabId === "higgs") {
                 canvasDesc.innerText = "힉스 & 중성미자 연구소: 자발적 대칭성 깨짐(EWSB)을 설명하는 3D 힉스 멕시칸 햇 퍼텐셜과 진공 기댓값(VEV) 상태를 시각화합니다.";
+            } else if (tabId === "theory-summary") {
+                canvasDesc.innerText = "이론 요약 대시보드 라이브 다양체: 물리적 공간 압축화 기하학을 제공하는 6차원 칼라비-야우 다양체(Calabi-Yau Manifold)의 3차원 투영 회전과 실시간 요동을 시각화합니다.";
             }
             
             // Execute related calculations immediately
@@ -250,6 +252,10 @@ function initTabs() {
                 runStandardModelEngine();
             } else if (tabId === "higgs") {
                 if (typeof runHiggsEngine === 'function') runHiggsEngine();
+            } else if (tabId === "theory-summary") {
+                if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                    window.MathJax.typesetPromise();
+                }
             }
         });
     });
@@ -1622,6 +1628,61 @@ function drawStringSimulationFrame() {
             ctx.shadowBlur = 15;
             ctx.beginPath();
             ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        ctx.restore();
+        
+    } else if (activeTab === "theory-summary") {
+        // --- TAB 11: Theoretical Summary Manifold (Beautiful Breathing Calabi-Yau Projection) ---
+        ctx.save();
+        ctx.translate(cx, cy);
+        
+        // We will draw a projection of a Calabi-Yau manifold using multiple intersecting, rotating, breathing complex 3D curves
+        const rings = 6;
+        const pointsPerRing = 100;
+        
+        ctx.lineWidth = 1.2;
+        ctx.shadowBlur = 10;
+        
+        for (let r = 0; r < rings; r++) {
+            // Harmonic breathing and rotation angles
+            const angleOffset = (Math.PI * 2 * r) / rings + time * 0.15;
+            const sizeScale = 80 + Math.sin(time * 0.8 + r) * 20;
+            
+            ctx.shadowColor = `hsla(${(r * 60 + time * 5) % 360}, 80%, 65%, 0.6)`;
+            ctx.strokeStyle = `hsla(${(r * 60 + time * 5) % 360}, 80%, 65%, 0.3)`;
+            
+            ctx.beginPath();
+            for (let i = 0; i <= pointsPerRing; i++) {
+                const theta = (Math.PI * 2 * i) / pointsPerRing;
+                
+                // Parametric equation for a Calabi-Yau-like projection (complex rosette)
+                const breathing = 1 + 0.15 * Math.sin(time * 1.5 + theta * 5);
+                const r3d = sizeScale * breathing * (1.2 + 0.4 * Math.sin(theta * 3 + angleOffset * 2));
+                
+                // Rotated coordinates
+                const x3d = r3d * Math.cos(theta + angleOffset) * Math.cos(angleOffset * 0.5);
+                const y3d = r3d * Math.sin(theta + angleOffset) * 0.5; // isometric projection tilt
+                
+                if (i === 0) ctx.moveTo(x3d, y3d);
+                else ctx.lineTo(x3d, y3d);
+            }
+            ctx.stroke();
+        }
+        
+        // Draw some orbiting light-quanta particles tracing the manifold paths
+        ctx.fillStyle = "#ffffff";
+        ctx.shadowColor = "#e9d5ff";
+        ctx.shadowBlur = 12;
+        for (let p = 0; p < 8; p++) {
+            const pAngle = time * 0.4 + (Math.PI * 2 * p) / 8;
+            const pDist = 100 + Math.sin(time * 1.2 + p) * 30;
+            const px = pDist * Math.cos(pAngle + Math.sin(time)) * Math.cos(pAngle * 0.2);
+            const py = pDist * Math.sin(pAngle + Math.sin(time)) * 0.5;
+            
+            ctx.beginPath();
+            ctx.arc(px, py, Math.random() * 2 + 1, 0, Math.PI * 2);
             ctx.fill();
         }
         
@@ -3370,9 +3431,96 @@ if (document.getElementById("btn-calc-higgs")) {
 });
 
 // --- 11. Initialization ---
+function initTheorySummary() {
+    // Language toggle
+    const langButtons = document.querySelectorAll(".lang-pill-btn");
+    langButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const lang = btn.getAttribute("data-lang");
+            
+            // Toggle active classes on buttons
+            langButtons.forEach(b => b.classList.toggle("active", b === btn));
+            
+            // Update styling
+            langButtons.forEach(b => {
+                if (b.classList.contains("active")) {
+                    b.style.background = "linear-gradient(135deg, #a78bfa, #7c3aed)";
+                    b.style.color = "white";
+                } else {
+                    b.style.background = "transparent";
+                    b.style.color = "var(--text-muted)";
+                }
+            });
+            
+            // Toggle lang elements
+            const enElements = document.querySelectorAll(".lang-text.en");
+            const koElements = document.querySelectorAll(".lang-text.ko");
+            
+            if (lang === "ko") {
+                enElements.forEach(el => el.style.display = "none");
+                koElements.forEach(el => el.style.display = "block");
+                
+                // Also support span inline
+                document.querySelectorAll("span.lang-text.ko").forEach(el => el.style.display = "inline");
+            } else {
+                enElements.forEach(el => el.style.display = "block");
+                koElements.forEach(el => el.style.display = "none");
+                
+                // Also support span inline
+                document.querySelectorAll("span.lang-text.en").forEach(el => el.style.display = "inline");
+            }
+            
+            // Rerun MathJax after toggling language
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                window.MathJax.typesetPromise();
+            }
+        });
+    });
+    
+    // Chapter selection
+    const chapterButtons = document.querySelectorAll(".chapter-btn");
+    const chapterContents = document.querySelectorAll(".chapter-content-card");
+    
+    chapterButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const chapterId = btn.getAttribute("data-chapter");
+            
+            // Update chapter buttons style
+            chapterButtons.forEach(b => {
+                const numEl = b.querySelector(".ch-num");
+                if (b === btn) {
+                    b.classList.add("active");
+                    b.style.background = "rgba(124, 58, 237, 0.1)";
+                    b.style.borderColor = "rgba(124, 58, 237, 0.3)";
+                    b.style.color = "var(--text-main)";
+                    if (numEl) numEl.style.color = "#a78bfa";
+                } else {
+                    b.classList.remove("active");
+                    b.style.background = "rgba(255, 255, 255, 0.02)";
+                    b.style.borderColor = "rgba(255, 255, 255, 0.06)";
+                    b.style.color = "var(--text-muted)";
+                    if (numEl) numEl.style.color = "var(--text-muted)";
+                }
+            });
+            
+            // Toggle content visibility
+            chapterContents.forEach(card => {
+                const cardId = card.getAttribute("data-ch-content");
+                card.style.display = cardId === chapterId ? "block" : "none";
+            });
+            
+            // Rerun MathJax for the new equations
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                window.MathJax.typesetPromise();
+            }
+        });
+    });
+}
+
 window.onload = () => {
     resizeCanvas();
     initTabs();
+    initTheorySummary();
     
     // Select default explorer values
     updateTheoryUI("Type_IIB");
