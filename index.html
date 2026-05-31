@@ -559,6 +559,23 @@
                             </p>
                         </div>
                     </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px; border-color: rgba(6, 182, 212, 0.25);">
+                        <h3>Virasoro 등각장론 대수 (CFT Algebra)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">
+                            비라소로 생성자 $L_m, L_n$의 대수적 교환관계 $[L_m, L_n] = (m-n)L_{m+n} + \frac{c}{12}m(m^2-1)\delta_{m+n,0}$을 연산합니다.
+                        </p>
+                        <div class="inputs-grid" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="input-item">
+                                <label>생성자 지수 m</label>
+                                <input type="number" id="diag-vir-m" value="2" min="-10" max="10" class="glass-input" style="width:100%; padding:6px; background:rgba(15,23,42,0.6); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); border-radius:6px; font-family:'Fira Code', monospace; font-size:12px;">
+                            </div>
+                            <div class="input-item">
+                                <label>생성자 지수 n</label>
+                                <input type="number" id="diag-vir-n" value="-2" min="-10" max="10" class="glass-input" style="width:100%; padding:6px; background:rgba(15,23,42,0.6); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); border-radius:6px; font-family:'Fira Code', monospace; font-size:12px;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Tab Content 10: Higgs & Neutrinos Left -->
@@ -1258,7 +1275,16 @@
                     </div>
                     
                     <div class="diagnostics-grid" id="diag-checklist-container">
-                        <!-- JS에서 동적 체크카드 렌더링 -->
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px; border-color: rgba(34, 211, 238, 0.25);">
+                        <h3>Virasoro 대수 연산 결과 (Worldsheet Commutator)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">임계 차원에 근거한 유효 중앙 전하 $c$를 추적하여 양자 교환자의 고스트 항 및 변칙 상쇄를 분석한 결과입니다.</p>
+                        <div class="assembled-particle-card" style="border-color: rgba(34, 211, 238, 0.3); background: rgba(0, 0, 0, 0.25); padding: 12px;">
+                            <div style="font-family:'Fira Code', monospace; line-height: 1.6; font-size:11px; color:#22d3ee; white-space: pre-wrap;" id="diag-vir-result">
+                                계산 중...
+                            </div>
+                        </div>
                     </div>
                 </div>
 

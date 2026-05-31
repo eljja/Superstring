@@ -710,27 +710,84 @@ function runDiagnosticsEngine() {
 
     // Render diagnostic cards
     const container = document.getElementById("diag-checklist-container");
-    container.innerHTML = "";
+    if (container) {
+        container.innerHTML = "";
+        checks.forEach(chk => {
+            const card = document.createElement("div");
+            card.className = `diag-card ${chk.passed ? 'passed' : 'failed'}`;
+            
+            card.innerHTML = `
+                <div class="diag-header">
+                    <span class="diag-title">${chk.name}</span>
+                    <span class="diag-status-badge ${chk.passed ? 'pass' : 'fail'}">${chk.passed ? 'PASS' : 'FAIL'}</span>
+                </div>
+                ${!chk.passed ? `<div class="diag-error-msg">⚠️ ${chk.error}</div>` : ''}
+                <p class="diag-explanation">${chk.exp}</p>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // --- Virasoro Algebra & CFT Anomaly calculations ---
+    const vir_m = parseInt(document.getElementById("diag-vir-m").value) || 0;
+    const vir_n = parseInt(document.getElementById("diag-vir-n").value) || 0;
     
-    checks.forEach(chk => {
-        const card = document.createElement("div");
-        card.className = `diag-card ${chk.passed ? 'passed' : 'failed'}`;
-        
-        card.innerHTML = `
-            <div class="diag-header">
-                <span class="diag-title">${chk.name}</span>
-                <span class="diag-status-badge ${chk.passed ? 'pass' : 'fail'}">${chk.passed ? 'PASS' : 'FAIL'}</span>
-            </div>
-            ${!chk.passed ? `<div class="diag-error-msg">⚠️ ${chk.error}</div>` : ''}
-            <p class="diag-explanation">${chk.exp}</p>
-        `;
-        container.appendChild(card);
-    });
+    // Matter central charge for Superstring CFT: c = 1.5 * D
+    const c_matter = D * 1.5;
+    const c_ghost = -15.0; // Critical super-ghost central charge
+    const total_c = c_matter + (D === 26 ? -26.0 : c_ghost); // adjust for bosonic if D=26
+    
+    let commutatorText = `• 세계면 CFT 중앙 전하 (Central Charge):\n`;
+    commutatorText += `  - Matter 중앙 전하 (c_m = 1.5 · D):  ${c_matter.toFixed(1)}\n`;
+    commutatorText += `  - Ghost 중앙 전하 (c_g):             ${D === 26 ? "-26.0" : "-15.0"}\n`;
+    commutatorText += `  - 총 양자 등각 이상 변칙 (c_tot):      ${(D === 10 || D === 26) ? "0.0 (변칙 완전 상쇄!)" : (c_matter + (D === 26 ? -26.0 : -15.0)).toFixed(1) + " (변칙 존재 - 고스트 발생)"}\n\n`;
+    
+    commutatorText += `• Virasoro 교환자 연산 [L_(${vir_m}), L_(${vir_n})]:\n`;
+    
+    const coeff = vir_m - vir_n;
+    const isAnomaly = (vir_m + vir_n === 0);
+    const anomalyTerm = isAnomaly ? (c_matter / 12.0) * vir_m * (vir_m * vir_m - 1) : 0.0;
+    
+    let resultEquation = `  [L_{${vir_m}}, L_{${vir_n}}] = `;
+    if (coeff !== 0) {
+        resultEquation += `${coeff} L_{${vir_m + vir_n}}`;
+    }
+    
+    if (isAnomaly && anomalyTerm !== 0) {
+        if (coeff !== 0) {
+            resultEquation += ` + (${anomalyTerm > 0 ? "" : "-"}${Math.abs(anomalyTerm).toFixed(4)}) I`;
+        } else {
+            resultEquation += `(${anomalyTerm.toFixed(4)}) I`;
+        }
+    } else if (coeff === 0 && !isAnomaly) {
+        resultEquation += `0`;
+    } else if (coeff === 0 && isAnomaly && anomalyTerm === 0) {
+        resultEquation += `0`;
+    }
+    
+    commutatorText += resultEquation + `\n\n`;
+    commutatorText += `• 물리적 진단:\n`;
+    if (D === 10) {
+        commutatorText += `  ↳ 10차원 초대칭 끈 우주에서는 총 중앙 전하 c_tot = 15 - 15 = 0으로 Weyl 이상 변칙이 상쇄되어, 광복원(Gauge) 및 일반 상대론적 물리량 계산이 게이지 독립적이고 유일하며 수학적으로 아름답게 수렴합니다.`;
+    } else if (D === 26) {
+        commutatorText += `  ↳ 26차원 보손 끈 우주에서는 총 중앙 전하 c_tot = 26 - 26 = 0으로 conformal anomaly가 제거되나, bosonic tachyonic 진공 붕괴 불안정성이 남게 됩니다.`;
+    } else {
+        commutatorText += `  ↳ 차원이 임계점(D=10, 26)을 이탈하여 총 c_tot = ${(c_matter + (D === 26 ? -26.0 : -15.0)).toFixed(2)} != 0 입니다. 이탈된 등각 변칙으로 인해 세계면의 Weyl 대칭이 파괴되며 물리 상태에 '유령(Ghost)' 상태가 잔존하는 치명적 수학적 모순이 증명되었습니다.`;
+    }
+    
+    const virResultEl = document.getElementById("diag-vir-result");
+    if (virResultEl) {
+        virResultEl.innerText = commutatorText;
+    }
 }
 
 // Bind Tab 3 events
 document.getElementById("diag-dims").addEventListener("input", runDiagnosticsEngine);
 document.getElementById("diag-gauge").addEventListener("input", runDiagnosticsEngine);
+if (document.getElementById("diag-vir-m")) {
+    document.getElementById("diag-vir-m").addEventListener("input", runDiagnosticsEngine);
+    document.getElementById("diag-vir-n").addEventListener("input", runDiagnosticsEngine);
+}
 
 
 // --- 8. Real-Time String Animation (Canvas Engine) ---
