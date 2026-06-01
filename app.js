@@ -235,6 +235,8 @@ function initTabs() {
                 canvasDesc.innerText = "진폭면체 & 트위스터 연구소: 산란 진폭을 N=4 SYM 공간의 그라스만 기하학 부피로 치환하여 트위스터 공간에서 기하학적 렌더링을 수행합니다.";
             } else if (tabId === "string-field") {
                 canvasDesc.innerText = "끈 장론 & 타키온 응축 연구소: 위튼의 3차 개방 끈 장론에서 별-곱(Star-Product)을 통한 열린 끈의 붕괴 현상과 닫힌 끈 진공으로의 변이(Sen's Conjecture)를 기하학적으로 시각화합니다.";
+            } else if (tabId === "page-curve") {
+                canvasDesc.innerText = "페이지 곡선 & 복제 웜홀 연구소: 증발하는 블랙홀의 미세 조정된 얽힘 엔트로피(Fine-grained Entropy)를 섬 공식(Island Formula)을 통해 연산하고, 유니터리성이 보존되는 과정을 시각화합니다.";
             } else if (tabId === "theory-summary") {
                 canvasDesc.innerText = "이론 요약 대시보드 라이브 다양체: 물리적 공간 압축화 기하학을 제공하는 6차원 칼라비-야우 다양체(Calabi-Yau Manifold)의 3차원 투영 회전과 실시간 요동을 시각화합니다.";
             }
@@ -264,6 +266,8 @@ function initTabs() {
                 if (typeof runAmplituhedronEngine === 'function') runAmplituhedronEngine();
             } else if (tabId === "string-field") {
                 if (typeof runStringFieldEngine === 'function') runStringFieldEngine();
+            } else if (tabId === "page-curve") {
+                if (typeof runPageCurveEngine === 'function') runPageCurveEngine();
             } else if (tabId === "theory-summary") {
                 if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                     window.MathJax.typesetPromise();
@@ -4033,6 +4037,53 @@ document.addEventListener("DOMContentLoaded", () => {
         runStringFieldEngine();
         sftBtn.innerText = "계산 완료 ✅";
         setTimeout(() => { sftBtn.innerText = "📉 D-막 장력 상쇄 (Sen's Conjecture) 연산"; }, 2000);
+    });
+});
+
+// --- Page Curve Engine (Black Hole Information) ---
+function runPageCurveEngine() {
+    const t = parseFloat(document.getElementById("page-time").value);
+    
+    document.getElementById("page-time-val").innerText = `t = ${t}`;
+
+    // Max entropy S_0 = 100 for simplicity
+    const S_0 = 100;
+    
+    // Naive Hawking radiation entropy increases linearly: S_rad = t
+    const naive_S_rad = t;
+    
+    // Black hole entropy decreases linearly: S_BH = S_0 - t
+    const S_BH = S_0 - t;
+    
+    // Page time is when naive_S_rad == S_BH, so t_page = 50
+    const t_page = 50;
+
+    // Island formula: S_fine = min(naive_S_rad, S_BH)
+    const S_fine = Math.min(naive_S_rad, S_BH);
+
+    document.getElementById("res-page-naive").innerText = `$S_{\\text{rad}} = ${naive_S_rad.toFixed(1)}$`;
+    document.getElementById("res-page-bh").innerText = `$S_{BH} = ${Math.max(0, S_BH).toFixed(1)}$`;
+    
+    if (t < t_page) {
+        document.getElementById("res-page-final").innerText = `$S_{\\text{fine}} = ${S_fine.toFixed(1)}$ (Hawking Phase)`;
+        document.getElementById("res-page-phase").innerText = "No Island (섬 없음, 호킹 방사 주도)";
+        document.getElementById("res-page-phase").style.color = "#3b82f6";
+    } else {
+        document.getElementById("res-page-final").innerText = `$S_{\\text{fine}} = ${Math.max(0, S_fine).toFixed(1)}$ (Island Phase)`;
+        document.getElementById("res-page-phase").innerText = "Replica Wormhole (복제 웜홀 안장점 주도)";
+        document.getElementById("res-page-phase").style.color = "#8b5cf6";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const pageTime = document.getElementById("page-time");
+    const pageBtn = document.getElementById("btn-calc-page");
+
+    if (pageTime) pageTime.addEventListener("input", runPageCurveEngine);
+    if (pageBtn) pageBtn.addEventListener("click", () => {
+        runPageCurveEngine();
+        pageBtn.innerText = "계산 완료 ✅";
+        setTimeout(() => { pageBtn.innerText = "📉 호킹 방사 얽힘 엔트로피 연산"; }, 2000);
     });
 });
 

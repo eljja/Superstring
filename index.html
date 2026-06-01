@@ -60,6 +60,7 @@
             <button class="tab-btn" data-tab="mirror">🪞 거울 대칭 & 위상 끈 (Mirror Symmetry)</button>
             <button class="tab-btn" data-tab="amplituhedron">💎 진폭면체 & 트위스터 (Amplituhedron)</button>
             <button class="tab-btn" data-tab="string-field">🌌 끈 장론 & 타키온 응축 (String Field Theory)</button>
+            <button class="tab-btn" data-tab="page-curve">🕳️ 페이지 곡선 & 섬 공식 (Black Hole Information)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -737,7 +738,39 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 14: Theoretical Summary Left -->
+                <!-- Tab Content 14: Page Curve Left -->
+                <div id="left-page-curve" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🕳️ 페이지 곡선 & 양자 극값 표면</h2>
+                    </div>
+                    <p class="section-desc">호킹의 블랙홀 정보 역설(Information Paradox)을 해결한 2019년의 기념비적 발견인 <strong>섬 공식(Island Formula)</strong>과 <strong>복제 웜홀(Replica Wormhole)</strong>을 연산합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>증발하는 블랙홀 매개변수</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">블랙홀의 증발 시간(Time)과 엔트로피를 조절합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>증발 진행 시간 (Evaporation Time $t$)</label>
+                                <input type="range" id="page-time" min="0" max="100" step="1" value="30">
+                                <span class="range-val" id="page-time-val">t = 30</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>섬 공식 (The Island Formula)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">미세 조정된 얽힘 엔트로피(Fine-grained Entanglement Entropy)를 QES(Quantum Extremal Surface)를 통과하여 계산합니다.</p>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                            $$S(\text{Rad}) = \min_{I} \operatorname{ext}_{I} \left[ \frac{\text{Area}(\partial I)}{4G_N} + S_{\text{semi-cl}}(\text{Rad} \cup I) \right]$$
+                        </div>
+                    </div>
+                    
+                    <button class="action-btn" id="btn-calc-page" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #10b981, #047857); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        📉 호킹 방사 얽힘 엔트로피 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 15: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -862,6 +895,16 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">21</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Chern-Simons & Knot Invariants</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">천-사이먼스 이론 & 매듭 불변량</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="22" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">22</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">The Page Curve & Replica Wormholes</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">페이지 곡선과 복제 웜홀</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="23" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">23</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Monstrous Moonshine (j-function)</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">괴물 몬샤인과 모듈러 형식</span>
                         </button>
                     </div>
                 </div>
@@ -1660,7 +1703,48 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 14: Theoretical Summary Right -->
+                <!-- Tab Content 14: Page Curve Right -->
+                <div id="right-page-curve" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🕳️ 정보 역설의 기하학적 해결</h2>
+                    </div>
+
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #10b981;">호킹 방사 엔트로피 곡선 (The Page Curve)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">초기에는 호킹 방사(Hawking Radiation)의 엔트로피가 블랙홀의 엔트로피를 초과하는 역설이 발생하지만, 페이지 시간(Page Time) 이후 복제 웜홀(Replica Wormhole) 안장점(Saddle Point)이 주도하면서 엔트로피가 다시 감소하여 0으로 수렴합니다.</p>
+                        
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">초기 호킹 계산 (Naive Hawking Entropy)</span>
+                                <span class="value" id="res-page-naive" style="color:#ef4444; font-size: 14px;">$S_{\text{rad}} = 30.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">블랙홀 남은 면적 엔트로피 (Bekenstein-Hawking)</span>
+                                <span class="value" id="res-page-bh" style="color:#f59e0b; font-size: 14px;">$S_{BH} = 70.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">최종 얽힘 엔트로피 (Fine-grained Entropy)</span>
+                                <span class="value" id="res-page-final" style="color:#10b981; font-size: 16px; font-weight:bold;">$S_{\text{fine}} = 30.0$ (Pre-Page Time)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3 style="color: #047857;">복제 웜홀 안장점 (Replica Wormhole Saddle)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">증발 중반(Page Time) 이후, 섬(Island) $I$가 호킹 방사와 얽히게 되며 새로운 시공간 위상(Topology)이 경로 적분에서 지배적인 기여를 합니다.</p>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #047857;">
+                            \text{Phase: } \begin{cases} \text{No Island (Hawking Phase)} & (t < t_{\text{page}}) \\ \text{Island Phase (Wormhole)} & (t > t_{\text{page}}) \end{cases}
+                        </div>
+                        <div class="asm-spec-grid" style="margin-top: 10px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">현재 위상 (Current Quantum Phase)</span>
+                                <span class="value" id="res-page-phase" style="color:#3b82f6;">No Island (섬 없음)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 15: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -2272,6 +2356,52 @@
                                     $$\langle W_R(K) \rangle = \int \mathcal{D}A \, e^{\frac{ik}{4\pi} \int \text{Tr}(A \wedge dA + \frac{2}{3}A \wedge A \wedge A)} \, \text{Tr}_R(e^{\oint_K A})$$
                                 </div>
                                 <p>이 기념비적인 결과로 물리학자 최초로 필즈상을 수상하였으며, 물리적인 양자 게이지 장이 3차원 다양체 내의 비자명한 위상학적 매듭(Knot)을 감지하고 분류할 수 있음을 보여주며 물리학과 위상수학을 영원히 결속시켰습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 22 -->
+                    <div class="chapter-content-card" data-ch-content="22" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 22: <span class="lang-text en">The Page Curve & Replica Wormholes</span><span class="lang-text ko" style="display:none;">페이지 곡선과 복제 웜홀</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Hawking's 1976 paradox posited that black hole evaporation destroys quantum information. However, in 2019, it was shown that computing the fine-grained entanglement entropy via the <strong>Island Formula</strong> exactly reproduces the unitary <strong>Page Curve</strong>.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                                    $$S(\text{Rad}) = \min_{I} \operatorname{ext}_{I} \left[ \frac{\text{Area}(\partial I)}{4G_N} + S_{\text{semi-cl}}(\text{Rad} \cup I) \right]$$
+                                </div>
+                                <p>Past the Page Time, the minimum shifts to a non-empty Island ($I \neq \emptyset$), heavily entangled with the Hawking radiation. In the gravitational path integral, this corresponds to the dominance of <strong>Replica Wormhole</strong> saddle points connecting different copies of the spacetime.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>호킹의 1976년 역설은 블랙홀 증발이 양자 정보를 파괴한다고 주장했습니다. 그러나 2019년, **섬 공식(Island Formula)**을 통해 미세 조정된 얽힘 엔트로피를 계산하면 유니터리(Unitary) 곡선인 **페이지 곡선(Page Curve)**이 정확히 재현됨이 증명되었습니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                                    $$S(\text{Rad}) = \min_{I} \operatorname{ext}_{I} \left[ \frac{\text{Area}(\partial I)}{4G_N} + S_{\text{semi-cl}}(\text{Rad} \cup I) \right]$$
+                                </div>
+                                <p>페이지 시간(Page Time)을 지나면 엔트로피 최소값은 호킹 방사와 강하게 얽힌 빈 공간이 아닌 '섬($I$)'으로 이동합니다. 중력 경로 적분에서 이는 서로 다른 시공간 복제본들을 연결하는 **복제 웜홀(Replica Wormhole)** 안장점이 기여를 주도하는 현상으로 해석됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 23 -->
+                    <div class="chapter-content-card" data-ch-content="23" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                            <h3 style="color: #ef4444; font-size: 14px; margin-bottom: 8px;">Chapter 23: <span class="lang-text en">Monstrous Moonshine</span><span class="lang-text ko" style="display:none;">괴물 몬샤인과 모듈러 형식</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The <strong>Monstrous Moonshine</strong> conjecture (proved by Borcherds) reveals an absurdly beautiful connection between String Theory and the largest sporadic simple group, the Monster Group ($\mathbb{M}$). The partition function of the Monster CFT is exactly the modular $j$-function.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ef4444;">
+                                    $$j(\tau) = \frac{1}{q} + 744 + 196884q + 21493760q^2 + \cdots$$
+                                </div>
+                                <p>Notice that $196884 = 196883 + 1$. The Fourier coefficients of the elliptic modular function in string theory precisely match the dimensions of the irreducible representations of the Monster group! The universe's fundamental strings vibrate to the symmetries of the Monster.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>리처드 보처즈(Richard Borcherds)가 증명한 **괴물 몬샤인(Monstrous Moonshine)**은 끈 이론과 가장 거대한 산재 단순군인 괴물군(Monster Group, $\mathbb{M}$) 사이의 기적적인 연결성을 밝혀냅니다. 몬스터 CFT의 분배 함수는 정확히 모듈러 $j$-함수와 일치합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ef4444;">
+                                    $$j(\tau) = \frac{1}{q} + 744 + 196884q + 21493760q^2 + \cdots$$
+                                </div>
+                                <p>$196884 = 196883 + 1$임을 주목하십시오. 끈 이론에 등장하는 타원 모듈러 함수의 퓨리에 계수들이 괴물군의 기약 표현(Irreducible Representation)의 차원 수와 정확히 일치합니다! 우주의 근본 끈은 거대한 괴물군의 대칭성에 맞추어 진동하고 있습니다.</p>
                             </div>
                         </div>
                     </div>
