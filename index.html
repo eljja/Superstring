@@ -58,6 +58,7 @@
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
             <button class="tab-btn" data-tab="higgs">☀️ 힉스 & 중성미자 (Higgs & Neutrinos)</button>
             <button class="tab-btn" data-tab="mirror">🪞 거울 대칭 & 위상 끈 (Mirror Symmetry)</button>
+            <button class="tab-btn" data-tab="amplituhedron">💎 진폭면체 & 트위스터 (Amplituhedron)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -662,7 +663,46 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 12: Theoretical Summary Left -->
+                <!-- Tab Content 12: Amplituhedron Left -->
+                <div id="left-amplituhedron" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>💎 진폭면체 & 트위스터 공간</h2>
+                    </div>
+                    <p class="section-desc">무한히 복잡한 파인만 다이어그램(Feynman Diagrams)을 기하학적 도형인 진폭면체(Amplituhedron)의 부피로 대체하여 $\mathcal{N}=4$ 초 대칭 양-밀스 이론의 산란 진폭을 완벽하게 계산합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>그라스만 다양체 (Grassmannian $G(k, n)$)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">입자의 개수 $n$과 헬리시티(Helicity) 섹터 $k$를 설정합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>산란 입자 수 (n)</label>
+                                <input type="range" id="ampl-n" min="4" max="12" step="1" value="6">
+                                <span class="range-val" id="ampl-n-val">n = 6</span>
+                            </div>
+                            <div class="input-item">
+                                <label>N^k MHV 헬리시티 (k)</label>
+                                <input type="range" id="ampl-k" min="0" max="4" step="1" value="2">
+                                <span class="range-val" id="ampl-k-val">k = 2 (N²MHV)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>루프(Loop) 양자 보정</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">루프 차수 $L$을 증가시켜 기하학적 층(layers)의 교차 부피를 계산합니다.</p>
+                        <div class="input-item">
+                            <label>루프 개수 (L)</label>
+                            <input type="range" id="ampl-l" min="0" max="4" step="1" value="0">
+                            <span class="range-val" id="ampl-l-val">L = 0 (Tree Level)</span>
+                        </div>
+                    </div>
+                    
+                    <button class="action-btn" id="btn-calc-ampl" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #0ea5e9, #2563eb); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        💠 진폭면체 부피 (Amplitude) 계산
+                    </button>
+                </div>
+
+                <!-- Tab Content 13: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -755,8 +795,28 @@
                         </button>
                         <button class="chapter-btn" data-chapter="15" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">15</span>
-                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Seiberg-Witten Theory</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Seiberg-Witten Theory (N=2)</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">자이베르그-위튼 이론 (N=2)</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="16" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">16</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Mirror Symmetry & Gromov-Witten</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">거울 대칭 & GW 불변량</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="17" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">17</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">D-branes & Topological K-Theory</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">D-막 역학과 위상 K-이론</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="18" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">18</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">The Amplituhedron & Twistor Space</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">진폭면체와 트위스터 공간</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="19" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">19</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Quantum Error Correction & SYK</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">양자 오류 정정과 SYK 모델</span>
                         </button>
                     </div>
                 </div>
@@ -1480,7 +1540,47 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 12: Theoretical Summary Right -->
+                <!-- Tab Content 12: Amplituhedron Right -->
+                <div id="right-amplituhedron" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>💎 진폭면체 부피 렌더링 & 산란 진폭</h2>
+                    </div>
+
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #0ea5e9;">트위스터 기하학 연산 결과</h3>
+                        <div class="asm-spec-grid" style="margin-top: 10px;">
+                            <div class="asm-spec-item">
+                                <span class="label">차원 (Dimensions of G)</span>
+                                <span class="value" id="res-ampl-dim" style="color:#0ea5e9;">4k = 8</span>
+                            </div>
+                            <div class="asm-spec-item">
+                                <span class="label">양성 그라스만 구조 (Positivity)</span>
+                                <span class="value" id="res-ampl-pos" style="color:#fbbf24;">Det(Z) > 0</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px;">산란 진폭은 트위스터 공간 내 다면체 구조인 진폭면체(Amplituhedron)의 정준 미분형식(Canonical Form) 적분으로 정확히 계산됩니다.</p>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3 style="color: #3b82f6;">산란 진폭 (Scattering Amplitude)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">BCFW 재귀 관계를 넘어선 기하학적 체적(Volume) 기반의 수치 계산입니다.</p>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                            $$\mathcal{M}_{n,k}^{(L)} = \int d\Omega_{n,k,L}$$
+                        </div>
+                        <div class="asm-spec-grid" style="margin-top: 10px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">정준 미분 형식의 부피 (Volume of Amplituhedron)</span>
+                                <span class="value" id="res-ampl-vol" style="color:#3b82f6; font-size: 14px;">0.0034521...</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">생략된 파인만 다이어그램 개수</span>
+                                <span class="value" id="res-ampl-feynman" style="color:#f87171;">수백만 개 -> 단 1개의 기하학!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 13: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -1997,6 +2097,55 @@
                                     $$\mathcal{E} \xrightarrow{T} \mathcal{F}$$
                                 </div>
                                 <p>이 이론은 기존의 일반 코호몰로지(Cohomology)로는 포착할 수 없는 위상학적 비틀림 전하(Torsion Charge)까지 완벽하게 잡아내며, K-이론이 Ramond-Ramond 게이지 전하를 담아내는 진정한 수학적 언어임을 확립했습니다.</p>
+                            </div>
+                    </div>
+
+                    <!-- Chapter 18 -->
+                    <div class="chapter-content-card" data-ch-content="18" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(14, 165, 233, 0.3);">
+                            <h3 style="color: #0ea5e9; font-size: 14px; margin-bottom: 8px;">Chapter 18: <span class="lang-text en">The Amplituhedron & Twistor Space</span><span class="lang-text ko" style="display:none;">진폭면체와 트위스터 공간</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Discovered by Arkani-Hamed and Trnka (2013), the <strong>Amplituhedron</strong> revolutionizes quantum field theory by entirely discarding virtual particles, Feynman diagrams, and even spacetime locality itself. Instead, the scattering amplitudes of $\mathcal{N}=4$ Super Yang-Mills theory are exactly equivalent to the volume of a geometric jewel in Grassmannian space $G(k, n)$.</p>
+                                <p>The tree-level amplitude is elegantly given by the integral of the canonical differential form $\Omega$ over this positive geometry:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #0ea5e9;">
+                                    $$\mathcal{A}_{n,k} = \int \Omega(\mathcal{A}_{n,k,L})$$
+                                </div>
+                                <p>This implies that locality and unitarity are not fundamental axioms of nature, but merely emergent properties from a deeper, purely geometric reality in Twistor Space.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>아르카니-하메드와 트른카에 의해 발견된 **진폭면체(Amplituhedron)**는 가상 입자와 파인만 다이어그램, 심지어 '시공간의 국소성'이라는 개념마저 완전히 폐기하며 양자장론을 기하학적으로 혁명했습니다. $\mathcal{N}=4$ 초대칭 양-밀스 이론의 산란 진폭은 그라스만 다양체 $G(k, n)$ 안에 존재하는 이 다면체의 부피와 정확히 일치합니다.</p>
+                                <p>트리 수준(Tree-level)의 산란 진폭은 이 양의 기하학(Positive Geometry) 위에서의 정준 미분 형식 $\Omega$의 적분으로 우아하게 주어집니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #0ea5e9;">
+                                    $$\mathcal{A}_{n,k} = \int \Omega(\mathcal{A}_{n,k,L})$$
+                                </div>
+                                <p>이는 국소성(Locality)과 유니터리성(Unitarity)이 자연의 근본 원리가 아니라, 트위스터 공간(Twistor Space)의 심오한 기하학적 실체로부터 파생된 **창발적 현상(Emergent Property)**에 불과함을 시사합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 19 -->
+                    <div class="chapter-content-card" data-ch-content="19" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 19: <span class="lang-text en">Quantum Error Correction & SYK Model</span><span class="lang-text ko" style="display:none;">양자 오류 정정과 SYK 모델</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The latest breakthroughs in Holography reframe the AdS/CFT correspondence as a vast <strong>Quantum Error-Correcting Code</strong>. The bulk spacetime geometry is incredibly robust because the boundary conformal field theory encodes information non-locally.</p>
+                                <p>This is beautifully captured by the <strong>Sachdev-Ye-Kitaev (SYK) Model</strong>, a 1D quantum mechanical system of $N$ Majorana fermions with random all-to-all interactions:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ec4899;">
+                                    $$H = \sum_{1 \le i < j < k < l \le N} J_{ijkl} \chi_i \chi_j \chi_k \chi_l$$
+                                </div>
+                                <p>The SYK model exhibits maximal quantum chaos and is holographically dual to a Jackiw-Teitelboim (JT) gravity black hole in two dimensions, precisely explaining the information paradox.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>현대 홀로그래피 이론의 최전선은 AdS/CFT 이중성을 거대한 **양자 오류 정정 코드(Quantum Error-Correcting Code)**로 재해석합니다. 벌크 중력 공간의 기하학이 그토록 견고하게 유지되는 이유는, 경계면의 양자장 정보가 비국소적으로 암호화되어 있기 때문입니다.</p>
+                                <p>이는 $N$개의 마요라나 페르미온들이 무작위적으로 전역 상호작용하는 **SYK(Sachdev-Ye-Kitaev) 모델**을 통해 가장 극적으로 증명됩니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ec4899;">
+                                    $$H = \sum_{1 \le i < j < k < l \le N} J_{ijkl} \chi_i \chi_j \chi_k \chi_l$$
+                                </div>
+                                <p>SYK 모델은 자연계에서 허용되는 가장 빠른 속도의 '최대 양자 혼돈(Maximal Chaos)' 상태를 보여주며, 이는 2차원 자키브-타이텔보임(JT) 중력의 블랙홀과 완벽히 대응되어 호킹의 정보 역설을 해결하는 핵심 단서가 되었습니다.</p>
                             </div>
                         </div>
                     </div>

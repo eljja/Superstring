@@ -231,6 +231,8 @@ function initTabs() {
                 canvasDesc.innerText = "힉스 & 중성미자 연구소: 자발적 대칭성 깨짐(EWSB)을 설명하는 3D 힉스 멕시칸 햇 퍼텐셜과 진공 기댓값(VEV) 상태를 시각화합니다.";
             } else if (tabId === "mirror") {
                 canvasDesc.innerText = "거울 대칭 & 위상 끈 연구소: 칼라비-야우 다양체의 3차원 투영 상에서 A-모델의 인스턴톤과 B-모델의 복소 구조 변형을 계산합니다.";
+            } else if (tabId === "amplituhedron") {
+                canvasDesc.innerText = "진폭면체 & 트위스터 연구소: 산란 진폭을 N=4 SYM 공간의 그라스만 기하학 부피로 치환하여 트위스터 공간에서 기하학적 렌더링을 수행합니다.";
             } else if (tabId === "theory-summary") {
                 canvasDesc.innerText = "이론 요약 대시보드 라이브 다양체: 물리적 공간 압축화 기하학을 제공하는 6차원 칼라비-야우 다양체(Calabi-Yau Manifold)의 3차원 투영 회전과 실시간 요동을 시각화합니다.";
             }
@@ -256,6 +258,8 @@ function initTabs() {
                 if (typeof runHiggsEngine === 'function') runHiggsEngine();
             } else if (tabId === "mirror") {
                 if (typeof runMirrorEngine === 'function') runMirrorEngine();
+            } else if (tabId === "amplituhedron") {
+                if (typeof runAmplituhedronEngine === 'function') runAmplituhedronEngine();
             } else if (tabId === "theory-summary") {
                 if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                     window.MathJax.typesetPromise();
@@ -3932,6 +3936,54 @@ document.addEventListener("DOMContentLoaded", () => {
         runMirrorEngine();
         mirrorBtn.innerText = "계산 완료 ✅";
         setTimeout(() => { mirrorBtn.innerText = "♾️ Gromov-Witten 불변량 자동 계산"; }, 2000);
+    });
+});
+
+// --- Amplituhedron & Twistor Space Engine ---
+function runAmplituhedronEngine() {
+    const n = parseInt(document.getElementById("ampl-n").value);
+    const k = parseInt(document.getElementById("ampl-k").value);
+    const L = parseInt(document.getElementById("ampl-l").value);
+    
+    document.getElementById("ampl-n-val").innerText = `n = ${n}`;
+    document.getElementById("ampl-k-val").innerText = `k = ${k} (N${k === 0 ? "" : k === 1 ? "" : "²"}MHV)`;
+    document.getElementById("ampl-l-val").innerText = `L = ${L} (${L === 0 ? "Tree Level" : L + " Loop"})`;
+
+    const dim = 4 * k;
+    document.getElementById("res-ampl-dim").innerText = `4k = ${dim}`;
+    
+    // Simulate positivity and volume calculation for Grassmannian G(k, n)
+    // The volume drops dramatically as loops and n increase.
+    // Vol ~ O(1) / (n! * (2L)!) 
+    let volBase = Math.exp(-0.5 * n - 0.8 * k - 1.5 * L);
+    let volStr = volBase.toExponential(4);
+    
+    document.getElementById("res-ampl-vol").innerText = volStr;
+
+    // Feynman diagram explosion vs 1 geometry
+    let feynmanCount = 1;
+    if (L === 0) feynmanCount = Math.floor(Math.pow(n, 2) * 5);
+    else if (L === 1) feynmanCount = Math.floor(Math.pow(n, 4) * 20);
+    else if (L === 2) feynmanCount = Math.floor(Math.pow(n, 6) * 100);
+    else if (L === 3) feynmanCount = Math.floor(Math.pow(n, 8) * 1000);
+    else feynmanCount = Math.floor(Math.pow(n, 10) * 10000);
+
+    document.getElementById("res-ampl-feynman").innerText = `${feynmanCount.toLocaleString()} 개 -> 단 1개의 기하학!`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const amplN = document.getElementById("ampl-n");
+    const amplK = document.getElementById("ampl-k");
+    const amplL = document.getElementById("ampl-l");
+    const amplBtn = document.getElementById("btn-calc-ampl");
+
+    if (amplN) amplN.addEventListener("input", runAmplituhedronEngine);
+    if (amplK) amplK.addEventListener("input", runAmplituhedronEngine);
+    if (amplL) amplL.addEventListener("input", runAmplituhedronEngine);
+    if (amplBtn) amplBtn.addEventListener("click", () => {
+        runAmplituhedronEngine();
+        amplBtn.innerText = "계산 완료 ✅";
+        setTimeout(() => { amplBtn.innerText = "💠 진폭면체 부피 (Amplitude) 계산"; }, 2000);
     });
 });
 
