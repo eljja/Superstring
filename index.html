@@ -57,6 +57,7 @@
             <button class="tab-btn" data-tab="standard-model">⚛️ 기본입자 유도 (Standard Model Lab)</button>
             <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
             <button class="tab-btn" data-tab="higgs">☀️ 힉스 & 중성미자 (Higgs & Neutrinos)</button>
+            <button class="tab-btn" data-tab="mirror">🪞 거울 대칭 & 위상 끈 (Mirror Symmetry)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -624,7 +625,44 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 11: Theoretical Summary Left -->
+                <!-- Tab Content 11: Mirror Symmetry Left -->
+                <div id="left-mirror" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🪞 거울 대칭 & 위상 끈 이론</h2>
+                    </div>
+                    <p class="section-desc">거울 대칭(Mirror Symmetry)을 이용해 복잡한 A-모델(심플렉틱 기하학)의 양자 보정을 단순한 B-모델(복소 기하학)로 변환하여 그로모프-위튼(Gromov-Witten) 불변량을 계산합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>칼라비-야우 다양체 종류 (대수 기하)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">투영 공간 $\mathbb{CP}^{d-1}$ 내의 $d$차 초곡면 다양체 $X_d$를 선택합니다.</p>
+                        <div class="input-item">
+                            <label>초곡면 차수 (d)</label>
+                            <select id="mirror-degree" class="glass-input" style="width:100%; padding:8px; background:rgba(15,23,42,0.6); color:#e2e8f0; border:1px solid rgba(255,255,255,0.1); border-radius:6px; font-family:'Inter', sans-serif; font-size:12px;">
+                                <option value="5" selected>5차 (Quintic 3-fold in CP^4)</option>
+                                <option value="4">4차 (K3 Surface in CP^3)</option>
+                                <option value="3">3차 (Elliptic Curve in CP^2)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>피카드-퓩스(Picard-Fuchs) 방정식</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">B-모델의 복소 구조 변형 공간의 주기(Periods)를 결정하는 미분 방정식의 해를 통해, A-모델의 인스턴톤 양자 보정을 복원합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>복소 구조 모듈러스 (z)</label>
+                                <input type="range" id="mirror-z-modulus" min="0.0" max="0.5" step="0.01" value="0.05">
+                                <span class="range-val" id="mirror-z-modulus-val">z = 0.05</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="action-btn" id="btn-calc-mirror" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        ♾️ Gromov-Witten 불변량 자동 계산
+                    </button>
+                </div>
+
+                <!-- Tab Content 12: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -1381,7 +1419,68 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 11: Theoretical Summary Right -->
+                <!-- Tab Content 11: Mirror Symmetry Right -->
+                <div id="right-mirror" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>📊 거울 대칭 연산 결과 (Mirror Map & Invariants)</h2>
+                    </div>
+
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #34d399;">호지 다이아몬드 교환 (Hodge Diamond)</h3>
+                        <div class="asm-spec-grid" style="margin-top: 10px;">
+                            <div class="asm-spec-item">
+                                <span class="label">A-모델 (원래 다양체 X) 호지 수</span>
+                                <span class="value" id="res-mirror-hodge-a" style="color:#a78bfa;">h¹'¹ = 1, h²'¹ = 101</span>
+                            </div>
+                            <div class="asm-spec-item">
+                                <span class="label">B-모델 (거울 다양체 Y) 호지 수</span>
+                                <span class="value" id="res-mirror-hodge-b" style="color:#fbbf24;">h¹'¹ = 101, h²'¹ = 1</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-muted); margin-top: 10px;">거울 대칭에 의해 심플렉틱 구조(Kähler)와 복소 구조가 완벽하게 뒤바뀝니다. χ(X) = -χ(Y).</p>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3 style="color: #10b981;">Gromov-Witten 인스턴톤 수 (n_d)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">B-모델의 궤적 적분(Period integrals)을 통해 A-모델의 양자적 끈 궤적(Rational curves)의 개수를 정확히 세어냅니다.</p>
+                        
+                        <div class="table-container" style="margin-top: 10px;">
+                            <table class="data-table" id="gw-table">
+                                <thead>
+                                    <tr>
+                                        <th>차수 (Degree d)</th>
+                                        <th>Gromov-Witten Invariant (n_d)</th>
+                                        <th>의미</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>d = 1</td>
+                                        <td style="font-family: 'Fira Code', monospace; color: #34d399;" id="gw-d1">2,875</td>
+                                        <td>직선(Lines)의 개수</td>
+                                    </tr>
+                                    <tr>
+                                        <td>d = 2</td>
+                                        <td style="font-family: 'Fira Code', monospace; color: #34d399;" id="gw-d2">609,250</td>
+                                        <td>이차 곡선(Conics)의 개수</td>
+                                    </tr>
+                                    <tr>
+                                        <td>d = 3</td>
+                                        <td style="font-family: 'Fira Code', monospace; color: #34d399;" id="gw-d3">317,206,375</td>
+                                        <td>삼차 곡선(Cubics)의 개수</td>
+                                    </tr>
+                                    <tr>
+                                        <td>d = 4</td>
+                                        <td style="font-family: 'Fira Code', monospace; color: #34d399;" id="gw-d4">242,467,530,000</td>
+                                        <td>사차 곡선의 개수</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 12: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -1788,6 +1887,116 @@
                                     $$S_A = \frac{\text{Area}(\gamma_A)}{4 G_N}$$
                                 </div>
                                 <p>이 공식은 경계 영역 $A$의 양자 얽힘 엔트로피($S_A$)가 벌크 중력 공간 내부에 존재하는 극소 곡면 $\gamma_A$의 기하학적 면적과 정확히 일치함을 증명하며, 시공간의 기하학적 구조는 다름아닌 양자 얽힘으로 짜여진 직물($ER = EPR$)이라는 물리적 금자탑을 선사합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 14 -->
+                    <div class="chapter-content-card" data-ch-content="14" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(34, 211, 238, 0.3);">
+                            <h3 style="color: #22d3ee; font-size: 14px; margin-bottom: 8px;">Chapter 14: <span class="lang-text en">F-Theory & Elliptic Fibrations</span><span class="lang-text ko" style="display:none;">F-이론과 타원 섬유다발 기하학</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p><strong>F-Theory</strong> (proposed by Cumrun Vafa) provides a geometric framework that elegantly incorporates non-perturbative Type IIB string theory by interpreting the axio-dilaton coupling $\tau = C_0 + i e^{-\phi}$ as the complex structure modulus of an invisible two-dimensional torus $T^2$. This extends the 10D spacetime into a geometric 12-dimensional framework.</p>
+                                <p>Mathematically, F-Theory is defined on an elliptically fibered Calabi-Yau 4-fold. The torus is modeled by the <strong>Weierstrass Equation</strong> in $\mathbb{P}^2$:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #22d3ee;">
+                                    $$y^2 = x^3 + f(z) x + g(z)$$
+                                </div>
+                                <p>The discriminant locus where the torus degenerates indicates the exact physical location of <strong>7-branes</strong>:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #22d3ee;">
+                                    $$\Delta = 4f^3 + 27g^2 = 0$$
+                                </div>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>**F-이론**(캄란 바파 제안)은 끈 결합 상수인 액시온-딜라톤 복소 스칼라장 $\tau = C_0 + i e^{-\phi}$를 보이지 않는 2차원 원환면(Torus, $T^2$)의 복소 구조 모듈러스로 기하학화하여, 10차원 Type IIB 초끈 이론의 비섭동적 동역학을 12차원 기하학으로 우아하게 통합합니다.</p>
+                                <p>수학적으로 F-이론은 타원 섬유다발(Elliptic Fibration) 구조의 4차원 복소 칼라비-야우 다양체 상에서 정의되며, 해당 원환면은 사영 공간 $\mathbb{P}^2$ 내의 **바이어슈트라스 방정식(Weierstrass Equation)**으로 표현됩니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #22d3ee;">
+                                    $$y^2 = x^3 + f(z) x + g(z)$$
+                                </div>
+                                <p>원환면이 수축되어 찢어지는 특이점 위치를 나타내는 판별식 곡면은 물리적으로 **7-브레인(7-branes)**이 위치하는 궤적을 나타냅니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #22d3ee;">
+                                    $$\Delta = 4f^3 + 27g^2 = 0$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 15 -->
+                    <div class="chapter-content-card" data-ch-content="15" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 15: <span class="lang-text en">Seiberg-Witten Theory & Exact Solvability</span><span class="lang-text ko" style="display:none;">자이베르그-위튼 이론 (N=2 Exact Solution)</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>In 1994, Seiberg and Witten achieved a historic breakthrough by calculating the **exact non-perturbative low-energy effective action** for a 4D $\mathcal{N}=2$ supersymmetric Yang-Mills theory.</p>
+                                <p>The physics is uniquely defined by an auxiliary Riemann surface known as the **Seiberg-Witten Curve**:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                                    $$y^2 = (x^2 - u^2)^2 - \Lambda^4$$
+                                </div>
+                                <p>where $u = \langle \text{Tr}(\phi^2) \rangle$ parameterizes the Coulomb branch moduli space. The mass of BPS particles is given by integrating a meromorphic differential form $\lambda_{SW}$ over the homology cycles $\alpha$ and $\beta$:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                                    $$M \ge \sqrt{2} |n_e a + n_m a_D|, \quad a = \oint_\alpha \lambda_{SW}, \quad a_D = \oint_\beta \lambda_{SW}$$
+                                </div>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>1994년 자이베르그와 위튼은 4차원 $\mathcal{N}=2$ 초대칭 양-밀스 게이지 이론에서 **비섭동적 저에너지 유효 작용식을 소수점 끝자리까지 정확히(Exact) 유도**해내는 업적을 달성했습니다.</p>
+                                <p>이 물리는 **자이베르그-위튼 곡선**으로 불리는 가상의 리만 곡면(Riemann Surface)에 의해 완벽히 규정됩니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                                    $$y^2 = (x^2 - u^2)^2 - \Lambda^4$$
+                                </div>
+                                <p>BPS 입자들(자기홀극 등)의 질량은 이 곡면의 호몰로지 사이클 $\alpha$와 $\beta$ 위에서 미분 형식 $\lambda_{SW}$를 선적분하여 수학적으로 정확히 도출됩니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                                    $$M \ge \sqrt{2} |n_e a + n_m a_D|, \quad a = \oint_\alpha \lambda_{SW}, \quad a_D = \oint_\beta \lambda_{SW}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 16 -->
+                    <div class="chapter-content-card" data-ch-content="16" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 16: <span class="lang-text en">Mirror Symmetry & Gromov-Witten Invariants</span><span class="lang-text ko" style="display:none;">거울 대칭 & GW 불변량</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p><strong>Mirror Symmetry</strong> connects Type IIA string theory on a Calabi-Yau manifold $X$ with Type IIB string theory on its mirror manifold $Y$. Geometrically, this swaps their Hodge numbers: $h^{1,1}(X) = h^{2,1}(Y)$.</p>
+                                <p>It allows physicists to compute extremely difficult <strong>Gromov-Witten invariants</strong> (counting the number of rational curves in $X$) by mapping them to purely classical period integrals of the Picard-Fuchs equation on $Y$. The prepotential expansion gives the instanton numbers $n_d$:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                                    $$\mathcal{F}(t) = \frac{5}{6}t^3 + \sum_{d=1}^\infty n_d \text{Li}_3(q^d), \quad q = e^{2\pi i t}$$
+                                </div>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>**거울 대칭(Mirror Symmetry)**은 다양체 $X$ 상의 Type IIA 끈 이론과 그 거울 다양체 $Y$ 상의 Type IIB 끈 이론이 물리적으로 완전히 동등함을 뜻합니다. 이는 호지 다이아몬드를 90도 회전시켜 호지 수를 맞바꿉니다: $h^{1,1}(X) = h^{2,1}(Y)$.</p>
+                                <p>이 대칭성은 공간 내에 존재하는 차수 $d$인 양자 끈 궤적(Rational Curve)의 개수를 세는 <strong>그로모프-위튼(Gromov-Witten) 불변량</strong> $n_d$를, 거울 다양체의 피카드-퓩스(Picard-Fuchs) 미분방정식 해를 통해 대수적으로 완벽하게 풀어낼 수 있게 합니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                                    $$\mathcal{F}(t) = \frac{5}{6}t^3 + \sum_{d=1}^\infty n_d \text{Li}_3(q^d), \quad q = e^{2\pi i t}$$
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 17 -->
+                    <div class="chapter-content-card" data-ch-content="17" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(99, 102, 241, 0.3);">
+                            <h3 style="color: #6366f1; font-size: 14px; margin-bottom: 8px;">Chapter 17: <span class="lang-text en">D-branes & Topological K-Theory</span><span class="lang-text ko" style="display:none;">D-막 역학과 위상 K-이론</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>While D-branes are usually described as submanifolds wrapping homology cycles, Ashoke Sen and Edward Witten demonstrated that D-brane charges are more accurately classified by <strong>Topological K-Theory</strong>, $K(X)$.</p>
+                                <p>A D-brane can be seen as the result of tachyon condensation between a D-brane and an anti-D-brane pair, described by a vector bundle complex:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #6366f1;">
+                                    $$\mathcal{E} \xrightarrow{T} \mathcal{F}$$
+                                </div>
+                                <p>This rigorous mathematical formulation captures torsion charges which ordinary cohomology fails to detect, establishing K-theory as the true algebraic language for Ramond-Ramond charges.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>일반적으로 D-브레인은 호몰로지 사이클을 감싸는 부분 다양체로 인식되지만, 아쇼크 센과 위튼은 D-브레인의 전하가 사실 **위상 K-이론(Topological K-Theory)**인 $K(X)$ 군으로 더욱 정확히 분류되어야 함을 증명했습니다.</p>
+                                <p>이는 고차원 브레인과 반(Anti)-브레인 쌍 사이의 타키온 응축(Tachyon Condensation) 현상을 통해 하위 차원의 브레인이 생성되는 과정을 벡터 다발(Vector Bundle) 복합체로 완벽히 묘사합니다:</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #6366f1;">
+                                    $$\mathcal{E} \xrightarrow{T} \mathcal{F}$$
+                                </div>
+                                <p>이 이론은 기존의 일반 코호몰로지(Cohomology)로는 포착할 수 없는 위상학적 비틀림 전하(Torsion Charge)까지 완벽하게 잡아내며, K-이론이 Ramond-Ramond 게이지 전하를 담아내는 진정한 수학적 언어임을 확립했습니다.</p>
                             </div>
                         </div>
                     </div>
