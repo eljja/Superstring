@@ -233,6 +233,8 @@ function initTabs() {
                 canvasDesc.innerText = "거울 대칭 & 위상 끈 연구소: 칼라비-야우 다양체의 3차원 투영 상에서 A-모델의 인스턴톤과 B-모델의 복소 구조 변형을 계산합니다.";
             } else if (tabId === "amplituhedron") {
                 canvasDesc.innerText = "진폭면체 & 트위스터 연구소: 산란 진폭을 N=4 SYM 공간의 그라스만 기하학 부피로 치환하여 트위스터 공간에서 기하학적 렌더링을 수행합니다.";
+            } else if (tabId === "string-field") {
+                canvasDesc.innerText = "끈 장론 & 타키온 응축 연구소: 위튼의 3차 개방 끈 장론에서 별-곱(Star-Product)을 통한 열린 끈의 붕괴 현상과 닫힌 끈 진공으로의 변이(Sen's Conjecture)를 기하학적으로 시각화합니다.";
             } else if (tabId === "theory-summary") {
                 canvasDesc.innerText = "이론 요약 대시보드 라이브 다양체: 물리적 공간 압축화 기하학을 제공하는 6차원 칼라비-야우 다양체(Calabi-Yau Manifold)의 3차원 투영 회전과 실시간 요동을 시각화합니다.";
             }
@@ -260,6 +262,8 @@ function initTabs() {
                 if (typeof runMirrorEngine === 'function') runMirrorEngine();
             } else if (tabId === "amplituhedron") {
                 if (typeof runAmplituhedronEngine === 'function') runAmplituhedronEngine();
+            } else if (tabId === "string-field") {
+                if (typeof runStringFieldEngine === 'function') runStringFieldEngine();
             } else if (tabId === "theory-summary") {
                 if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                     window.MathJax.typesetPromise();
@@ -3984,6 +3988,51 @@ document.addEventListener("DOMContentLoaded", () => {
         runAmplituhedronEngine();
         amplBtn.innerText = "계산 완료 ✅";
         setTimeout(() => { amplBtn.innerText = "💠 진폭면체 부피 (Amplitude) 계산"; }, 2000);
+    });
+});
+
+// --- String Field Theory Engine ---
+function runStringFieldEngine() {
+    const t = parseFloat(document.getElementById("sft-tachyon").value);
+    const go = parseFloat(document.getElementById("sft-go").value);
+    
+    document.getElementById("sft-tachyon-val").innerText = `t = ${t.toFixed(2)}`;
+    document.getElementById("sft-go-val").innerText = `g_o = ${go.toFixed(1)}`;
+
+    // Tachyon potential V(T) ~ -1/2 T^2 + 1/3 T^3 in proper units
+    // Min is at T=1, where V = -1/6 * (1/g_o^2)
+    // Actually exact value is V(T_0) = - 1 / (2 pi^2 g_o^2) in standard string units (Sen's conjecture)
+    
+    // We normalize tension tau_p = 1 / (2 pi^2 g_o^2)
+    const tau_p = 1 / (2 * Math.pow(Math.PI, 2) * Math.pow(go, 2));
+    
+    // Simple interpolation for the potential depth
+    const energy = -tau_p * (3 * Math.pow(t, 2) - 2 * Math.pow(t, 3));
+    
+    document.getElementById("res-sft-energy").innerText = `E = ${energy.toExponential(3)}`;
+
+    const cancelRatio = (Math.abs(energy) / tau_p) * 100;
+    
+    if (t >= 0.99) {
+        document.getElementById("res-sft-cancel").innerText = `${cancelRatio.toFixed(2)}% 완전 상쇄 (Closed String 진공)`;
+        document.getElementById("res-sft-cancel").style.color = "#4ade80";
+    } else {
+        document.getElementById("res-sft-cancel").innerText = `${cancelRatio.toFixed(2)}% 부분 상쇄 (Open Strings 존재)`;
+        document.getElementById("res-sft-cancel").style.color = "#fbbf24";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const sftTachyon = document.getElementById("sft-tachyon");
+    const sftGo = document.getElementById("sft-go");
+    const sftBtn = document.getElementById("btn-calc-sft");
+
+    if (sftTachyon) sftTachyon.addEventListener("input", runStringFieldEngine);
+    if (sftGo) sftGo.addEventListener("input", runStringFieldEngine);
+    if (sftBtn) sftBtn.addEventListener("click", () => {
+        runStringFieldEngine();
+        sftBtn.innerText = "계산 완료 ✅";
+        setTimeout(() => { sftBtn.innerText = "📉 D-막 장력 상쇄 (Sen's Conjecture) 연산"; }, 2000);
     });
 });
 
