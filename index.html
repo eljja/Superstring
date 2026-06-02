@@ -62,6 +62,11 @@
             <button class="tab-btn" data-tab="string-field">🌌 끈 장론 & 타키온 응축 (String Field Theory)</button>
             <button class="tab-btn" data-tab="page-curve">🕳️ 페이지 곡선 & 섬 공식 (Black Hole Information)</button>
             <button class="tab-btn" data-tab="osv-topological">🌀 위상 끈 & OSV 추측 (Topological String)</button>
+            <button class="tab-btn" data-tab="seiberg-witten">🧲 사이버그-위튼 & 자기 홀극 (Seiberg-Witten N=2)</button>
+            <button class="tab-btn" data-tab="k-theory">🧬 K-이론 & D-막 전하 (K-Theory & D-Branes)</button>
+            <button class="tab-btn" data-tab="f-theory">🔥 F-이론 & 특이점 (F-Theory & Singularities)</button>
+            <button class="tab-btn" data-tab="matrix-model">⬛ 행렬 모델 (BFSS / IKKT Matrix Theory)</button>
+            <button class="tab-btn" data-tab="tensor-network">🕸️ 텐서 네트워크 & 홀로그래피 (Tensor Networks)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -808,7 +813,137 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 16: Theoretical Summary Left -->
+                <!-- Tab Content 16: Seiberg-Witten Left -->
+                <div id="left-seiberg-witten" class="subpanel-content">
+                    <div class="panel-header"><h2>🧲 사이버그-위튼 & 자기 홀극</h2></div>
+                    <p class="section-desc">$\mathcal{N}=2$ 초거대칭 양자색역학(SQCD)의 저에너지 유효 작용을 지배하는 사이버그-위튼 곡선(Seiberg-Witten Curve)의 모듈라이 공간을 연산합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>모듈라이 공간 (Moduli Space Parameter)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>진공 기댓값 매개변수 ($u$)</label>
+                                <input type="range" id="sw-u" min="-10" max="10" step="0.1" value="2.0">
+                                <span class="range-val" id="sw-u-val">u = 2.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>타원 곡선 (Elliptic Curve)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                            y^2 = (x - \Lambda^2)(x + \Lambda^2)(x - u)
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-sw" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #f59e0b, #b45309); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 BPS 질량 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 17: K-Theory Left -->
+                <div id="left-k-theory" class="subpanel-content">
+                    <div class="panel-header"><h2>🧬 K-이론 & D-막 전하</h2></div>
+                    <p class="section-desc">D-막의 전하(RR Charge)가 단순한 코호몰로지(Cohomology) 군이 아닌 위상 K-이론(Topological K-Theory)에 의해 분류됨을 연산합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>타키온 응축 (Tachyon Condensation)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>다양체 차원 ($d$)</label>
+                                <input type="range" id="k-dim" min="0" max="10" step="1" value="4">
+                                <span class="range-val" id="k-dim-val">d = 4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>K-이론 분류 기호 (Atiyah-Hirzebruch)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ec4899;">
+                            K(X) = \text{Ker}(d_3) / \text{Im}(d_3) \subset H^*(X, \mathbb{Z})
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-k" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #be185d); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 D-막 전하 분류 (K-Group) 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 18: F-Theory Left -->
+                <div id="left-f-theory" class="subpanel-content">
+                    <div class="panel-header"><h2>🔥 F-이론 & 특이점</h2></div>
+                    <p class="section-desc">Type IIB 끈 이론의 액시온-딜라톤($\tau$)을 2차원 원환면(Torus)의 복소 구조 매개변수로 승격시킨 12차원 F-이론을 연산합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>바이어슈트라스 모델 (Weierstrass Model)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>복소 매개변수 $f$</label>
+                                <input type="range" id="ft-f" min="-5" max="5" step="0.1" value="-1.0">
+                                <span class="range-val" id="ft-f-val">f = -1.0</span>
+                            </div>
+                            <div class="input-item">
+                                <label>복소 매개변수 $g$</label>
+                                <input type="range" id="ft-g" min="-5" max="5" step="0.1" value="1.0">
+                                <span class="range-val" id="ft-g-val">g = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>판별식 (Discriminant)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ef4444;">
+                            \Delta = 4f^3 + 27g^2 = 0 \quad (\text{ADE Singularities})
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-ft" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #ef4444, #b91c1c); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 게이지 대칭성 (ADE 분류) 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 19: Matrix Model Left -->
+                <div id="left-matrix-model" class="subpanel-content">
+                    <div class="panel-header"><h2>⬛ 행렬 모델 (Matrix Theory)</h2></div>
+                    <p class="section-desc">무한 차원 비가환 행렬(Non-commutative Matrix)의 고유값(Eigenvalue)으로부터 연속적인 시공간 차원과 중력이 창발하는 현상을 묘사합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>행렬 크기 극한 (Large N Limit)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>행렬 랭크 ($N$)</label>
+                                <input type="range" id="mt-n" min="2" max="100" step="1" value="10">
+                                <span class="range-val" id="mt-n-val">N = 10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>BFSS 행렬 작용 (BFSS Action)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                            S = \int dt \, \text{Tr} \left( \frac{1}{2} (D_t X^i)^2 + \frac{1}{4} [X^i, X^j]^2 \right)
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-mt" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #10b981, #047857); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 비가환 시공간 기하 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 20: Tensor Network Left -->
+                <div id="left-tensor-network" class="subpanel-content">
+                    <div class="panel-header"><h2>🕸️ 텐서 네트워크 & 홀로그래피</h2></div>
+                    <p class="section-desc">MERA / HaPPY 코드를 통해 양자 얽힘(Quantum Entanglement)의 텐서 네트워크가 어떻게 거시적인 AdS 벌크 기하학(Bulk Geometry)을 형성하는지 묘사합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>얽힘 네트워크 층수 (Network Depth)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>네트워크 층 (Depth $D$)</label>
+                                <input type="range" id="tn-d" min="1" max="10" step="1" value="3">
+                                <span class="range-val" id="tn-d-val">D = 3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>류-타카야나기 공식 (Ryu-Takayanagi)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #8b5cf6;">
+                            S_A = \frac{\text{Area}(\gamma_A)}{4G_N} \approx | \text{cut}(A, A^c) | \cdot \ln \chi
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-tn" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #8b5cf6, #5b21b6); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 양자 오류 수정 (QEC) 복원 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 21: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -953,6 +1088,56 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">25</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Generalized Complex Geometry</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">일반화된 복소 기하학</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="26" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">26</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Seiberg-Witten Theory (N=2)</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">사이버그-위튼 이론 (N=2)</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="27" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">27</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Monopole Condensation</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">자기 홀극 응축 현상</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="28" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">28</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">K-Theory & RR Charges</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">K-이론과 D-막 전하</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="29" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">29</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Atiyah-Hirzebruch Spectral Sequence</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">아티야-히르체브루흐 스펙트럼 열</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="30" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">30</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">F-Theory & 12 Dimensions</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">F-이론과 12차원 시공간</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="31" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">31</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Elliptic Fibrations & Weierstrass Models</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">타원 파이브레이션과 바이어슈트라스 모델</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="32" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">32</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">BFSS Matrix Theory</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">BFSS 행렬 이론</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="33" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">33</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">IKKT Matrix Model (Type IIB)</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">IKKT 행렬 모델 (Type IIB)</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="34" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">34</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Tensor Networks in Holography</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">홀로그래피에서의 텐서 네트워크</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="35" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">35</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Quantum Error Correction (HaPPY)</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">양자 오류 수정 코드 (HaPPY)</span>
                         </button>
                     </div>
                 </div>
@@ -1827,7 +2012,98 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 16: Theoretical Summary Right -->
+                <!-- Tab Content 16: Seiberg-Witten Right -->
+                <div id="right-seiberg-witten" class="subpanel-content">
+                    <div class="panel-header"><h2>🧲 사이버그-위튼 질량 공식</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #f59e0b;">BPS 상태 질량 (BPS State Mass)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">초거대칭 대수가 중심 전하(Central Charge) $Z$에 의해 결정되며, 자기 홀극과 쌍극자(Dyons)의 질량은 모듈라이 공간의 주기로 표현됩니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">중심 전하 ($Z = n_e a + n_m a_D$)</span>
+                                <span class="value" id="res-sw-z" style="color:#ef4444; font-size: 14px;">$|Z| = 0.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">BPS 질량 공식 ($M = \sqrt{2}|Z|$)</span>
+                                <span class="value" id="res-sw-mass" style="color:#f59e0b; font-size: 16px; font-weight:bold;">$M = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 17: K-Theory Right -->
+                <div id="right-k-theory" class="subpanel-content">
+                    <div class="panel-header"><h2>🧬 D-막 전하와 K-이론 분류</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #ec4899;">위상 K-이론 전하 (Topological K-Theory Charge)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">타키온 장의 위상적 결함에 얽매인 게이지 장을 통해, Type II 끈 이론의 D-막이 호몰로지(Homology)가 아닌 K-이론에 의해 완벽하게 분류됨을 확인합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">분류군 (Classification Group)</span>
+                                <span class="value" id="res-k-group" style="color:#ec4899; font-size: 16px; font-weight:bold;">K(X) = $\mathbb{Z}$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 18: F-Theory Right -->
+                <div id="right-f-theory" class="subpanel-content">
+                    <div class="panel-header"><h2>🔥 특이점 게이지 대칭 (ADE Classification)</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #ef4444;">코다이라 분류 (Kodaira Classification)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">칼라비-야우 4-다양체 내부의 타원 곡선(Elliptic Curve)이 찌그러지는 특이점 구조로부터 7-막(7-Brane) 위에 형성되는 양자 게이지 대칭성을 판별합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">판별식 ($\Delta$)</span>
+                                <span class="value" id="res-ft-delta" style="color:#f59e0b; font-size: 14px;">$\Delta = 0.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">게이지 대칭군 (Gauge Symmetry Group)</span>
+                                <span class="value" id="res-ft-group" style="color:#ef4444; font-size: 16px; font-weight:bold;">$SU(N)$ Type (A_{N-1})</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 19: Matrix Model Right -->
+                <div id="right-matrix-model" class="subpanel-content">
+                    <div class="panel-header"><h2>⬛ 행렬에서 창발하는 시공간</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #10b981;">비가환 고유값 응축 (Non-commutative Eigenvalues)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">1차원 양자 역학 행렬들의 고유값이 동시에 대각화되면서 연속적인 기하학적 공간으로 창발하는 홀로그래픽 쌍대성을 보여줍니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">행렬 상호작용 에너지 (Interaction Energy)</span>
+                                <span class="value" id="res-mt-energy" style="color:#3b82f6; font-size: 14px;">$E \propto N^3$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">창발된 공간 차원 (Emergent Dimensions)</span>
+                                <span class="value" id="res-mt-dim" style="color:#10b981; font-size: 16px; font-weight:bold;">D = 11 (M-Theory)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 20: Tensor Network Right -->
+                <div id="right-tensor-network" class="subpanel-content">
+                    <div class="panel-header"><h2>🕸️ 양자 얽힘과 시공간 기하학</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #8b5cf6;">MERA 네트워크와 양자 오류 수정</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">경계(Boundary)의 얽힘 엔트로피가 벌크(Bulk)의 최소 곡면 면적으로 기하학화되는 류-타카야나기(Ryu-Takayanagi) 공식을 MERA 텐서 네트워크를 통해 검증합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">네트워크 컷 크기 (Network Cut Size)</span>
+                                <span class="value" id="res-tn-cut" style="color:#ef4444; font-size: 14px;">$|Cut| = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">기하학적 얽힘 엔트로피 ($S_A$)</span>
+                                <span class="value" id="res-tn-sa" style="color:#8b5cf6; font-size: 16px; font-weight:bold;">$S_A = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 21: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -2531,6 +2807,100 @@
                                     \mathcal{J} = \begin{pmatrix} I & \pi \\ \omega & -I^* \end{pmatrix} \quad \text{where} \quad \mathcal{J}^2 = -1 \text{ on } TM \oplus T^*M
                                 </div>
                                 <p>이 프레임워크는 위상 끈 이론의 A-모델(심플렉틱 구조, 라그랑지안 막)과 B-모델(복소 구조, 정칙 막)을 단일한 일반화된 대수적 구조로 놀랍도록 완벽하게 통합해냅니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 26 -->
+                    <div class="chapter-content-card" data-ch-content="26" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 26: <span class="lang-text en">Seiberg-Witten Theory (N=2)</span><span class="lang-text ko" style="display:none;">사이버그-위튼 이론 (N=2)</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>초거대칭 $\mathcal{N}=2$ 게이지 이론의 저에너지 유효 작용을 타원 곡선(Elliptic Curve)으로 완벽하게 풀어낸 놀라운 이론입니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                                    y^2 = (x^2 - \Lambda^4)(x - u)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 27 -->
+                    <div class="chapter-content-card" data-ch-content="27" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 27: <span class="lang-text en">Monopole Condensation</span><span class="lang-text ko" style="display:none;">자기 홀극 응축 현상</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>초전도체에서 쿠퍼쌍이 응축하여 자기장을 밀어내는 것과 쌍대(Dual) 현상으로, 자기 홀극(Magnetic Monopole)이 응축하여 전기장을 묶어두는 쿼크 가둠(Quark Confinement) 현상을 수학적으로 명확히 증명합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 28 -->
+                    <div class="chapter-content-card" data-ch-content="28" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 28: <span class="lang-text en">K-Theory & RR Charges</span><span class="lang-text ko" style="display:none;">K-이론과 D-막 전하</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>단순한 코호몰로지로는 표현할 수 없는 비섭동적 끈 이론의 위상학적 성질을 위상 K-이론(Topological K-Theory)으로 분류합니다. $D$-막의 전하가 K-군(K-Group)의 원소임이 밝혀졌습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 29 -->
+                    <div class="chapter-content-card" data-ch-content="29" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 29: <span class="lang-text en">Atiyah-Hirzebruch Spectral Sequence</span><span class="lang-text ko" style="display:none;">아티야-히르체브루흐 스펙트럼 열</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>아티야-히르체브루흐 스펙트럼 열(AHSS)을 이용해 미분 형식(Differential Forms)에서 $K(X)$를 유도하며, 타키온 응축을 거친 닫힌 끈 진공으로의 붕괴를 수학적으로 정립합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 30 -->
+                    <div class="chapter-content-card" data-ch-content="30" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                            <h3 style="color: #ef4444; font-size: 14px; margin-bottom: 8px;">Chapter 30: <span class="lang-text en">F-Theory & 12 Dimensions</span><span class="lang-text ko" style="display:none;">F-이론과 12차원 시공간</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Type IIB 끈 이론의 이중성을 기하학화하기 위해 시공간을 12차원으로 확장합니다. 여분의 2차원은 타원 원환면(Torus)의 형태를 가지며 물리적 차원이 아닌 기하학적 매개변수 차원으로 취급됩니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 31 -->
+                    <div class="chapter-content-card" data-ch-content="31" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                            <h3 style="color: #ef4444; font-size: 14px; margin-bottom: 8px;">Chapter 31: <span class="lang-text en">Elliptic Fibrations & Weierstrass Models</span><span class="lang-text ko" style="display:none;">타원 파이브레이션과 바이어슈트라스 모델</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>칼라비-야우 4-다양체 상의 타원 파이브레이션(Elliptic Fibration)의 특이점(Singularity) 구조가 7-막에 어떤 게이지 대칭(ADE Classification)을 형성하는지 바이어슈트라스 모델로 판별합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 32 -->
+                    <div class="chapter-content-card" data-ch-content="32" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 32: <span class="lang-text en">BFSS Matrix Theory</span><span class="lang-text ko" style="display:none;">BFSS 행렬 이론</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>시공간 좌표 자체가 $N \times N$ 비가환 행렬로 승격되며, $N \to \infty$ 극한에서 11차원 M-이론의 초중력을 완벽히 기술하는 비섭동적 행렬 양자 역학 모델입니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 33 -->
+                    <div class="chapter-content-card" data-ch-content="33" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 33: <span class="lang-text en">IKKT Matrix Model (Type IIB)</span><span class="lang-text ko" style="display:none;">IKKT 행렬 모델 (Type IIB)</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>시간을 포함한 모든 시공간 좌표를 행렬로 취급하는 Type IIB 초끈 이론의 비가환 모델로, 연속적인 시공간이라는 개념 자체가 무한차원 행렬의 고유값 응축 현상으로 창발(Emergent)됨을 보여줍니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 34 -->
+                    <div class="chapter-content-card" data-ch-content="34" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 34: <span class="lang-text en">Tensor Networks in Holography</span><span class="lang-text ko" style="display:none;">홀로그래피에서의 텐서 네트워크</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>AdS/CFT 대응성을 양자 정보 이론의 텐서 네트워크(MERA 등)로 재해석하여, 벌크(Bulk) 시공간 기하학이 경계(Boundary)의 양자 얽힘 텐서 결합으로부터 창발됨을 입증합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 35 -->
+                    <div class="chapter-content-card" data-ch-content="35" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 35: <span class="lang-text en">Quantum Error Correction (HaPPY)</span><span class="lang-text ko" style="display:none;">양자 오류 수정 코드 (HaPPY)</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>HaPPY(Harlow, Pastawski, Preskill, Yoshida) 텐서 네트워크 코드를 통해, 홀로그래픽 쌍대성이 근본적으로 완전한 양자 오류 수정(Quantum Error Correction) 코드임을 증명하는 세기의 발견입니다.</p>
                             </div>
                         </div>
                     </div>

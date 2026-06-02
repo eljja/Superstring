@@ -239,6 +239,16 @@ function initTabs() {
                 canvasDesc.innerText = "페이지 곡선 & 복제 웜홀 연구소: 증발하는 블랙홀의 미세 조정된 얽힘 엔트로피(Fine-grained Entropy)를 섬 공식(Island Formula)을 통해 연산하고, 유니터리성이 보존되는 과정을 시각화합니다.";
             } else if (tabId === "osv-topological") {
                 canvasDesc.innerText = "위상 끈 & OSV 연구소: 위상 끈 이론(Topological String Theory)의 분배 함수가 거시적 BPS 블랙홀의 엔트로피를 미시적으로 완벽하게 설명하는 OSV 추측을 시각화합니다.";
+            } else if (tabId === "seiberg-witten") {
+                canvasDesc.innerText = "사이버그-위튼 연구소: N=2 초거대칭 양자색역학의 진공 구조와 자기 홀극(Magnetic Monopole) 응축에 의한 쿼크 가둠 현상을 위상학적으로 증명합니다.";
+            } else if (tabId === "k-theory") {
+                canvasDesc.innerText = "K-이론 연구소: D-막의 전하가 코호몰로지가 아닌 위상 K-이론(Topological K-Theory)에 의해 완전히 분류됨을 타키온 응축을 통해 시각화합니다.";
+            } else if (tabId === "f-theory") {
+                canvasDesc.innerText = "F-이론 연구소: 액시온-딜라톤을 타원 곡선의 모듈라이로 기하학화하여, 12차원 F-이론의 특이점(Singularity)으로부터 창발하는 7-막의 게이지 대칭성을 시각화합니다.";
+            } else if (tabId === "matrix-model") {
+                canvasDesc.innerText = "행렬 모델 연구소: 비가환(Non-commutative) 무한 차원 행렬의 고유값들이 대각화되면서 연속적인 기하학과 중력이 창발(Emergent)되는 M-이론 행렬 역학을 시뮬레이션합니다.";
+            } else if (tabId === "tensor-network") {
+                canvasDesc.innerText = "텐서 네트워크 연구소: 얽힘 엔트로피의 텐서 얽힘망(MERA/HaPPY)이 홀로그래피 원리를 통해 어떻게 거시적인 벌크(Bulk) 시공간으로 기하학화되는지 연산합니다.";
             } else if (tabId === "theory-summary") {
                 canvasDesc.innerText = "이론 요약 대시보드 라이브 다양체: 물리적 공간 압축화 기하학을 제공하는 6차원 칼라비-야우 다양체(Calabi-Yau Manifold)의 3차원 투영 회전과 실시간 요동을 시각화합니다.";
             }
@@ -272,6 +282,16 @@ function initTabs() {
                 if (typeof runPageCurveEngine === 'function') runPageCurveEngine();
             } else if (tabId === "osv-topological") {
                 if (typeof runOSVEngine === 'function') runOSVEngine();
+            } else if (tabId === "seiberg-witten") {
+                if (typeof runSeibergWittenEngine === 'function') runSeibergWittenEngine();
+            } else if (tabId === "k-theory") {
+                if (typeof runKTheoryEngine === 'function') runKTheoryEngine();
+            } else if (tabId === "f-theory") {
+                if (typeof runFTheoryEngine === 'function') runFTheoryEngine();
+            } else if (tabId === "matrix-model") {
+                if (typeof runMatrixModelEngine === 'function') runMatrixModelEngine();
+            } else if (tabId === "tensor-network") {
+                if (typeof runTensorNetworkEngine === 'function') runTensorNetworkEngine();
             } else if (tabId === "theory-summary") {
                 if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                     window.MathJax.typesetPromise();
@@ -4131,6 +4151,113 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// --- 5 New Physics Engines ---
+function runSeibergWittenEngine() {
+    const u = parseFloat(document.getElementById("sw-u")?.value || 2.0);
+    if(document.getElementById("sw-u-val")) document.getElementById("sw-u-val").innerText = `u = ${u.toFixed(1)}`;
+    const Lambda = 1.0;
+    // Central charge approx for u > Lambda^2 (Weak coupling regime)
+    let Z = Math.sqrt(u) + (Lambda**4) / (4 * Math.pow(u, 1.5));
+    let mass = Math.sqrt(2) * Math.abs(Z);
+    if(document.getElementById("res-sw-z")) document.getElementById("res-sw-z").innerText = `$|Z| = ${Math.abs(Z).toFixed(3)}$`;
+    if(document.getElementById("res-sw-mass")) document.getElementById("res-sw-mass").innerText = `$M = ${mass.toFixed(3)}$`;
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-sw-z'), document.getElementById('res-sw-mass')]);
+    }
+}
+
+function runKTheoryEngine() {
+    const d = parseInt(document.getElementById("k-dim")?.value || 4);
+    if(document.getElementById("k-dim-val")) document.getElementById("k-dim-val").innerText = `d = ${d}`;
+    // Bott Periodicity in K-Theory: K(S^d) depends on d mod 2 for complex K-theory
+    let kGroup = (d % 2 === 0) ? "\\mathbb{Z}" : "0";
+    if(document.getElementById("res-k-group")) document.getElementById("res-k-group").innerText = `K(X) = $${kGroup}$`;
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-k-group')]);
+    }
+}
+
+function runFTheoryEngine() {
+    const f = parseFloat(document.getElementById("ft-f")?.value || -1.0);
+    const g = parseFloat(document.getElementById("ft-g")?.value || 1.0);
+    if(document.getElementById("ft-f-val")) document.getElementById("ft-f-val").innerText = `f = ${f.toFixed(1)}`;
+    if(document.getElementById("ft-g-val")) document.getElementById("ft-g-val").innerText = `g = ${g.toFixed(1)}`;
+    
+    // Discriminant Delta = 4f^3 + 27g^2
+    const delta = 4 * Math.pow(f, 3) + 27 * Math.pow(g, 2);
+    let group = "";
+    if (Math.abs(delta) < 0.1) {
+        if (Math.abs(f) < 0.1 && Math.abs(g) < 0.1) group = "E_8 (Exceptional)";
+        else group = "SU(N) (A-type)";
+    } else {
+        group = "U(1) (Abelian / No Enhancement)";
+    }
+    
+    if(document.getElementById("res-ft-delta")) document.getElementById("res-ft-delta").innerText = `$\\Delta = ${delta.toFixed(2)}$`;
+    if(document.getElementById("res-ft-group")) document.getElementById("res-ft-group").innerText = `$${group}$`;
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-ft-delta'), document.getElementById('res-ft-group')]);
+    }
+}
+
+function runMatrixModelEngine() {
+    const n = parseInt(document.getElementById("mt-n")?.value || 10);
+    if(document.getElementById("mt-n-val")) document.getElementById("mt-n-val").innerText = `N = ${n}`;
+    // Energy scales as N^3 for M2-branes / Matrix model
+    const energy = Math.pow(n, 3);
+    const dim = (n > 50) ? 11 : 10;
+    
+    if(document.getElementById("res-mt-energy")) document.getElementById("res-mt-energy").innerText = `$E \\approx ${energy}$ (Planck units)`;
+    if(document.getElementById("res-mt-dim")) document.getElementById("res-mt-dim").innerText = `D = ${dim} (M-Theory Limit)`;
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-mt-energy'), document.getElementById('res-mt-dim')]);
+    }
+}
+
+function runTensorNetworkEngine() {
+    const d = parseInt(document.getElementById("tn-d")?.value || 3);
+    if(document.getElementById("tn-d-val")) document.getElementById("tn-d-val").innerText = `D = ${d}`;
+    // Number of bonds cut scales as 2^D for a simple fractal MERA tree
+    const cut = Math.pow(2, d);
+    const SA = cut * Math.log(2); // Entanglement entropy
+    
+    if(document.getElementById("res-tn-cut")) document.getElementById("res-tn-cut").innerText = `$|Cut| = ${cut}$ bonds`;
+    if(document.getElementById("res-tn-sa")) document.getElementById("res-tn-sa").innerText = `$S_A = ${SA.toFixed(2)}$`;
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-tn-cut'), document.getElementById('res-tn-sa')]);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Event listeners for the 5 new tabs
+    const swU = document.getElementById("sw-u");
+    const swBtn = document.getElementById("btn-calc-sw");
+    if(swU) swU.addEventListener("input", runSeibergWittenEngine);
+    if(swBtn) swBtn.addEventListener("click", () => { runSeibergWittenEngine(); swBtn.innerText="완료 ✅"; setTimeout(()=>swBtn.innerText="📉 BPS 질량 연산",1500); });
+
+    const kDim = document.getElementById("k-dim");
+    const kBtn = document.getElementById("btn-calc-k");
+    if(kDim) kDim.addEventListener("input", runKTheoryEngine);
+    if(kBtn) kBtn.addEventListener("click", () => { runKTheoryEngine(); kBtn.innerText="완료 ✅"; setTimeout(()=>kBtn.innerText="📉 D-막 전하 분류 (K-Group) 연산",1500); });
+
+    const ftF = document.getElementById("ft-f");
+    const ftG = document.getElementById("ft-g");
+    const ftBtn = document.getElementById("btn-calc-ft");
+    if(ftF) ftF.addEventListener("input", runFTheoryEngine);
+    if(ftG) ftG.addEventListener("input", runFTheoryEngine);
+    if(ftBtn) ftBtn.addEventListener("click", () => { runFTheoryEngine(); ftBtn.innerText="완료 ✅"; setTimeout(()=>ftBtn.innerText="📉 게이지 대칭성 (ADE 분류) 연산",1500); });
+
+    const mtN = document.getElementById("mt-n");
+    const mtBtn = document.getElementById("btn-calc-mt");
+    if(mtN) mtN.addEventListener("input", runMatrixModelEngine);
+    if(mtBtn) mtBtn.addEventListener("click", () => { runMatrixModelEngine(); mtBtn.innerText="완료 ✅"; setTimeout(()=>mtBtn.innerText="📉 비가환 시공간 기하 연산",1500); });
+
+    const tnD = document.getElementById("tn-d");
+    const tnBtn = document.getElementById("btn-calc-tn");
+    if(tnD) tnD.addEventListener("input", runTensorNetworkEngine);
+    if(tnBtn) tnBtn.addEventListener("click", () => { runTensorNetworkEngine(); tnBtn.innerText="완료 ✅"; setTimeout(()=>tnBtn.innerText="📉 양자 오류 수정 (QEC) 복원 연산",1500); });
+});
+
 window.onload = () => {
     resizeCanvas();
     initTabs();
@@ -4152,6 +4279,11 @@ window.onload = () => {
     runCosmologyEngine();
     runDualitiesEngine();
     runSwamplandEngine();
+    runSeibergWittenEngine();
+    runKTheoryEngine();
+    runFTheoryEngine();
+    runMatrixModelEngine();
+    runTensorNetworkEngine();
     
     // Initial Standard Model Lab run
     renderVacuumCandidates();
