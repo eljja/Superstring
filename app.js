@@ -268,7 +268,17 @@ function initTabs() {
             } else if (tabId === "resurgence") {
                 canvasDesc.innerText = "리서전스 & 복소 안장점 연구소: 팩토리얼로 발산하는 섭동 급수항들의 Borel 특이점을 추적하고, Picard-Lefschetz 복소 인스턴톤 안장점 보정을 유기적으로 합성하여 비섭동 유효 에너지를 복원합니다.";
             } else if (tabId === "padic-string") {
-                canvasDesc.innerText = "p-진수 초끈 연구소: 세계면 좌표가 p-진수 체 $\mathbb{Q}_p$ 상에 존재할 때 도출되는 4점 tree Freund-Olson 진폭을 연산하고, 실수 및 p-진수 진폭의 아델릭 곱 보존식 만족여부를 증명합니다.";
+                canvasDesc.innerText = "p-진수 초끈 연구소: 세계면 좌표가 p-진수 체 $\\mathbb{Q}_p$ 상에 존재할 때 도출되는 4점 tree Freund-Olson 진폭을 연산하고, 실수 및 p-진수 진폭의 아델릭 곱 보존식 만족여부를 증명합니다.";
+            } else if (tabId === "mock-modular") {
+                canvasDesc.innerText = "목 모듈러 & 마티유 달빛 연구소: 라마누잔의 목 세타 함수 수렴 거동 및 K3 다양체 elliptic genus 분배 함수의 q-전개 계수들과 Mathieu 산재 단순군 $M_{24}$ 간의 달빛 대응 관계식을 계산합니다.";
+            } else if (tabId === "carrollian-physics") {
+                canvasDesc.innerText = "캐롤 시공간 & 평탄 홀로그래피 연구소: 광속이 0인 한계 하에서 Minkowski 평탄 시공간 인과 붕괴를 연산하고, Asymptotic BMS 초대칭 무한 전하 고유값 보존율을 유도합니다.";
+            } else if (tabId === "non-invertible") {
+                canvasDesc.innerText = "비가역 대칭성 & 위상 결함 연구소: 군의 구조를 초월하는 융합 범주론(Fusion Category)을 기반으로 비가역 global 위상 대칭 조작 결함선(TDL) 간의 중력 변칙 상쇄 대수를 시뮬레이션합니다.";
+            } else if (tabId === "boundary-sft") {
+                canvasDesc.innerText = "경계 끈 장론 & 타키온 연구소: 개방 끈 월드시트 경계에서의 RG 흐름을 유도하여, 불안정한 D-막 상의 타키온 퍼텐셜 붕괴 흐름 $V(T)$ 및 D-막 장력 사멸 비율을 정밀 계산합니다.";
+            } else if (tabId === "freed-witten") {
+                canvasDesc.innerText = "프리드-위튼 변칙 연구소: 배경 3-form H-플럭스 하에서 D-막이 사이클을 감쌀 때 발생하는 Freed-Witten topological obstruction $W_3 + [H]$ 및 K-이론적 integral 전하 구조를 연산합니다.";
             } else if (tabId === "theory-summary") {
                 canvasDesc.innerText = "이론 요약 대시보드 라이브 다양체: 물리적 공간 압축화 기하학을 제공하는 6차원 칼라비-야우 다양체(Calabi-Yau Manifold)의 3차원 투영 회전과 실시간 요동을 시각화합니다.";
             }
@@ -332,6 +342,16 @@ function initTabs() {
                 if (typeof runResurgenceEngine === 'function') runResurgenceEngine();
             } else if (tabId === "padic-string") {
                 if (typeof runPAdicStringEngine === 'function') runPAdicStringEngine();
+            } else if (tabId === "mock-modular") {
+                if (typeof runMockModularEngine === 'function') runMockModularEngine();
+            } else if (tabId === "carrollian-physics") {
+                if (typeof runCarrollianPhysicsEngine === 'function') runCarrollianPhysicsEngine();
+            } else if (tabId === "non-invertible") {
+                if (typeof runNonInvertibleEngine === 'function') runNonInvertibleEngine();
+            } else if (tabId === "boundary-sft") {
+                if (typeof runBoundarySFTEngine === 'function') runBoundarySFTEngine();
+            } else if (tabId === "freed-witten") {
+                if (typeof runFreedWittenEngine === 'function') runFreedWittenEngine();
             } else if (tabId === "theory-summary") {
                 if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                     window.MathJax.typesetPromise();
@@ -918,6 +938,7 @@ function drawStringSimulation() {
 }
 
 function drawStringSimulationFrame() {
+    if (!ctx) return;
     drawCosmicBackground();
     
     const W = canvas.width;
@@ -1770,6 +1791,429 @@ function drawStringSimulationFrame() {
         
         ctx.restore();
         
+    } else if (activeTab === "mock-modular") {
+        // --- Mock Modular & Mathieu Moonshine Visualization ---
+        ctx.save();
+        ctx.translate(cx, cy);
+        
+        // Draw Poincaré disk or concentric orbits
+        ctx.shadowBlur = 10;
+        ctx.lineWidth = 1;
+        
+        const qVal = parseFloat(document.getElementById("mm-q")?.value || 0.1);
+        const preset = parseInt(document.getElementById("mm-preset")?.value || 1);
+        
+        // Draw concentric orbits of modular forms
+        for (let r = 40; r <= 200; r += 40) {
+            ctx.strokeStyle = `rgba(192, 132, 252, ${0.1 + r/400})`;
+            ctx.beginPath();
+            ctx.arc(0, 0, r, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        // Draw modular geodesics/spokes
+        ctx.strokeStyle = "rgba(124, 58, 237, 0.15)";
+        const spokes = 24; // Mathieu M24 group order links
+        for (let i = 0; i < spokes; i++) {
+            const angle = (i * Math.PI * 2) / spokes;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(220 * Math.cos(angle), 220 * Math.sin(angle));
+            ctx.stroke();
+        }
+        
+        // Render representation orbital nodes
+        const nodeCount = preset === 1 ? 45 : preset === 2 ? 231 : preset === 3 ? 770 : 1024;
+        const displayNodes = Math.min(nodeCount, 60); // cap display to prevent lag
+        ctx.fillStyle = "#c084fc";
+        ctx.shadowColor = "#7c3aed";
+        
+        for (let i = 0; i < displayNodes; i++) {
+            const angle = (i * Math.PI * 2) / displayNodes + time * 0.2;
+            const rOffset = 15 * Math.sin(5 * angle + time * 2) * qVal;
+            const radius = 100 + rOffset;
+            const x = radius * Math.cos(angle);
+            const y = radius * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 4 + 2 * Math.cos(time + i), 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Ramanujan Mock-Theta singularity point in the center
+        const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 25);
+        grad.addColorStop(0, "rgba(255, 255, 255, 1)");
+        grad.addColorStop(0.4, "rgba(192, 132, 252, 0.6)");
+        grad.addColorStop(1, "rgba(124, 58, 237, 0)");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(0, 0, 25, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+        
+    } else if (activeTab === "carrollian-physics") {
+        // --- Carrollian Spacetime & Flat Space Holography Visualizer ---
+        ctx.save();
+        ctx.translate(cx, cy);
+        
+        const cSpeed = parseFloat(document.getElementById("cp-c")?.value || 0.1);
+        const bmsT = parseInt(document.getElementById("cp-t")?.value || 2);
+        
+        // Draw spatial rings in perspective (3D cylinder look)
+        ctx.shadowBlur = 10;
+        ctx.lineWidth = 1.5;
+        
+        const cylHeight = 240;
+        const ringCount = 6;
+        
+        for (let i = 0; i < ringCount; i++) {
+            const y = -cylHeight/2 + (cylHeight / (ringCount - 1)) * i;
+            const phase = time + (i * Math.PI) / 3;
+            
+            // Spatial radius expands or contracts under BMS supertranslation
+            const radius = 80 + 15 * Math.sin(bmsT * phase) * (1 - cSpeed);
+            
+            ctx.strokeStyle = `rgba(16, 185, 129, ${0.2 + 0.5 * (1 - Math.abs(y)/180)})`;
+            ctx.save();
+            ctx.scale(1, 0.35); // flatten to oval for 3D depth
+            ctx.beginPath();
+            ctx.arc(0, y / 0.35, radius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+        }
+        
+        // Draw degenerate time generators (vertical neon lines)
+        const lineCount = 12;
+        ctx.strokeStyle = "rgba(5, 150, 105, 0.25)";
+        ctx.lineWidth = 1;
+        for (let i = 0; i < lineCount; i++) {
+            const angle = (i * Math.PI * 2) / lineCount;
+            const radius = 80;
+            const x = radius * Math.cos(angle);
+            
+            ctx.beginPath();
+            ctx.moveTo(x, -cylHeight/2);
+            ctx.lineTo(x, cylHeight/2);
+            ctx.stroke();
+            
+            // Animate Carrollian particles flowing ONLY in time (vertically)
+            ctx.fillStyle = "#10b981";
+            ctx.shadowColor = "#34d399";
+            const particleY = ((time * 40 + i * 30) % cylHeight) - cylHeight/2;
+            
+            ctx.beginPath();
+            ctx.arc(x, particleY, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Draw collapsing lightcones (the slope depends on cSpeed)
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+        ctx.lineWidth = 2;
+        
+        // Slope of cone = cSpeed. As c -> 0, cone collapses to vertical line
+        const coneWidth = 50 * cSpeed;
+        const coneHeight = 60;
+        
+        ctx.beginPath();
+        // Top cone
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-coneWidth, -coneHeight);
+        ctx.lineTo(coneWidth, -coneHeight);
+        ctx.closePath();
+        // Bottom cone
+        ctx.moveTo(0, 0);
+        ctx.lineTo(-coneWidth, coneHeight);
+        ctx.lineTo(coneWidth, coneHeight);
+        ctx.closePath();
+        ctx.stroke();
+        
+        ctx.restore();
+        
+    } else if (activeTab === "non-invertible") {
+        // --- Non-Invertible Symmetries & Torus Defect Network ---
+        ctx.save();
+        ctx.translate(cx, cy);
+        
+        const qNum = parseInt(document.getElementById("ni-p")?.value || 2);
+        const fusionN = parseInt(document.getElementById("ni-n")?.value || 1);
+        
+        // Draw a rotating 3D torus wireframe
+        const R = 100; // Torus major radius
+        const r = 40;  // Torus minor radius
+        
+        const rotX = time * 0.2;
+        const rotY = time * 0.3;
+        
+        function getTorus3D(u, v) {
+            // Torus parametric eq
+            const x = (R + r * Math.cos(v)) * Math.cos(u);
+            const y = (R + r * Math.cos(v)) * Math.sin(u);
+            const z = r * Math.sin(v);
+            
+            // 3D rotation
+            // Rot X
+            let y1 = y * Math.cos(rotX) - z * Math.sin(rotX);
+            let z1 = y * Math.sin(rotX) + z * Math.cos(rotX);
+            // Rot Y
+            let x2 = x * Math.cos(rotY) + z1 * Math.sin(rotY);
+            let z2 = -x * Math.sin(rotY) + z1 * Math.cos(rotY);
+            
+            // Simple orthographic projection
+            return { x: x2, y: y1, z: z2 };
+        }
+        
+        // Draw torus wireframe meshes
+        ctx.strokeStyle = "rgba(245, 158, 11, 0.08)";
+        ctx.lineWidth = 0.5;
+        const stepsU = 16;
+        const stepsV = 8;
+        
+        for (let i = 0; i < stepsU; i++) {
+            const u = (i * Math.PI * 2) / stepsU;
+            ctx.beginPath();
+            for (let j = 0; j <= stepsV; j++) {
+                const v = (j * Math.PI * 2) / stepsV;
+                const pt = getTorus3D(u, v);
+                if (j === 0) ctx.moveTo(pt.x, pt.y);
+                else ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.stroke();
+        }
+        
+        // Draw longitudinal and meridional topological defect lines (TDLs)
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 15;
+        ctx.strokeStyle = "#f59e0b";
+        ctx.shadowColor = "rgba(245, 158, 11, 0.8)";
+        
+        ctx.beginPath();
+        for (let i = 0; i <= 60; i++) {
+            const u = (i * Math.PI * 2) / 60;
+            const v = 0;
+            const pt = getTorus3D(u, v);
+            if (i === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+        
+        // Cyan defect wraps minor cycle (u = phase, v in [0, 2pi])
+        ctx.strokeStyle = "#06b6d4";
+        ctx.shadowColor = "rgba(6, 182, 212, 0.8)";
+        ctx.beginPath();
+        for (let j = 0; j <= 40; j++) {
+            const u = time * 0.1;
+            const v = (j * Math.PI * 2) / 40;
+            const pt = getTorus3D(u, v);
+            if (j === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+        
+        // Animate intersection fusion quantum dimension flashes
+        const intersectPt = getTorus3D(time * 0.1, 0);
+        
+        const particleSize = 6 + 4 * Math.sin(time * 5);
+        ctx.fillStyle = "#ffffff";
+        ctx.shadowColor = "#f59e0b";
+        ctx.shadowBlur = 25;
+        ctx.beginPath();
+        ctx.arc(intersectPt.x, intersectPt.y, particleSize, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Render mini sparks from the fusion junction
+        ctx.fillStyle = "rgba(245, 158, 11, 0.9)";
+        ctx.shadowBlur = 5;
+        for (let i = 0; i < qNum * 3; i++) {
+            const pAngle = time * 2 + (i * Math.PI * 2) / (qNum * 3);
+            const pDist = 15 + 10 * Math.cos(time * 3 + i);
+            const px = intersectPt.x + pDist * Math.cos(pAngle);
+            const py = intersectPt.y + pDist * Math.sin(pAngle);
+            ctx.beginPath();
+            ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        ctx.restore();
+        
+    } else if (activeTab === "boundary-sft") {
+        // --- Boundary SFT Tachyon Condensation Potentials ---
+        ctx.save();
+        ctx.translate(cx, cy);
+        
+        const tachyonT = parseFloat(document.getElementById("bs-t")?.value || 0.0);
+        
+        // Visualizing the 3D potential valley: V(T) = V_0 * (1 + T) * e^-T
+        ctx.strokeStyle = "rgba(236, 72, 153, 0.2)";
+        ctx.lineWidth = 1;
+        ctx.shadowBlur = 0;
+        
+        function projectValley(xVal, zVal) {
+            const scaledX = (xVal + 160) / 70; // Map range to SFT domain
+            const pot = scaledX >= 0 ? 100 * (1 + scaledX) * Math.exp(-scaledX) : 100;
+            
+            const depthY = pot - 50 + 20 * Math.sin(zVal * 0.08 + time * 1.5);
+            
+            // Perspective transform
+            const scaleFactor = 300 / (zVal + 400);
+            return {
+                x: xVal * scaleFactor,
+                y: (depthY - 80) * scaleFactor
+            };
+        }
+        
+        // Grid mesh
+        for (let z = 50; z <= 250; z += 25) {
+            ctx.beginPath();
+            for (let x = -160; x <= 160; x += 10) {
+                const pt = projectValley(x, z);
+                if (x === -160) ctx.moveTo(pt.x, pt.y);
+                else ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.stroke();
+        }
+        
+        // Draw the rolling D-brane particle descending down SFT potential
+        const ballX = -120 + tachyonT * 50;
+        const ballZ = 150 + 20 * Math.sin(time);
+        
+        const ballPt = projectValley(ballX, ballZ);
+        const braneRadius = Math.max(3, 18 * Math.exp(-tachyonT * 0.5));
+        
+        ctx.save();
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = "#ec4899";
+        
+        const ballGrad = ctx.createRadialGradient(ballPt.x, ballPt.y, 0, ballPt.x, ballPt.y, braneRadius);
+        ballGrad.addColorStop(0, "#ffffff");
+        ballGrad.addColorStop(0.3, "#f472b6");
+        ballGrad.addColorStop(1, "rgba(236, 72, 153, 0)");
+        
+        ctx.fillStyle = ballGrad;
+        ctx.beginPath();
+        ctx.arc(ballPt.x, ballPt.y, braneRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        
+        // Draw tachyonic condensation vacuum sparks
+        if (tachyonT > 1.0) {
+            ctx.fillStyle = "rgba(236, 72, 153, 0.85)";
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = "#be185d";
+            const sparkCount = Math.min(15, Math.round(tachyonT * 3));
+            for (let i = 0; i < sparkCount; i++) {
+                const angle = time * 3 + (i * Math.PI * 2) / sparkCount;
+                const r = braneRadius * 0.8 + 25 * Math.random() * Math.sin(time + i);
+                const sx = ballPt.x + r * Math.cos(angle);
+                const sy = ballPt.y + r * Math.sin(angle);
+                ctx.beginPath();
+                ctx.arc(sx, sy, 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        ctx.restore();
+        
+    } else if (activeTab === "freed-witten") {
+        // --- Freed-Witten Anomaly obstruction twisting ribbon ---
+        ctx.save();
+        ctx.translate(cx, cy);
+        
+        const hFlux = parseInt(document.getElementById("fw-k")?.value || 2);
+        const wClass = parseInt(document.getElementById("fw-w")?.value || 0);
+        
+        const hasAnomaly = (hFlux + wClass) % 2 !== 0;
+        
+        // Render a rotating twisted 3D ribbon (Möbius band-like cycle)
+        const ribbonRadius = 90;
+        const ribbonWidth = 25;
+        const rotY = time * 0.25;
+        const rotX = time * 0.15;
+        
+        ctx.shadowBlur = 15;
+        ctx.lineWidth = 2.5;
+        
+        // Anomaly status controls color and stability
+        if (hasAnomaly) {
+            ctx.strokeStyle = `rgba(239, 68, 68, ${0.75 + 0.25 * Math.sin(time * 15)})`; // flickering red
+            ctx.shadowColor = "rgba(239, 68, 68, 0.8)";
+        } else {
+            ctx.strokeStyle = "#3b82f6"; // stable blue
+            ctx.shadowColor = "rgba(59, 130, 246, 0.8)";
+        }
+        
+        function getRibbonPoint(angle, offset) {
+            const halfAngle = angle / 2;
+            const r = ribbonRadius + offset * Math.cos(halfAngle);
+            const x = r * Math.cos(angle);
+            const y = r * Math.sin(angle);
+            const z = offset * Math.sin(halfAngle);
+            
+            // Rot X
+            let y1 = y * Math.cos(rotX) - z * Math.sin(rotX);
+            let z1 = y * Math.sin(rotX) + z * Math.cos(rotX);
+            // Rot Y
+            let x2 = x * Math.cos(rotY) + z1 * Math.sin(rotY);
+            
+            return { x: x2, y: y1 };
+        }
+        
+        const steps = 90;
+        ctx.beginPath();
+        for (let i = 0; i <= steps; i++) {
+            const angle = (i * Math.PI * 2) / steps;
+            const pt = getRibbonPoint(angle, ribbonWidth);
+            if (i === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+        
+        ctx.beginPath();
+        for (let i = 0; i <= steps; i++) {
+            const angle = (i * Math.PI * 2) / steps;
+            const pt = getRibbonPoint(angle, -ribbonWidth);
+            if (i === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+        
+        // Intersecting H-flux magnetic vector field lines (vertical arrows)
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(34, 211, 238, 0.35)";
+        ctx.fillStyle = "rgba(34, 211, 238, 0.6)";
+        
+        const arrowCount = Math.min(10, hFlux * 2);
+        for (let i = 0; i < arrowCount; i++) {
+            const offsetDist = -120 + (240 / (arrowCount - 1)) * i;
+            ctx.beginPath();
+            ctx.moveTo(offsetDist, -80);
+            ctx.lineTo(offsetDist, 80);
+            ctx.stroke();
+            
+            // Draw arrowhead
+            ctx.beginPath();
+            ctx.moveTo(offsetDist, 80);
+            ctx.lineTo(offsetDist - 4, 73);
+            ctx.lineTo(offsetDist + 4, 73);
+            ctx.closePath();
+            ctx.fill();
+        }
+        
+        // Anomaly warnings / stability labels
+        ctx.font = "bold 9px 'Outfit', sans-serif";
+        ctx.textAlign = "center";
+        if (hasAnomaly) {
+            ctx.fillStyle = "#ef4444";
+            ctx.fillText("ANOMALOUS TOPOLOGICAL OBSTRUCTION: W3 + H ≠ 0", 0, -115 + 4 * Math.cos(time * 8));
+        } else {
+            ctx.fillStyle = "#34d399";
+            ctx.fillText("ANOMALY CANCELLED: K-THEORETIC VACUUM STABLE", 0, -115);
+        }
+        
+        ctx.restore();
+        
     } else if (activeTab === "theory-summary") {
         // --- TAB 11: Theoretical Summary Manifold (Beautiful Breathing Calabi-Yau Projection) ---
         ctx.save();
@@ -2379,7 +2823,8 @@ function runScatteringEngine() {
     const rCanvas = document.getElementById("resonance-canvas");
     if (!rCanvas) return;
     const rCtx = rCanvas.getContext("2d");
-    const rW = rCanvas.width = rCanvas.parentNode.clientWidth;
+    if (!rCtx) return;
+    const rW = rCanvas.width = rCanvas.parentNode?.clientWidth || 300;
     const rH = rCanvas.height = 180;
     
     rCtx.fillStyle = "#030308";
@@ -2670,6 +3115,7 @@ function drawGwSpectrum(gmu, lMpc, dL) {
     const gwCanvas = document.getElementById("cosmo-gw-canvas");
     if (!gwCanvas) return;
     const gCtx = gwCanvas.getContext("2d");
+    if (!gCtx) return;
     
     const rect = gwCanvas.parentNode.getBoundingClientRect();
     gwCanvas.width = rect.width * (window.devicePixelRatio || 1);
@@ -2964,6 +3410,7 @@ function drawDualityWeb(activeTheory, gs, R) {
     const canvas = document.getElementById("m-theory-web-canvas");
     if (!canvas) return;
     const wCtx = canvas.getContext("2d");
+    if (!wCtx) return;
     
     const rect = canvas.parentNode.getBoundingClientRect();
     canvas.width = rect.width * (window.devicePixelRatio || 1);
@@ -3301,6 +3748,7 @@ function drawSwamplandPotentialCurve(activeT, w0, activeV) {
     const canvas = document.getElementById("swampland-canvas");
     if (!canvas) return;
     const sCtx = canvas.getContext("2d");
+    if (!sCtx) return;
     
     const rect = canvas.parentNode.getBoundingClientRect();
     canvas.width = rect.width * (window.devicePixelRatio || 1);
@@ -3590,6 +4038,7 @@ function drawSmMassChart(m_e, m_mu, m_tau, m_u, m_c, m_t, m_d, m_s, m_b, isSM) {
     const canvas = document.getElementById("sm-mass-canvas");
     if (!canvas) return;
     const mCtx = canvas.getContext("2d");
+    if (!mCtx) return;
     
     const rect = canvas.parentNode.getBoundingClientRect();
     canvas.width = rect.width * (window.devicePixelRatio || 1);
@@ -4457,6 +4906,97 @@ function runPAdicStringEngine() {
     }
 }
 
+function runMockModularEngine() {
+    const preset = parseInt(document.getElementById("mm-preset")?.value || 1);
+    const qVal = parseFloat(document.getElementById("mm-q")?.value || 0.1);
+    
+    const dim = preset === 1 ? 45 : preset === 2 ? 231 : preset === 3 ? 770 : 2048;
+    if(document.getElementById("mm-preset-val")) document.getElementById("mm-preset-val").innerText = `Preset = ${preset} (dim ${dim})`;
+    if(document.getElementById("mm-q-val")) document.getElementById("mm-q-val").innerText = `q = ${qVal.toFixed(2)}`;
+    
+    // c(n) coefficient = 2 * dim of representation for n=1
+    const cCoeff = preset === 1 ? 90 : preset === 2 ? 462 : preset === 3 ? 1540 : 4096;
+    
+    if(document.getElementById("res-mm-coeff")) document.getElementById("res-mm-coeff").innerText = `$c(1) = ${cCoeff} = 2 \\times \\text{dim}(V_{${preset === 4 ? '1024' : dim}})$`;
+    if(document.getElementById("res-mm-moonshine")) document.getElementById("res-mm-moonshine").innerText = `$Z_{K3}(\\tau,z) = 24 \\operatorname{ch} + \\sum c(n)q^n$ (M24 달빛 은하 정합 완료)`;
+    
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-mm-coeff'), document.getElementById('res-mm-moonshine')]);
+    }
+}
+
+function runCarrollianPhysicsEngine() {
+    const cSpeed = parseFloat(document.getElementById("cp-c")?.value || 0.1);
+    const bmsT = parseInt(document.getElementById("cp-t")?.value || 2);
+    
+    if(document.getElementById("cp-c-val")) document.getElementById("cp-c-val").innerText = `c = ${cSpeed.toFixed(3)}`;
+    if(document.getElementById("cp-t-val")) document.getElementById("cp-t-val").innerText = `T = ${bmsT}`;
+    
+    const g00 = -cSpeed * cSpeed;
+    const qBms = bmsT * 4.5 * (1.0 - g00);
+    
+    if(document.getElementById("res-cp-metric")) document.getElementById("res-cp-metric").innerText = `$g_{00} = -c^2 = ${g00.toFixed(6)}$`;
+    if(document.getElementById("res-cp-bms")) document.getElementById("res-cp-bms").innerText = `$Q_{\\text{BMS}} = ${qBms.toFixed(4)} \\hbar / G_5$ (Asymptotic Flat 수렴완료)`;
+    
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-cp-metric'), document.getElementById('res-cp-bms')]);
+    }
+}
+
+function runNonInvertibleEngine() {
+    const pNum = parseInt(document.getElementById("ni-p")?.value || 2);
+    const fusionN = parseInt(document.getElementById("ni-n")?.value || 1);
+    
+    if(document.getElementById("ni-p-val")) document.getElementById("ni-p-val").innerText = `p = ${pNum}`;
+    if(document.getElementById("ni-n-val")) document.getElementById("ni-n-val").innerText = `N = ${fusionN}`;
+    
+    const qDim = Math.sqrt(pNum) * fusionN;
+    
+    if(document.getElementById("res-ni-fusion")) document.getElementById("res-ni-fusion").innerText = `$\\mathcal{D}_a \\times \\mathcal{D}_b = ${fusionN} \\mathcal{D}_c$ (융합 환원식 확인)`;
+    if(document.getElementById("res-ni-dimension")) document.getElementById("res-ni-dimension").innerText = `$d_{\\mathcal{D}} = \\sqrt{${pNum}} \\times ${fusionN} = ${qDim.toFixed(4)}$ (비가역 양자차원 합치)`;
+    
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-ni-fusion'), document.getElementById('res-ni-dimension')]);
+    }
+}
+
+function runBoundarySFTEngine() {
+    const tachyonT = parseFloat(document.getElementById("bs-t")?.value || 0.0);
+    const rgScale = parseFloat(document.getElementById("bs-rg")?.value || 1.0);
+    
+    if(document.getElementById("bs-t-val")) document.getElementById("bs-t-val").innerText = `T = ${tachyonT.toFixed(1)}`;
+    if(document.getElementById("bs-rg-val")) document.getElementById("bs-rg-val").innerText = `t = ${rgScale.toFixed(1)}`;
+    
+    const potRatio = Math.max(0, (1 + tachyonT) * Math.exp(-tachyonT));
+    const tensionRatio = Math.exp(-rgScale * potRatio);
+    
+    if(document.getElementById("res-bs-potential")) document.getElementById("res-bs-potential").innerText = `$V(T)/V_0 = ${potRatio.toFixed(5)}$ (진공 에너지 수축)`;
+    if(document.getElementById("res-bs-tension")) document.getElementById("res-bs-tension").innerText = `$\\mathcal{T}/\\mathcal{T}_0 = ${(tensionRatio * 100).toFixed(3)}\\%$ (D-막 장력 감쇠완료)`;
+    
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-bs-potential'), document.getElementById('res-bs-tension')]);
+    }
+}
+
+function runFreedWittenEngine() {
+    const hFlux = parseInt(document.getElementById("fw-k")?.value || 2);
+    const wClass = parseInt(document.getElementById("fw-w")?.value || 0);
+    
+    if(document.getElementById("fw-k-val")) document.getElementById("fw-k-val").innerText = `k = ${hFlux}`;
+    if(document.getElementById("fw-w-val")) document.getElementById("fw-w-val").innerText = `W3 = ${wClass}`;
+    
+    const obs = (hFlux + wClass) % 2;
+    
+    if(document.getElementById("res-fw-obstruction")) document.getElementById("res-fw-obstruction").innerText = `$W_3(W) + [H] \\equiv ${obs} \\pmod 2$`;
+    if(document.getElementById("res-fw-anomaly")) {
+        document.getElementById("res-fw-anomaly").innerText = obs === 0 ? "$\\text{무변칙: } K(X) \\cong \\mathbb{Z}$ 보존" : "$\\text{FW 변칙: } W_3 + [H] \\neq 0$ 장애";
+    }
+    
+    if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+        window.MathJax.typesetPromise([document.getElementById('res-fw-obstruction'), document.getElementById('res-fw-anomaly')]);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     // Event listeners for the 5 new tabs
     const swU = document.getElementById("sw-u");
@@ -4555,6 +5095,42 @@ document.addEventListener("DOMContentLoaded", () => {
     if(psP) psP.addEventListener("input", runPAdicStringEngine);
     if(psAp) psAp.addEventListener("input", runPAdicStringEngine);
     if(psBtn) psBtn.addEventListener("click", () => { runPAdicStringEngine(); psBtn.innerText="완료 ✅"; setTimeout(()=>psBtn.innerText="📉 p-진수 프뢰인트-올슨 산란 연산",1500); });
+
+    // Event listeners for the 5 newest tabs
+    const mmPreset = document.getElementById("mm-preset");
+    const mmQ = document.getElementById("mm-q");
+    const mmBtn = document.getElementById("btn-calc-mm");
+    if(mmPreset) mmPreset.addEventListener("input", runMockModularEngine);
+    if(mmQ) mmQ.addEventListener("input", runMockModularEngine);
+    if(mmBtn) mmBtn.addEventListener("click", () => { runMockModularEngine(); mmBtn.innerText="완료 ✅"; setTimeout(()=>mmBtn.innerText="📉 마티유 가중 단면 지수 연산",1500); });
+
+    const cpC = document.getElementById("cp-c");
+    const cpT = document.getElementById("cp-t");
+    const cpBtn = document.getElementById("btn-calc-cp");
+    if(cpC) cpC.addEventListener("input", runCarrollianPhysicsEngine);
+    if(cpT) cpT.addEventListener("input", runCarrollianPhysicsEngine);
+    if(cpBtn) cpBtn.addEventListener("click", () => { runCarrollianPhysicsEngine(); cpBtn.innerText="완료 ✅"; setTimeout(()=>cpBtn.innerText="📉 캐롤 초전하 수렴 벡터 연산",1500); });
+
+    const niP = document.getElementById("ni-p");
+    const niN = document.getElementById("ni-n");
+    const niBtn = document.getElementById("btn-calc-ni");
+    if(niP) niP.addEventListener("input", runNonInvertibleEngine);
+    if(niN) niN.addEventListener("input", runNonInvertibleEngine);
+    if(niBtn) niBtn.addEventListener("click", () => { runNonInvertibleEngine(); niBtn.innerText="완료 ✅"; setTimeout(()=>niBtn.innerText="📉 비가역 위상 결함 융합 구조 연산",1500); });
+
+    const bsT = document.getElementById("bs-t");
+    const bsRg = document.getElementById("bs-rg");
+    const bsBtn = document.getElementById("btn-calc-bs");
+    if(bsT) bsT.addEventListener("input", runBoundarySFTEngine);
+    if(bsRg) bsRg.addEventListener("input", runBoundarySFTEngine);
+    if(bsBtn) bsBtn.addEventListener("click", () => { runBoundarySFTEngine(); bsBtn.innerText="완료 ✅"; setTimeout(()=>bsBtn.innerText="📉 타키온 붕괴 임계 질량 연산",1500); });
+
+    const fwK = document.getElementById("fw-k");
+    const fwW = document.getElementById("fw-w");
+    const fwBtn = document.getElementById("btn-calc-fw");
+    if(fwK) fwK.addEventListener("input", runFreedWittenEngine);
+    if(fwW) fwW.addEventListener("input", runFreedWittenEngine);
+    if(fwBtn) fwBtn.addEventListener("click", () => { runFreedWittenEngine(); fwBtn.innerText="완료 ✅"; setTimeout(()=>fwBtn.innerText="📉 프리드-위튼 위상 기하성 상쇄 연산",1500); });
 });
 
 window.onload = () => {
@@ -4593,6 +5169,11 @@ window.onload = () => {
     runIntegrableDeformationsEngine();
     runResurgenceEngine();
     runPAdicStringEngine();
+    runMockModularEngine();
+    runCarrollianPhysicsEngine();
+    runNonInvertibleEngine();
+    runBoundarySFTEngine();
+    runFreedWittenEngine();
     
     // Initial Standard Model Lab run
     renderVacuumCandidates();

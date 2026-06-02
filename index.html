@@ -77,6 +77,11 @@
             <button class="tab-btn" data-tab="integrable-deformations">🔗 비가환 이중성 & 가적 변형 (Integrable Deformations)</button>
             <button class="tab-btn" data-tab="resurgence">📈 리서전스 & 복소 안장점 (Resurgence Theory)</button>
             <button class="tab-btn" data-tab="padic-string">🔢 p-진수 초끈 & 아델릭 (p-Adic Strings)</button>
+            <button class="tab-btn" data-tab="mock-modular">🪞 목 모듈러 & 마티유 달빛 (Mock Modular & Moonshine)</button>
+            <button class="tab-btn" data-tab="carrollian-physics">🌀 캐롤 시공간 & 평탄 홀로그래피 (Carrollian Physics)</button>
+            <button class="tab-btn" data-tab="non-invertible">⛓️ 비가역 대칭성 & 위상 결함 (Non-Invertible Symmetry)</button>
+            <button class="tab-btn" data-tab="boundary-sft">🌌 경계 끈 장론 & 타키온 (Boundary SFT)</button>
+            <button class="tab-btn" data-tab="freed-witten">🧬 프리드-위튼 변칙 & K-이론 (Freed-Witten Anomaly)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -1248,7 +1253,157 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 31: Theoretical Summary Left -->
+                <!-- Tab Content 31: Mock Modular & Mathieu Moonshine Left -->
+                <div id="left-mock-modular" class="subpanel-content">
+                    <div class="panel-header"><h2>🪞 목 모듈러 & 마티유 달빛</h2></div>
+                    <p class="section-desc">K3 다양체 타원 단면 지수(Elliptic Genus)와 마티유 산재군 $M_{24}$ 표현론 간의 수수께끼와 같은 Moonshine 관계, 그리고 라마누잔의 목 세타 함수(Mock Theta Functions) 수렴 거동을 분석합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>마티유 환원 인자 & 복소 특이점</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>M24 표현 차원 프리셋 ($d_{M24}$)</label>
+                                <input type="range" id="mm-preset" min="1" max="4" step="1" value="1">
+                                <span class="range-val" id="mm-preset-val">Preset = 1 (dim 45)</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>복소 열역학 파라미터 ($q$)</label>
+                                <input type="range" id="mm-q" min="0.01" max="0.99" step="0.01" value="0.1">
+                                <span class="range-val" id="mm-q-val">q = 0.10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>K3 타원 지수 분해 공식</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #c084fc;">
+                            Z_{K3}(\tau, z) = 24 \operatorname{ch}(\tau, z) + \sum c(n) q^n
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-mm" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #c084fc, #7c3aed); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 마티유 가중 단면 지수 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 32: Carrollian Physics Left -->
+                <div id="left-carrollian-physics" class="subpanel-content">
+                    <div class="panel-header"><h2>🌀 캐롤 시공간 & 평탄 홀로그래피</h2></div>
+                    <p class="section-desc">광속이 극한으로 0에 수렴하는 비상대론의 쌍대 극한 공간인 캐롤(Carrollian) 다발 기하와, 4차원 평탄 Minkowski 시공간 산란 진폭을 통제하는 무한차원 Asymptotic BMS 대칭 전하를 해석합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>광속 극한비 & BMS 변환 매개변수</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>광속 한계 수렴값 ($c$)</label>
+                                <input type="range" id="cp-c" min="0.001" max="1.0" step="0.005" value="0.1">
+                                <span class="range-val" id="cp-c-val">c = 0.100</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>BMS 초평행 이동전하 ($T$)</label>
+                                <input type="range" id="cp-t" min="1" max="10" step="1" value="2">
+                                <span class="range-val" id="cp-t-val">T = 2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>캐롤 메트릭 붕괴 한계</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                            g_{\mu\nu} \to -c^2 dt^2 + d\vec{x}^2
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-cp" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 캐롤 초전하 수렴 벡터 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 33: Non-Invertible Symmetries Left -->
+                <div id="left-non-invertible" class="subpanel-content">
+                    <div class="panel-header"><h2>⛓️ 비가역 대칭성 & 위상 결함</h2></div>
+                    <p class="section-desc">군의 구조를 넘어서는 융합 범주론(Fusion Category)으로 묘사되는 고차 비가역(Non-invertible) global 대칭성과 이로 인한 위상 대칭 결함선(TDL) 간의 중력 변칙(Anomaly) 상쇄 기하학을 연산합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>결함선 차원 & 격자 융합수</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>위상 결함선 양자수 ($p$)</label>
+                                <input type="range" id="ni-p" min="1" max="5" step="1" value="2">
+                                <span class="range-val" id="ni-p-val">p = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>융합 곱 가중수 ($N_{ab}^c$)</label>
+                                <input type="range" id="ni-n" min="1" max="3" step="1" value="1">
+                                <span class="range-val" id="ni-n-val">N = 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>비가역 결함 대칭성 융합식</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                            \mathcal{D}_a \times \mathcal{D}_b = \sum N_{ab}^c \mathcal{D}_c
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-ni" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 비가역 위상 결함 융합 구조 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 34: Boundary String Field Theory Left -->
+                <div id="left-boundary-sft" class="subpanel-content">
+                    <div class="panel-header"><h2>🌌 경계 끈 장론 & 타키온 응축</h2></div>
+                    <p class="section-desc">개방 끈 월드시트의 경계 작용(Boundary Action) 상의 재규격화군(RG) 흐름을 도출하여 D-막이 타키온 응축을 거쳐 Sen의 진공으로 붕괴하고 장력이 완전히 사멸하는 단계를 솔빙합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>타키온 진공 진동폭 & RG 스케일</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>타키온 평균 질량 장폭 ($T$)</label>
+                                <input type="range" id="bs-t" min="-1.0" max="5.0" step="0.1" value="0.0">
+                                <span class="range-val" id="bs-t-val">T = 0.0</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>경계 RG 에너지 척도 ($t$)</label>
+                                <input type="range" id="bs-rg" min="0.0" max="10.0" step="0.2" value="1.0">
+                                <span class="range-val" id="bs-rg-val">t = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>개방 끈 타키온 센(Sen) 포텐셜</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ec4899;">
+                            V(T) = V_0 (1 + T) e^{-T}
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-bs" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #be185d); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 타키온 붕괴 임계 질량 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 35: Freed-Witten Anomaly Left -->
+                <div id="left-freed-witten" class="subpanel-content">
+                    <div class="panel-header"><h2>🧬 프리드-위튼 변칙 & K-이론적 장애</h2></div>
+                    <p class="section-desc">3-form H-flux가 있는 공간에서 D-막이 감길 때, 월드시트 스핀 구조에 가해지는 topological obstruction인 Freed-Witten anomaly 조건을 규명하고 K-이론 전하 보존도를 산출합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>H-플럭스 3-form 대수 & 스티펠-위트니 지표</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>H-플럭스 결합 정수하 ($k$)</label>
+                                <input type="range" id="fw-k" min="0" max="10" step="1" value="2">
+                                <span class="range-val" id="fw-k-val">k = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>Stiefel-Whitney 특성류 위상차 ($W_3$)</label>
+                                <input type="range" id="fw-w" min="0" max="1" step="1" value="0">
+                                <span class="range-val" id="fw-w-val">W3 = 0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>프리드-위튼 변칙 상쇄 등식</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                            W_3(W) + [H]|_{\Sigma} = 0
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-fw" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 프리드-위튼 위상 기하성 상쇄 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 36: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -1543,6 +1698,56 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">55</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-associative Geometry & R-fluxes</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비결합 기하학과 R-플럭스</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="56" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">56</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Mock Modular Forms & Mathieu Moonshine</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">목 모듈러 형식과 마티유 문샤인</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="57" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">57</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Carrollian Spacetime & Asymptotic BMS Symmetry</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">캐롤 시공간과 점근적 BMS 대칭성</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="58" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">58</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-Invertible Symmetries & Fusion Categories</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비가역 대칭성과 융합 범주론</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="59" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">59</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Boundary SFT & Tachyon Condensation</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">경계 끈 장론과 타키온 응축</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="60" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">60</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Freed-Witten Anomaly & K-Theoretic Obstruction</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">프리드-위튼 변칙과 K-이론적 장애</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="61" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">61</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Exceptional Field Theory & E7(7) U-Duality</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">예외적 장론과 E7(7) U-이중성</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="62" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">62</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Nekrasov Partition Function & Omega Background</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">네크라소프 분배 함수와 오메가 배경</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="63" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">63</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Mock Theta Functions & Ramanujan's Lost Notebook</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">목 세타 함수와 라마누잔의 유실된 노트</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="64" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">64</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-perturbative Superpotentials & D-Instanton Effects</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비섭동적 초퍼텐셜과 D-인스턴톤 효과</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="65" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">65</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Outer Automorphism of E8 & Self-Dual Lattices</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">E8의 외적 자기동형 사상과 자기쌍대 격자</span>
                         </button>
                     </div>
                 </div>
@@ -2698,7 +2903,104 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 31: Theoretical Summary Right -->
+                </div>
+
+                <!-- Tab Content 31: Mock Modular & Mathieu Moonshine Right -->
+                <div id="right-mock-modular" class="subpanel-content">
+                    <div class="panel-header"><h2>🪞 마티유 가중 단면 지수 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #c084fc;">K3 타원 지수 확장계수 & M24 특성 차원</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">라마누잔의 3계 목 세타 수렴값을 계산하고 K3 다양체 타원 지수의 q-전개 계수 $c(n)$가 Mathieu 단순 군 $M_{24}$의 자명하지 않은 표현 차원들의 합으로 분해됨을 입증합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">목 세타 전개 타원 계수 ($c(n)$)</span>
+                                <span class="value" id="res-mm-coeff" style="color:#c084fc; font-size: 14px;">$c(n) = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">마티유 $M_{24}$ 비자명 차원 가중대응성</span>
+                                <span class="value" id="res-mm-moonshine" style="color:#7c3aed; font-size: 16px; font-weight:bold;">Mathieu M24 Moonshine 확인</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 32: Carrollian Physics Right -->
+                <div id="right-carrollian-physics" class="subpanel-content">
+                    <div class="panel-header"><h2>🌀 캐롤 초전하 수렴 기하 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #10b981;">캐롤 한계 계량 왜곡 & Asymptotic BMS 전하</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">광속 $c \to 0$ 한계 하에서 Minkowski 인과율 광추(Lightcone)의 원기둥형 붕괴율을 산출하고, 3차원 영 무한대($\mathcal{I}^\pm$) 경계 등각 대칭성과 결합된 BMS 초전하 값을 유도합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">캐롤 시간-공간 메트릭 퇴화율 ($g_{00}$)</span>
+                                <span class="value" id="res-cp-metric" style="color:#ef4444; font-size: 14px;">$g_{00} = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">BMS 점근적 초평행이동 전하 고유값 ($Q_{\text{BMS}}$)</span>
+                                <span class="value" id="res-cp-bms" style="color:#10b981; font-size: 16px; font-weight:bold;">$Q_{\text{BMS}} = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 33: Non-Invertible Symmetries Right -->
+                <div id="right-non-invertible" class="subpanel-content">
+                    <div class="panel-header"><h2>⛓️ 비가역 위상 결함 융합 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #f59e0b;">융합 대수 환원구조 & 대칭 결함 양자차원</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">양자 결함면 $\mathcal{D}$가 융합 곱을 거칠 때, 군의 가역 1차원 역원 관계를 넘어서는 대칭 전하 결합성과 비가역 결함 라인의 황금비 양자 차원(Quantum Dimension)을 정밀 계산합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">비가역 위상 결함선 융합 방정식 해집</span>
+                                <span class="value" id="res-ni-fusion" style="color:#f59e0b; font-size: 14px;">$\mathcal{D}_a \times \mathcal{D}_b = \sum N_{ab}^c \mathcal{D}_c$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">결함 상태 총 양자 차원 값 ($d_{\mathcal{D}}$)</span>
+                                <span class="value" id="res-ni-dimension" style="color:#d97706; font-size: 16px; font-weight:bold;">$d_{\mathcal{D}} = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 34: Boundary String Field Theory Right -->
+                <div id="right-boundary-sft" class="subpanel-content">
+                    <div class="panel-header"><h2>🌌 개방 끈 타키온 진공 에너지 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #ec4899;">Sen의 타키온 포텐셜 변이 & D-막 장력 감쇠율</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">경계 RG 흐름 상에서 타키온 장폭 $T$가 양의 무한대로 감쇠해 갈 때 개방 끈 진공 에너지 포텐셜 $V(T)$가 0으로 수축하며 D-막 장력이 완벽히 소멸하는 과정을 확인합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">재규격화 유효 타키온 포텐셜 ($V(T)/V_0$)</span>
+                                <span class="value" id="res-bs-potential" style="color:#f59e0b; font-size: 14px;">$V(T)/V_0 = 1.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">D-막 월드시트 장력 잔존 잔여비율 ($\mathcal{T}/\mathcal{T}_0$)</span>
+                                <span class="value" id="res-bs-tension" style="color:#ec4899; font-size: 16px; font-weight:bold;">$\mathcal{T}/\mathcal{T}_0 = 100.0\%$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 35: Freed-Witten Anomaly Right -->
+                <div id="right-freed-witten" class="subpanel-content">
+                    <div class="panel-header"><h2>🧬 프리드-위튼 변칙 상쇄 여부 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #3b82f6;">FW 코호몰로지 장애 장벽 & K-이론 등급 전하</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">스티펠-위트니 특성류 $W_3$와 배경 H-플럭스의 외미분 3-form 제한식을 연산하여, 막의 월드시트 스핀 양자수가 변칙 없이 보존되는지 검증하고 유효 전하 부류를 분류합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">Freed-Witten 위상학적 장애 지표 ($W_3(W) + [H]$)</span>
+                                <span class="value" id="res-fw-obstruction" style="color:#ef4444; font-size: 14px;">$W_3(W) + [H] \neq 0$ (변칙 존재)</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">K-이론적 보존 등급 전하 적분치 ([Q])</span>
+                                <span class="value" id="res-fw-anomaly" style="color:#3b82f6; font-size: 16px; font-weight:bold;">변칙 상쇄로 보존 전하 성립</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 36: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -3781,18 +4083,154 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Chapter 55 -->
-                    <div class="chapter-content-card" data-ch-content="55" style="display:none;">
-                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
-                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 55: <span class="lang-text en">Non-associative Geometry & R-fluxes</span><span class="lang-text ko" style="display:none;">비결합 기하학과 R-플럭스</span></h3>
+                    </div>
+                    <!-- Chapter 56 -->
+                    <div class="chapter-content-card" data-ch-content="56" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(167, 139, 250, 0.3);">
+                            <h3 style="color: #a78bfa; font-size: 14px; margin-bottom: 8px;">Chapter 56: <span class="lang-text en">Mock Modular Forms & Mathieu Moonshine</span><span class="lang-text ko" style="display:none;">목 모듈러 형식과 마티유 문샤인</span></h3>
                             <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
-                                <p>강한 배경 플럭스 하에서 열린 끈과 D-막의 비가환성을 넘어, 비기하적 $R$-플럭스가 주입된 시공간에서 닫힌 끈이 경험하는 물리 기하학입니다. 세 좌표 연산자 간의 스타 곱 결합 법칙이 성립하지 않는 비결합성 대수 관계를 가지며, 양자 역학의 고전적 모노폴 구조와 일치합니다.</p>
+                                <p>K3 다양체의 elliptic genus가 Mathieu 단순 산재군 $M_{24}$의 비자명 표현 차원들의 합으로 분해되는 신비로운 **Mathieu Moonshine** 현상입니다. 라마누잔의 목 세타 함수(Mock Theta Functions)는 비홀로모픽 보정항을 통해 조화 약 마스 형식(Harmonic Weak Maass Forms)으로 완성되며 이 대응성에 깊이 관여합니다.</p>
                                 <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
-                                    [x^i, x^j, x^k] \equiv [x^i, x^j] \star x^k - x^i \star [x^j, x^k] = \frac{3}{2}\hbar^2 R^{ijk}
+                                    Z_{K3}(\tau, z) = 24 \operatorname{ch}_{-1/2, 0}(\tau, z) + \sum_{n=1}^\infty A(n) q^n \frac{\theta_1(\tau, z)^2}{\eta(\tau)^3}
                                 </div>
                             </div>
                             <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
-                                <p>Non-associative geometry emerges when closed strings probe spacetimes twisted by non-geometric $R$-fluxes. It forces coordinates to satisfy a non-associative star product algebra, violating the associative law of multiplication, which is physically linked to strings in magnetic monopole backgrounds.</p>
+                                <p>Mathieu Moonshine reveals a deep connection between the elliptic genus of K3 surfaces and the representations of the Mathieu sporadic group $M_{24}$. Mock modular forms, which lack holomorphic modular properties, are completed into harmonic weak Maass forms using a non-holomorphic shadow term to resolve this partition function.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 57 -->
+                    <div class="chapter-content-card" data-ch-content="57" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 57: <span class="lang-text en">Carrollian Spacetime & Asymptotic BMS Symmetry</span><span class="lang-text ko" style="display:none;">캐롤 시공간과 점근적 BMS 대칭성</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>광속이 0으로 수렴($c \to 0$)하여 광추가 수직인 시간선으로 완전히 짜부라지는 캐롤 극한 기하학입니다. 이는 평탄 Minkowski 시공간의 점근적 경계 무한대($\mathcal{I}$)에서의 홀로그래피 이중성을 연구하는 핵심 틀이며, 초평행이동(Supertranslations)을 거느리는 무한차원 **BMS 대수**를 이룹니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    [L_n, L_m] = (n-m)L_{n+m}, \quad [L_n, T_m] = (n-m)T_{n+m} + \frac{c_T}{12} n(n^2-1)\delta_{n+m, 0}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Carrollian geometry is the ultra-relativistic limit ($c \to 0$) where lightcones collapse into spatial vertical lines. It forms the geometric framework for flat-space holography at null infinity ($\mathcal{I}$), governed by the infinite-dimensional Bondi-Metzner-Sachs (BMS) supertranslation algebra.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 58 -->
+                    <div class="chapter-content-card" data-ch-content="58" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 58: <span class="lang-text en">Non-Invertible Symmetries & Fusion Categories</span><span class="lang-text ko" style="display:none;">비가역 대칭성과 융합 범주론</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>일반적인 대칭군 표현론을 초월하여 역원이 존재하지 않는 위상 대칭 조작법입니다. 융합 범주론(Fusion Category) 및 고차 범주(Higher Categories)로 서술되며, 초끈 진공의 D-막들과 위상학적 결함선(Topological Defect Lines)의 복합 교차 아노말리를 판별하는 데 사용됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \mathcal{D}_a \times \mathcal{D}_b = \sum_c N_{ab}^c \mathcal{D}_c, \quad [T] \times [\overline{T}] = 1 + \mathcal{D}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Non-invertible symmetries generalize standard group-like global symmetries to topological operators lacking an inverse, mathematically described by fusion categories. They govern the properties of topological defect lines (TDLs) and provide powerful constraints on quantum gravity anomaly cancellations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 59 -->
+                    <div class="chapter-content-card" data-ch-content="59" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 59: <span class="lang-text en">Boundary SFT & Tachyon Condensation</span><span class="lang-text ko" style="display:none;">경계 끈 장론과 타키온 응축</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>개방 끈의 월드시트 경계 작용소 상에서 재규격화군(RG) 흐름을 직접 추적하여 열린 끈 포텐셜의 거동을 분석하는 **경계 끈 장론(BSFT)**입니다. 센(Sen)의 추측을 입증하며, 불안정한 D-막의 타키온 값이 퍼텐셜 골짜기 끝으로 굴러 떨어질 때 D-막 장력이 완벽히 소멸하고 순수 닫힌 끈 진공만 남게 됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    S_{\text{BSFT}}(T) = \mathcal{Z}(T) \left( 1 + \beta \frac{dT}{dt} \right), \quad V(T) = V_0 (1 + T) e^{-T}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Boundary String Field Theory (BSFT) computes exact tachyon potentials on unstable D-branes by utilizing worldsheet boundary renormalization group flows. It mathematically proves Sen's conjecture: as the tachyon field $T$ flows to infinity, the D-brane tension is completely annihilated, leaving only the closed string vacuum.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 60 -->
+                    <div class="chapter-content-card" data-ch-content="60" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 60: <span class="lang-text en">Freed-Witten Anomaly & K-Theoretic Obstruction</span><span class="lang-text ko" style="display:none;">프리드-위튼 변칙과 K-이론적 장애</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>D-막이 비홀로모픽 3-form $H$-플럭스가 포함된 다양체 상의 사이클 $\Sigma$를 감쌀 때 발생하는 위상학적 장애 관계식입니다. $W_3(W) + [H]|_{\Sigma} \ne 0$ 일 때 D-막 월드시트 상의 spin-c 대수 구조가 붕괴하여 변칙이 발생하며, 이는 K-이론적 integral charge 보존 등식과 직결됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    W_3(W) + [H]|_{\Sigma} = 0 \in H^3(\Sigma, \mathbb{Z})
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The Freed-Witten anomaly represents a topological obstruction for a D-brane wrapping a cycle $\Sigma$ in a background with NS-NS $H$-flux. The anomaly vanishes only if the sum of the third integral Stiefel-Whitney class $W_3(W)$ of the normal bundle and the restricted $H$-flux is trivial, which directly constrains D-brane K-theory charges.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 61 -->
+                    <div class="chapter-content-card" data-ch-content="61" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 61: <span class="lang-text en">Exceptional Field Theory & E7(7) U-Duality</span><span class="lang-text ko" style="display:none;">예외적 장론과 E7(7) U-이중성</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>11차원 초중력을 U-이중성 대칭군 $E_{7(7)}$이 명시적으로 드러나도록 4차원 외부 공간과 56차원 내부 배위 공간으로 일반화한 **예외적 장론(ExFT)**입니다. M-이론과 Type IIB 배경을 단일 작용식 아래 통합하는 강력한 수리 물리 대수 구조를 제공합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \mathcal{L} = R(e) + \frac{1}{12} \mathcal{M}_{MN} \mathcal{F}_{\mu\nu}^M \mathcal{F}^{\mu\nu N} - V(\mathcal{M}, g)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Exceptional Field Theory (ExFT) unifies supergravity theories by making the U-duality group $E_{7(7)}$ manifest, extending internal dimensions to a 56-coordinate generalized space. It provides a covariant geometric action that encompasses both 11D M-theory and 10D Type IIB superstrings.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 62 -->
+                    <div class="chapter-content-card" data-ch-content="62" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 62: <span class="lang-text en">Nekrasov Partition Function & Omega Background</span><span class="lang-text ko" style="display:none;">네크라소프 분배 함수와 오메가 배경</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>초거대칭 게이지 이론의 비섭동적 instanton 기여도를 엄밀 연산하기 위해 도입된 **Nekrasov 분배 함수**입니다. 시공간을 복소 평면으로 회전 변형하는 오메가 배경($\epsilon_1, \epsilon_2$) 하에서 인스턴톤 모듈라이 공간을 국소화(Localization) 적분함으로써, Seiberg-Witten 프리포텐셜 $\mathcal{F}$를 임계 극한에서 정확히 유도합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    Z(q, \epsilon_1, \epsilon_2) = \exp \left( -\frac{\mathcal{F}(a, \Lambda)}{\epsilon_1\epsilon_2} + \mathcal{O}(\epsilon) \right)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The Nekrasov partition function calculates non-perturbative instanton corrections in $\mathcal{N}=2$ supersymmetric gauge theories using localization. By introducing the $\Omega$-background ($\epsilon_1, \epsilon_2$) to regularize spacetime, it yields the exact Seiberg-Witten prepotential in the classic limits.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 63 -->
+                    <div class="chapter-content-card" data-ch-content="63" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 63: <span class="lang-text en">Mock Theta Functions & Ramanujan's Lost Notebook</span><span class="lang-text ko" style="display:none;">목 세타 함수와 라마누잔의 유실된 노트</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>천재 수학자 라마누잔이 생의 마지막 순간 유실된 노트에 기록한 목 세타 함수(Mock Theta Functions)의 기하학입니다. 현대의 Weak Maass Form 및 Mock Modular Form 이론의 기반이 되었으며, K3 다양체의 카오스적 초대칭 상태 융합 및 아노말리 분배 함수 해석의 핵심 도구입니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    f(q) = \sum_{n=0}^\infty \frac{q^{n^2}}{(1+q)^2(1+q^2)^2 \cdots (1+q^n)^2}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Mock theta functions, first introduced in Ramanujan's deathbed letter, represent mathematical modular forms lacking proper transformation properties. Modern string field and algebraic number theory utilize their completed non-holomorphic Maass forms to define exact partitions of chaotic BPS microstates.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 64 -->
+                    <div class="chapter-content-card" data-ch-content="64" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 64: <span class="lang-text en">Non-perturbative Superpotentials & D-Instanton Effects</span><span class="lang-text ko" style="display:none;">비섭동적 초퍼텐셜과 D-인스턴톤 효과</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>칼라비-야우 다양체 컴팩트화 기하학에서 섭동적인 Gukov-Vafa-Witten (GVW) 초퍼텐셜식에 가해지는 유클리드 D-브레인 인스턴톤(Euclidean D-branes) 비섭동적 안정화 효과입니다. KKLT 시나리오 등에서 Kähler moduli 공간을 물리적으로 완전히 고정시키고 초대칭을 자발적으로 깨뜨리는 열쇠입니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    W = W_{\text{GVW}} + \sum_{q} N_q e^{2\pi i \int_q (J + i B)} + \sum_{D} C_D e^{-S_D}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Non-perturbative superpotentials include corrections to the classical Gukov-Vafa-Witten superpotential induced by Euclidean D-brane instantons. These instanton configurations are physically indispensable for stabilizing Kähler moduli and constructing consistent de Sitter vacua in string models.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 65 -->
+                    <div class="chapter-content-card" data-ch-content="65" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 65: <span class="lang-text en">Outer Automorphism of E8 & Self-Dual Lattices</span><span class="lang-text ko" style="display:none;">E8의 외적 자기동형 사상과 자기쌍대 격자</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>잡종 초끈(Heterotic string)의 진공 모듈러 무모순성을 결정짓는 8차원 고유 격자인 $E_8$ 격자와 24차원의 Leech 격자의 기하 대수학입니다. 이들은 Vertex Operator Algebra (VOA)와 일대일 합치하며, Jacobi Theta Function의 모듈러 분배함수 계산식을 완성시킵니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \Theta_\Lambda(\tau) = \sum_{x \in \Lambda} q^{\frac{1}{2} x^2} = E_4(\tau)^2 = 1 + 480 \sum_{n=1}^\infty \sigma_3(n) q^n
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The $E_8$ and 24D Leech self-dual lattices govern the anomaly-free modular invariance of heterotic string partition functions. They are deeply linked to vertex operator algebras and generate highly symmetric Jacobi theta and Eisenstein series $E_4$ expansions representing exact spacetime vacua.</p>
                             </div>
                         </div>
                     </div>
