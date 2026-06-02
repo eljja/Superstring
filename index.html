@@ -67,6 +67,11 @@
             <button class="tab-btn" data-tab="f-theory">🔥 F-이론 & 특이점 (F-Theory & Singularities)</button>
             <button class="tab-btn" data-tab="matrix-model">⬛ 행렬 모델 (BFSS / IKKT Matrix Theory)</button>
             <button class="tab-btn" data-tab="tensor-network">🕸️ 텐서 네트워크 & 홀로그래피 (Tensor Networks)</button>
+            <button class="tab-btn" data-tab="non-commutative">🧮 비가환 기하학 (Non-commutative Geometry)</button>
+            <button class="tab-btn" data-tab="chern-simons">🌀 천-사이먼스 & 매듭 (Chern-Simons TQFT)</button>
+            <button class="tab-btn" data-tab="celestial">🌠 천구 홀로그래피 (Celestial Holography)</button>
+            <button class="tab-btn" data-tab="generalized-geom">🧬 일반화 기하학 & Courant (Generalized Geometry)</button>
+            <button class="tab-btn" data-tab="loop-gravity">🕸️ 루프 양자 중력 (LQG vs String Theory)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -943,7 +948,152 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 21: Theoretical Summary Left -->
+                <!-- Tab Content 21: Non-commutative Geometry Left -->
+                <div id="left-non-commutative" class="subpanel-content">
+                    <div class="panel-header"><h2>🧮 비가환 기하학 & 모얄 곱</h2></div>
+                    <p class="section-desc">시공간 좌표 연산자가 교환하지 않는 비가환 공간 \([X^\mu, X^\nu] = i \theta^{\mu\nu}\) 상에서 정의되는 스트링 월드시트와 스타 곱(Star Product) 물리적 결합을 모사합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>비가환 매개변수 (Non-commutativity)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>비가환 상수 ($\theta$)</label>
+                                <input type="range" id="nc-theta" min="0" max="10" step="0.1" value="1.0">
+                                <span class="range-val" id="nc-theta-val">\theta = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>Moyal-Weyl 스타 곱 공식 (Star Product)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                            f \star g = f(x) \exp\left( \frac{i}{2} \theta^{\mu\nu} \partial_\mu \vec{\partial}_\nu \right) g(x)
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-nc" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #10b981, #047857); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 모얄 곱 & 스타 가교 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 22: Chern-Simons Left -->
+                <div id="left-chern-simons" class="subpanel-content">
+                    <div class="panel-header"><h2>🌀 천-사이먼스 & 위상 양자 장론</h2></div>
+                    <p class="section-desc">3차원 시공간에서 정의되는 등각장론 쌍대성과 매듭 기하 불변량을 계산하는 천-사이먼스(Chern-Simons TQFT) 이론의 작용소를 시뮬레이션합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>게이지 군 및 레벨 (Gauge & Level)</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>게이지 군 랭크 ($SU(N)$)</label>
+                                <input type="range" id="cs-n" min="2" max="5" step="1" value="2">
+                                <span class="range-val" id="cs-n-val">N = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>Chern-Simons 레벨 ($k$)</label>
+                                <input type="range" id="cs-k" min="1" max="20" step="1" value="5">
+                                <span class="range-val" id="cs-k-val">k = 5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>Chern-Simons 작용식 (Action)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                            S = \frac{k}{4\pi}\int_M \text{tr} \left( A \wedge dA + \frac{2}{3} A \wedge A \wedge A \right)
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-cs" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 위상 기하 불변량 (Jones Polynomial) 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 23: Celestial Left -->
+                <div id="left-celestial" class="subpanel-content">
+                    <div class="panel-header"><h2>🌠 천구 홀로그래피 & 평평한 시공간</h2></div>
+                    <p class="section-desc">4차원 민코프스키(Minkowski) 평평한 시공간에서의 끈 산란 진폭을 2차원 천구 상의 등각장론 상관함수로 변환(Mellin Transform)하는 천구 홀로그래피(Celestial Holography)를 탐색합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>멜린 스케일링 차원 & 중력 상수</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>멜린 스케일링 차원 ($\Delta$)</label>
+                                <input type="range" id="ch-delta" min="1" max="10" step="1" value="2">
+                                <span class="range-val" id="ch-delta-val">\Delta = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>중력 결합 상수 ($G_N$)</label>
+                                <input type="range" id="ch-gn" min="0.1" max="5.0" step="0.1" value="1.0">
+                                <span class="range-val" id="ch-gn-val">G_N = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>멜린 변환 관계식 (Mellin Transform)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                            \tilde{A}(\Delta) = \int_0^\infty d\omega \, \omega^{\Delta-1} A(\omega)
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-ch" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 천구 산란 기하학 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 24: Generalized Geometry Left -->
+                <div id="left-generalized-geom" class="subpanel-content">
+                    <div class="panel-header"><h2>🧬 일반화 복소 기하학 & 코란트</h2></div>
+                    <p class="section-desc">탄젠트 다발과 코탄젠트 다발의 직합 $T \oplus T^*$ 상에서 규정되는 코란트 괄호(Courant Bracket) 및 Hitchin 복소 구조 변형을 계산합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>3-form Flux & 켈러 모듈러스</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>NS-NS 3-form 플럭스 ($H_3$)</label>
+                                <input type="range" id="gg-h3" min="0" max="10" step="1" value="2">
+                                <span class="range-val" id="gg-h3-val">H_3 = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>켈러 부피 크기 ($t$)</label>
+                                <input type="range" id="gg-t" min="0.1" max="5.0" step="0.1" value="1.0">
+                                <span class="range-val" id="gg-t-val">t = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>H-twist 코란트 괄호 (Courant Bracket)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ec4899;">
+                            [X+\xi, Y+\eta]_H = [X,Y] + \mathcal{L}_X \eta - \iota_Y d\xi + \iota_X \iota_Y H_3
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-gg" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #be185d); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 코란트 괄호식 & 거울 구조 결합 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 25: Loop Quantum Gravity Left -->
+                <div id="left-loop-gravity" class="subpanel-content">
+                    <div class="panel-header"><h2>🕸️ 루프 양자 중력 vs 초끈 이론</h2></div>
+                    <p class="section-desc">시공간의 불연속적인 격자망(스핀 네트워크)을 다루는 루프 양자 중력(LQG)의 면적 연산자 고유값 및 홀로그래픽 엔트로피 바운드 일치성을 검증합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>이미르지 매개변수 & 스핀 고유값</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>Barbero-Immirzi 상수 ($\gamma$)</label>
+                                <input type="range" id="lqg-gamma" min="0.1" max="2.0" step="0.01" value="0.27">
+                                <span class="range-val" id="lqg-gamma-val">\gamma = 0.27</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>네트워크 스핀 양자수 ($j$)</label>
+                                <input type="range" id="lqg-j" min="0.5" max="5.0" step="0.5" value="1.0">
+                                <span class="range-val" id="lqg-j-val">j = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>LQG 이산 면적 연산자 (Area Operator)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #8b5cf6;">
+                            \hat{A} |j\rangle = 8\pi \ell_P^2 \gamma \sqrt{j(j+1)} |j\rangle
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-lqg" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #8b5cf6, #4c1d95); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 시공간 이산성 및 면적 연산자 고유값 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 26: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -1138,6 +1288,56 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">35</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Quantum Error Correction (HaPPY)</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">양자 오류 수정 코드 (HaPPY)</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="36" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">36</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-commutative Moyal-Weyl Spacetime</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비가환 모얄-웨일 시공간</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="37" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">37</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Chern-Simons Theory & Knot Invariants</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">천-사이먼스 이론과 매듭 불변량</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="38" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">38</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Celestial Sphere & Soft Theorems</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">천구면과 소프트 중력자 정리</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="39" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">39</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Generalized Complex Geometry</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">일반화 복소 기하학과 코란트 대수</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="40" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">40</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">LQG Area Operator Spectrum</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">LQG 면적 연산자 고유값 스펙트럼</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="41" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">41</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Asymptotic Safety & Wetterich RG</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">점근적 안전성과 베터리히 RG 흐름</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="42" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">42</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Higher-Form & Non-Invertible Symmetries</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">고차 폼 및 비가역 양자 대칭성</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="43" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">43</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">M-Theory on G2 Manifolds</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">G2 다양체 상의 M-이론 축소화</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="44" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">44</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">W-Algebras & Higher Spin Gravity</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">W-대수와 고스핀 게이지 중력</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="45" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">45</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">ER=EPR & Replica Wormholes</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">ER=EPR 추측과 레플리카 웜홀</span>
                         </button>
                     </div>
                 </div>
@@ -2103,7 +2303,102 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 21: Theoretical Summary Right -->
+                <!-- Tab Content 21: Non-commutative Geometry Right -->
+                <div id="right-non-commutative" class="subpanel-content">
+                    <div class="panel-header"><h2>🧮 비가환 모얄 평면 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #10b981;">스타 곱 결합 & 위치 불확정성 관계</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">비가환 시공간 변칙 하에서 두 가우스 파동함수의 중첩 스타 곱 강도와 최소 플랑크 분해 한계를 실시간 연산합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">스타 곱 중첩도 (Star Overlap $|f \star g|$)</span>
+                                <span class="value" id="res-nc-overlap" style="color:#ef4444; font-size: 14px;">$|Overlap| = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">시공간 픽셀 최소 해상도 ($\Delta x \Delta y$)</span>
+                                <span class="value" id="res-nc-limit" style="color:#10b981; font-size: 16px; font-weight:bold;">$\Delta x \Delta y \ge 0.5 \ell_P^2$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 22: Chern-Simons Right -->
+                <div id="right-chern-simons" class="subpanel-content">
+                    <div class="panel-header"><h2>🌀 천-사이먼스 위상 홀로그래피 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #3b82f6;">매듭 불변량 & 2D CFT 경계 중심 전하</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">3차원 벌크 게이지 불변성과 2차원 Wess-Zumino-Witten 등각장론 경계 전하 및 세잎매듭(Trefoil Knot)의 존스 다항식 기대값을 연산합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">존스 다항식 기댓값 ($V_K(q)$ at $q = e^{i\theta}$)</span>
+                                <span class="value" id="res-cs-jones" style="color:#f59e0b; font-size: 14px;">$V_K(q) = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">WZW 경계 등각장론 중심 전하 ($c$)</span>
+                                <span class="value" id="res-cs-c" style="color:#3b82f6; font-size: 16px; font-weight:bold;">$c = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 23: Celestial Right -->
+                <div id="right-celestial" class="subpanel-content">
+                    <div class="panel-header"><h2>🌠 천구 홀로그래피 산란 진폭 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #f59e0b;">멜린 주파수 스펙트럼 & BMS 전하</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">평평한 시공간의 산란 행렬(S-matrix)을 천구구면(Celestial Sphere)의 CFT 블록으로 사상하여 중력 적외선 BMS 전하 및 Mellin 진폭 값을 산출합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">Mellin 대칭성 적합도 ($\tilde{A}(\Delta)$)</span>
+                                <span class="value" id="res-ch-amp" style="color:#10b981; font-size: 14px;">$\tilde{A}(\Delta) = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">BMS Supertranslation 보존 전하 ($Q_{BMS}$)</span>
+                                <span class="value" id="res-ch-qbms" style="color:#f59e0b; font-size: 16px; font-weight:bold;">$Q_{BMS} = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 24: Generalized Geometry Right -->
+                <div id="right-generalized-geom" class="subpanel-content">
+                    <div class="panel-header"><h2>🧬 일반화 칼라비-야우 지표 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #ec4899;">코란트 대수 & 힉스-켈러 이중성</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">거울대칭을 통일적으로 묘사하는 일반화 복소 대수 구조 하에서 3-form 플럭스 비가환도 지표와 디랙 코호몰로지 적합도를 평가합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">일반화 복소 구조 지표 ($I_{gen}$)</span>
+                                <span class="value" id="res-gg-igen" style="color:#3b82f6; font-size: 14px;">$I_{gen} = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">Courant Dirac 구조 변칙 여부 ($d_H^2$)</span>
+                                <span class="value" id="res-gg-anomaly" style="color:#ec4899; font-size: 16px; font-weight:bold;">$d_H^2 = 0$ (호환됨)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 25: Loop Quantum Gravity Right -->
+                <div id="right-loop-gravity" class="subpanel-content">
+                    <div class="panel-header"><h2>🕸️ 루프 스핀 네트워크 계산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #8b5cf6;">시공간 면적 양자화 & 엔트로피 대응도</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">스핀 네트워크 노드 주위의 불연속 기하 해상도를 기반으로 한 면적 크기와, 블랙홀 엔트로피의 베켄슈타인-호킹 상한 만족도를 계산합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">이산 면적 고유값 ($\text{Area}$ in $\ell_P^2$ units)</span>
+                                <span class="value" id="res-lqg-area" style="color:#8b5cf6; font-size: 14px;">$\text{Area} = 0.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">Bekenstein-Hawking 엔트로피 한계 만족비</span>
+                                <span class="value" id="res-lqg-ent" style="color:#ef4444; font-size: 16px; font-weight:bold;">100.0% 완벽 대응</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 26: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -2901,6 +3196,156 @@
                             <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 35: <span class="lang-text en">Quantum Error Correction (HaPPY)</span><span class="lang-text ko" style="display:none;">양자 오류 수정 코드 (HaPPY)</span></h3>
                             <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
                                 <p>HaPPY(Harlow, Pastawski, Preskill, Yoshida) 텐서 네트워크 코드를 통해, 홀로그래픽 쌍대성이 근본적으로 완전한 양자 오류 수정(Quantum Error Correction) 코드임을 증명하는 세기의 발견입니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 36 -->
+                    <div class="chapter-content-card" data-ch-content="36" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 36: <span class="lang-text en">Non-commutative Moyal-Weyl Spacetime</span><span class="lang-text ko" style="display:none;">비가환 모얄-웨일 시공간</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>좌표 연산자들 간의 비가환성 \([X^\mu, X^\nu] = i\theta^{\mu\nu}\)을 도입하여, 시공간의 점(point) 개념을 최소 면적 원소(pixel)로 치환합니다. 스타 곱(Star Product)을 통해 장론을 재규정하며, 이는 강한 자기장 하의 D-막 세계면 물리와 완벽히 수학적으로 동등합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    [X^\mu, X^\nu] = i \theta^{\mu\nu}, \quad (f \star g)(x) = \lim_{y \to x} \exp\left(\frac{i}{2}\theta^{\mu\nu}\partial_{x^\mu}\partial_{y^\nu}\right) f(x)g(y)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>By introducing non-commutativity among coordinate operators \([X^\mu, X^\nu] = i\theta^{\mu\nu}\), the conventional concept of spacetime points is replaced by minimal area pixels. Quantum field theories are reformulated using the Moyal-Weyl star product, mathematically equivalent to the worldvolume theory of D-branes in a strong constant B-field background.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 37 -->
+                    <div class="chapter-content-card" data-ch-content="37" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 37: <span class="lang-text en">Chern-Simons Theory & Knot Invariants</span><span class="lang-text ko" style="display:none;">천-사이먼스 이론과 매듭 불변량</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>3차원 다양체 상에서 게이지 불변적인 위상 작용식 $S_{CS}$를 기반으로 하는 대표적인 위상 양자장론(TQFT)입니다. 윌슨 루프(Wilson Loop) 연산자의 기대값은 위상 기하학적 매듭 불변량인 Jones 다항식을 유도하며, 경계면의 2차원 Wess-Zumino-Witten 등각장론과 정확한 홀로그래픽 대응성을 갖습니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    S_{CS} = \frac{k}{4\pi} \int_M \text{Tr}\left( A \wedge dA + \frac{2}{3} A \wedge A \wedge A \right), \quad \langle W_R(C) \rangle = J_K(q)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>A topological quantum field theory (TQFT) based on the gauge-invariant 3D Chern-Simons action. The expectation values of Wilson loop operators yield topological knot invariants, specifically the Jones polynomial, providing an exact holographic duality with the 2D Wess-Zumino-Witten (WZW) conformal field theory at the boundary.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 38 -->
+                    <div class="chapter-content-card" data-ch-content="38" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 38: <span class="lang-text en">Celestial Sphere & Soft Theorems</span><span class="lang-text ko" style="display:none;">천구면과 소프트 중력자 정리</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>4차원 평평한 시공간(Flat Spacetime)의 S-행렬 산란 진폭을 Mellin 변환을 거쳐 2차원 천구면(Celestial Sphere)의 CFT 상관함수로 매핑하는 혁신적 홀로그래피 프레임워크입니다. 적외선 영역의 Weinberg 소프트 정리들은 천구 상의 BMS(Bondi-Metzner-Sachs) 무한차원 대칭성의 워드 항등식(Ward Identities)으로 승화됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \mathcal{A}(\Delta_i, z_i, \bar{z}_i) = \prod_{i} \int_0^\infty d\omega_i \omega_i^{\Delta_i - 1} A(\omega_i, z_i, \bar{z}_i)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>A groundbreaking holographic framework mapping 4D scattering amplitudes (S-matrix) in flat Minkowski space to 2D conformal correlation functions on the celestial sphere via Mellin transforms. Infrared soft theorems (e.g., Weinberg's soft graviton theorem) are realized as the Ward identities of the infinite-dimensional BMS symmetry algebra.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 39 -->
+                    <div class="chapter-content-card" data-ch-content="39" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 39: <span class="lang-text en">Generalized Complex Geometry</span><span class="lang-text ko" style="display:none;">일반화 복소 기하학과 코란트 대수</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Nigel Hitchin에 의해 제안된 기하학으로, 탄젠트 다발과 코탄젠트 다발의 직합 $T \oplus T^*$ 상에서 복소 구조와 사임플렉틱(Symplectic) 구조를 대칭적으로 통합합니다. 리 괄호의 일반화인 Courant 괄호와 NS-NS 3-form flux $H_3$에 의한 뒤틀림을 수학적으로 엄밀히 규정합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    [X+\xi, Y+\eta]_H = [X,Y] + \mathcal{L}_X \eta - \iota_Y d\xi + \iota_X \iota_Y H_3, \quad \mathcal{J}^2 = -\mathbb{I}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>A mathematical framework proposed by Nigel Hitchin that unifies complex and symplectic geometries on the doubled bundle $T \oplus T^*$. It formally defines the Courant bracket (a generalization of the Lie bracket) twisted by the NS-NS 3-form flux $H_3$, paving the way for a unified description of string mirror dualities.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 40 -->
+                    <div class="chapter-content-card" data-ch-content="40" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 40: <span class="lang-text en">LQG Area Operator Spectrum</span><span class="lang-text ko" style="display:none;">LQG 면적 연산자 고유값 스펙트럼</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>루프 양자 중력(LQG)에서 게이지 공변적 자콥슨-스몰린-애쉬테카 변수를 정식 양자화하여, 면적 연산자 $\hat{A}$의 고유값이 Barbero-Immirzi 매개변수 $\gamma$ 및 1차 스핀 네트워크 표현 고유값 $j_p$에 비례하는 불연속적 이산 스펙트럼을 지님을 규명합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    A(S) = 8\pi \gamma \ell_P^2 \sum_{p \in S \cap \Gamma} \sqrt{j_p(j_p+1)}, \quad \gamma \approx 0.274
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>In Loop Quantum Gravity, canonical quantization of Ashtekar-Barbero variables reveals that the eigenvalues of the area operator $\hat{A}$ are discretized. This spectrum depends directly on the Barbero-Immirzi parameter $\gamma$ and the spin quantum numbers $j_p$ of the intersecting spin network edges.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 41 -->
+                    <div class="chapter-content-card" data-ch-content="41" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 41: <span class="lang-text en">Asymptotic Safety & Wetterich RG</span><span class="lang-text ko" style="display:none;">점근적 안전성과 베터리히 RG 흐름</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>아인슈타인 중력 이론이 비섭동적(Non-perturbative) 영역에서 자외선 고정점(UV Fixed Point)인 Reuter 고정점을 가짐으로써 고에너지 영역에서 물리적으로 완전히 안전하게 작동한다는 가설입니다. 비섭동적 유효 작용소 $\Gamma_k$의 베터리히 방정식(Wetterich Equation)을 활용해 재규격화군 흐름을 도출합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \partial_k \Gamma_k = \frac{1}{2} \text{STr} \left[ \left( \Gamma_k^{(2)} + R_k \right)^{-1} \partial_k R_k \right]
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The Asymptotic Safety conjecture posits that Einstein gravity remains UV-complete due to a non-perturbative ultraviolet fixed point (Reuter fixed point). The exact renormalization group flow is formulated using the Wetterich equation, expressing the scale dependence of the effective average action $\Gamma_k$.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 42 -->
+                    <div class="chapter-content-card" data-ch-content="42" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 42: <span class="lang-text en">Higher-Form & Non-Invertible Symmetries</span><span class="lang-text ko" style="display:none;">고차 폼 및 비가역 양자 대칭성</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>입자(0차원)를 넘어 끈(1차원), 막(2차원) 등 확장된 결합물에 적용되는 일반화 대칭성(Generalized Symmetries) 이론입니다. topological defects의 융합 법칙이 가역적인 군 구조를 넘어 카테고리(Fusion Category)를 형성하는 비가역 대칭성(Non-Invertible Symmetries)을 포괄합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    D_a \times D_b = \sum_{c} N_{ab}^c D_c, \quad U_g(M^{(d-q-1)}) \cdot W_C = g^{Q_q} W_C
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>A generalized symmetry framework acting on extended operators like Wilson loops and D-branes. It incorporates p-form symmetries and non-invertible symmetries where topological defect operators obey fusion category algebra rather than standard group multiplication laws.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 43 -->
+                    <div class="chapter-content-card" data-ch-content="43" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 43: <span class="lang-text en">M-Theory on G2 Manifolds</span><span class="lang-text ko" style="display:none;">G2 다양체 상의 M-이론 축소화</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>11차원 M-이론을 예외적인 리 군 홀로노미 $G_2$를 가지는 7차원 다양체 상에 컴팩트화하여, 4차원 저에너지 물리에서 완벽히 유일한 $N=1$ 초대칭(SUSY)을 보존하는 기하학적 메커니즘입니다. 예리한 원뿔형 특이점(Codimension-7 singularities)에서 표준모형 게이지 군과 키랄 페르미온이 동시에 발현됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    d\Phi = 0, \quad d*\Phi = 0, \quad \text{Hol}(M^7) \subseteq G_2 \subset SO(7)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Compactification of 11D M-theory on a 7-dimensional manifold with exceptional $G_2$ holonomy. This geometric framework preserves exactly $N=1$ supersymmetry in 4D, where non-Abelian gauge groups and chiral fermions emerge naturally from codimension-7 conical singularities.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 44 -->
+                    <div class="chapter-content-card" data-ch-content="44" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 44: <span class="lang-text en">W-Algebras & Higher Spin Gravity</span><span class="lang-text ko" style="display:none;">W-대수와 고스핀 게이지 중력</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Virasoro 등각 대칭성을 스핀 3 이상의 고스핀 보존들로 무한 확장한 W-대수($W_N$) 구조입니다. 이는 벌크 3차원 AdS 시공간 상의 비섭동적 Vasiliev 고스핀 중력과 경계 2차원 CFT 간의 엄밀한 Gaberdiel-Gopakumar 쌍대성으로 연결됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    T(z)T(w) \sim \frac{c/2}{(z-w)^4} + \frac{2T(w)}{(z-w)^2} + \frac{\partial T(w)}{z-w}, \quad W(z)W(w) \sim \text{spin-3 expansions}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>An infinite extension of the Virasoro conformal algebra incorporating generators of spin-3 and higher, known as W-algebras. This symmetry governs Vasiliev higher-spin gravity in AdS3, providing the mathematical backbone of the exact Gaberdiel-Gopakumar triality duality.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 45 -->
+                    <div class="chapter-content-card" data-ch-content="45" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 45: <span class="lang-text en">ER=EPR & Replica Wormholes</span><span class="lang-text ko" style="display:none;">ER=EPR 추측과 레플리카 웜홀</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>두 블랙홀을 연결하는 아인슈타인-로젠 다리(ER Wormhole)와 두 양자 상태의 아인슈타인-포돌스키-로젠 얽힘(EPR Entanglement)이 본질적으로 정확히 하나라는 Susskind-Maldacena 가설입니다. 양자 중력 경로 적외선 보정 하의 복제 웜홀(Replica Wormholes)은 블랙홀 정보 역설을 무력화하며 유니터리한 페이지 엔트로피 곡선을 창출합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    S(\text{Radiation}) = \min \left\{ \text{ext}_{\text{Island}} \left[ \frac{\text{Area}(\partial \text{Island})}{4G_N} + S_{\text{matter}}(\text{Radiation} \cup \text{Island}) \right] \right\}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The Maldacena-Susskind conjecture stating that non-traversable wormholes (Einstein-Rosen bridges) are physically equivalent to Einstein-Podolsky-Rosen quantum entanglement. Contributions from replica wormholes in the gravitational path integral successfully resolve the black hole information paradox, reproducing the unitary Page entropy curve via the island formula.</p>
                             </div>
                         </div>
                     </div>
