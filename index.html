@@ -72,6 +72,11 @@
             <button class="tab-btn" data-tab="celestial">🌠 천구 홀로그래피 (Celestial Holography)</button>
             <button class="tab-btn" data-tab="generalized-geom">🧬 일반화 기하학 & Courant (Generalized Geometry)</button>
             <button class="tab-btn" data-tab="loop-gravity">🕸️ 루프 양자 중력 (LQG vs String Theory)</button>
+            <button class="tab-btn" data-tab="non-geometric-flux">🌀 비기하적 플럭스 & T-폴드 (Non-geometric Flux)</button>
+            <button class="tab-btn" data-tab="conformal-bootstrap">📐 등각 부트스트랩 (Conformal Bootstrap)</button>
+            <button class="tab-btn" data-tab="integrable-deformations">🔗 비가환 이중성 & 가적 변형 (Integrable Deformations)</button>
+            <button class="tab-btn" data-tab="resurgence">📈 리서전스 & 복소 안장점 (Resurgence Theory)</button>
+            <button class="tab-btn" data-tab="padic-string">🔢 p-진수 초끈 & 아델릭 (p-Adic Strings)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -1093,7 +1098,157 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 26: Theoretical Summary Left -->
+                <!-- Tab Content 26: Non-geometric Flux Left -->
+                <div id="left-non-geometric-flux" class="subpanel-content">
+                    <div class="panel-header"><h2>🌀 비기하적 플럭스 & T-폴드</h2></div>
+                    <p class="section-desc">Transition 함수가 O(d,d) T-duality 변환을 거쳐 결합되는 T-폴드 시공간과 비결합적 구조를 지닌 locally/globally non-geometric R-flux 물리를 솔빙합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>비기하 R-플럭스 & 감김 양자수</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>R-플럭스 강도 ($R$)</label>
+                                <input type="range" id="ng-flux-r" min="0" max="10" step="1" value="2">
+                                <span class="range-val" id="ng-flux-r-val">R = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>T-이중 감김수 ($w$)</label>
+                                <input type="range" id="ng-flux-w" min="1" max="5" step="1" value="1">
+                                <span class="range-val" id="ng-flux-w-val">w = 1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>비결합성 대수 관계식 (Non-associativity)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #10b981;">
+                            [x^i, x^j, x^k] \propto i \hbar^2 R^{ijk}
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-ng" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #10b981, #047857); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 비기하적 모노드로미 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 27: Conformal Bootstrap Left -->
+                <div id="left-conformal-bootstrap" class="subpanel-content">
+                    <div class="panel-header"><h2>📐 등각 부트스트랩 & 교차 대칭</h2></div>
+                    <p class="section-desc">등각장론(CFT)의 유니터리성(Unitarity)과 교차 대칭성(Crossing Symmetry)을 기저로 삼아, 수치적인 고정점 경계를 연산하고 스케일링 차원을 한정합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>외부 장 차원 & 교환 스핀 양자수</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>외부 스칼라장 차원 ($\Delta_\phi$)</label>
+                                <input type="range" id="cb-delta-ext" min="1.0" max="3.0" step="0.01" value="1.5">
+                                <span class="range-val" id="cb-delta-ext-val">\Delta_\phi = 1.50</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>교환 연산자 스핀 ($\ell$)</label>
+                                <input type="range" id="cb-spin" min="0" max="4" step="2" value="2">
+                                <span class="range-val" id="cb-spin-val">\ell = 2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>수치적 4-point 교차 관계식 (Crossing)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                            \sum_{\mathcal{O}} \lambda_{\phi\phi\mathcal{O}}^2 g_{\Delta,\ell}(u,v) = 1
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-cb" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 등각 수치적 고정점 경계 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 28: Integrable Deformations Left -->
+                <div id="left-integrable-deformations" class="subpanel-content">
+                    <div class="panel-header"><h2>🔗 비가환 이중성 & 가적 변형</h2></div>
+                    <p class="section-desc">비가환 등거리군 상의 Buscher 공식 NATD 및 고전적 적분가능성을 만족하는 Yang-Baxter $\eta$-변형 끈 시그마 모델을 시뮬레이션합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>변형 상수 & 군 다양체 부피</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>양-백스터 변형 변수 ($\eta$)</label>
+                                <input type="range" id="id-eta" min="0.0" max="1.0" step="0.05" value="0.3">
+                                <span class="range-val" id="id-eta-val">\eta = 0.30</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>군 다양체 부피 인자 ($V_G$)</label>
+                                <input type="range" id="id-vg" min="1.0" max="10.0" step="0.5" value="2.0">
+                                <span class="range-val" id="id-vg-val">V_G = 2.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>NATD Lagrange 승수 작용식 (Action)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #f59e0b;">
+                            S_{NATD} = S_{\sigma} + \int \tilde{\chi} (dJ + J \wedge J)
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-id" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 양-백스터 비가환 쌍대 기하 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 29: Resurgence Theory Left -->
+                <div id="left-resurgence" class="subpanel-content">
+                    <div class="panel-header"><h2>📈 리서전스 & Picard-Lefschetz</h2></div>
+                    <p class="section-desc">섭동 급수의 asymptotic 발산 항들을 Borel 적분하고, Picard-Lefschetz 복소 안장점(instanton) 보정을 더해 완전하고 정확한 비섭동적 물리 값을 도출합니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>최대 루프 오더 & 게이지 결합 상수</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>섭동 절단 차수 ($N$)</label>
+                                <input type="range" id="re-n" min="1" max="50" step="1" value="20">
+                                <span class="range-val" id="re-n-val">N = 20</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>결합 상수 ($g^2$)</label>
+                                <input type="range" id="re-g2" min="0.01" max="0.50" step="0.01" value="0.10">
+                                <span class="range-val" id="re-g2-val">g^2 = 0.10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>Picard-Lefschetz Transseries 공식</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #ec4899;">
+                            F(g) = \sum_{n} a_n g^{2n} + e^{-\frac{S_0}{g^2}} \sum_{m} b_m g^{2m}
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-re" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #be185d); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 보렐 변환 및 안장점 기하 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 30: p-Adic Strings Left -->
+                <div id="left-padic-string" class="subpanel-content">
+                    <div class="panel-header"><h2>🔢 p-진수 초끈 & 아델릭 통합</h2></div>
+                    <p class="section-desc">세계면 좌표를 p-진수(p-adic numbers $\mathbb{Q}_p$)로 모델링하여 Freund-Olson tree 산란 진폭을 계산하고, 이들이 아델릭 곱 공식을 통해 실수 진폭으로 어떻게 통합되는지 봅니다.</p>
+                    <div class="solver-group glass-card">
+                        <h3>p-adic 소수 양자수 & 초끈 텐션</h3>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>p-진수 소수 ($p$)</label>
+                                <input type="range" id="ps-p" min="2" max="11" step="1" value="2">
+                                <span class="range-val" id="ps-p-val">p = 2</span>
+                            </div>
+                            <div class="input-item" style="margin-top:10px;">
+                                <label>초끈 텐션 역수 ($\alpha'$)</label>
+                                <input type="range" id="ps-ap" min="0.1" max="2.0" step="0.1" value="1.0">
+                                <span class="range-val" id="ps-ap-val">\alpha' = 1.0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>아델릭 산란 곱 공식 (Adelic Product)</h3>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #8b5cf6;">
+                            A_\infty(s,t) \cdot \prod_{p} A_p(s,t) = 1
+                        </div>
+                    </div>
+                    <button class="action-btn" id="btn-calc-ps" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #8b5cf6, #4c1d95); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        📉 p-진수 프뢰인트-올슨 산란 연산
+                    </button>
+                </div>
+
+                <!-- Tab Content 31: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -1338,6 +1493,56 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">45</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">ER=EPR & Replica Wormholes</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">ER=EPR 추측과 레플리카 웜홀</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="46" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">46</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-geometric Fluxes & T-folds</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비기하적 플럭스와 T-폴드</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="47" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">47</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Conformal Bootstrap & Crossing Symmetry</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">등각 부트스트랩과 교차 대칭성</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="48" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">48</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-Abelian T-Duality & Buscher Rules</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비가환 T-이중성과 가적 변형</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="49" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">49</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Resurgence Theory & Picard-Lefschetz Saddles</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">리서전스 이론과 복소 안장점</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="50" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">50</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">p-Adic String Theory & Adelic Formula</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">p-진수 초끈 이론과 아델릭 공식</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="51" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">51</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Division Algebras & G2 Holonomy</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">나눗셈 대수와 G2 홀로노미</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="52" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">52</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">SYK Model & Schwarzian Action</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">SYK 모델과 슈왈츠 작용식</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="53" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">53</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Double Field Theory & O(d,d) Symmetry</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">이중장 이론과 O(d,d) 대칭성</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="54" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">54</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">N=4 SYM Integrability & Bethe Ansatz</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">N=4 SYM 가적성과 베테 가설</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="55" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">55</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Non-associative Geometry & R-fluxes</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">비결합 기하학과 R-플럭스</span>
                         </button>
                     </div>
                 </div>
@@ -2398,7 +2603,102 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 26: Theoretical Summary Right -->
+                <!-- Tab Content 26: Non-geometric Flux Right -->
+                <div id="right-non-geometric-flux" class="subpanel-content">
+                    <div class="panel-header"><h2>🌀 비기하적 모노드로미 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #10b981;">T-폴드 교차 구조 & 야코비 위반 지표</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">NS-NS R-플럭스로 인해 발생하는 시공간 좌표의 비결합성 대수 위반 강도와 시공간 폐곡선 감김 상호작용 에너지를 측정합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">비결합 연산자 야코비 지표 ($R^{ijk}$)</span>
+                                <span class="value" id="res-ng-jacobi" style="color:#ef4444; font-size: 14px;">$[x^i,x^j,x^k] = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">감김-운동량 모노드로미 고유 기하학</span>
+                                <span class="value" id="res-ng-monodromy" style="color:#10b981; font-size: 16px; font-weight:bold;">$O(d,d,\mathbb{Z})$ Non-geometric</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 27: Conformal Bootstrap Right -->
+                <div id="right-conformal-bootstrap" class="subpanel-content">
+                    <div class="panel-header"><h2>📐 등각 수치적 부트스트랩 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #3b82f6;">교차 방정식 해집합 & 스케일링 극대 한계</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">수치 반정부호 계획법(Semidefinite Programming)을 모사하여 4점 등각 블록 전개 교차 방정식을 만족하는 교환 연산자의 스케일링 차원 극대 임계 경계를 산출합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">유니터리성 만족 교차 오차율 (Crossing Residue)</span>
+                                <span class="value" id="res-cb-residue" style="color:#f59e0b; font-size: 14px;">$\epsilon \le 10^{-6}$ (합치)</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">교환 연산자 극대 스케일링 임계차원 ($\Delta_{\max}$)</span>
+                                <span class="value" id="res-cb-deltamax" style="color:#3b82f6; font-size: 16px; font-weight:bold;">$\Delta_{\max} = 0.0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 28: Integrable Deformations Right -->
+                <div id="right-integrable-deformations" class="subpanel-content">
+                    <div class="panel-header"><h2>🔗 비가환 이중성 & 가적 기하 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #f59e0b;">Yang-Baxter 시그마 모델 변형 계량</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">이중적 적분가능성을 만족하는 변형 배경 하에서 양-백스터 변형 계량의 왜곡율 및 비가환 Buscher T-이중성 시공간 계량의 체적 수축비율을 계산합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">NATD 변형 배경 시공간 왜곡율 ($\eta_{\text{eff}}$)</span>
+                                <span class="value" id="res-id-distortion" style="color:#10b981; font-size: 14px;">$\eta_{\text{eff}} = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">이중 끈 시그마 모형 작용소 적분가능성</span>
+                                <span class="value" id="res-id-integrable" style="color:#f59e0b; font-size: 16px; font-weight:bold;">Lax Pair 존재 (가적임)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 29: Resurgence Theory Right -->
+                <div id="right-resurgence" class="subpanel-content">
+                    <div class="panel-header"><h2>📈 리서전스 보렐-Picard 안장점 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #ec4899;">보렐 평면 특이점 & 인스턴톤 비섭동 복원</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">asymptotic 하게 발산하는 섭동 급수 항들의 Borel 특이점 위치를 추적하고, 복소 Picard-Lefschetz 가우스 안장점 기여식을 통해 비섭동 인스턴톤 에너지를 완벽히 복원합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">보렐 특이점 분지 컷 위치 ($s_0$)</span>
+                                <span class="value" id="res-re-singular" style="color:#3b82f6; font-size: 14px;">$s_0 = 0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">보렐-인스턴톤 복원 비섭동 에너지 ($E_{\text{non-pert}}$)</span>
+                                <span class="value" id="res-re-enonpert" style="color:#ec4899; font-size: 16px; font-weight:bold;">$E_{\text{non-pert}} = 0$</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 30: p-Adic Strings Right -->
+                <div id="right-padic-string" class="subpanel-content">
+                    <div class="panel-header"><h2>🔢 p-진수 프뢰인트-올슨 진폭 연산 결과</h2></div>
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #8b5cf6;">Freund-Olson 진폭 & 아델릭 대응도</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">세계면이 p-진수 체 $\mathbb{Q}_p$ 상에 존재할 때 도출되는 4점 트리 산란 Freund-Olson 진폭 $A_p$를 실수 진폭 $A_\infty$와 결합하여 아델릭 등식을 입증합니다.</p>
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">p-진수 4점 Freund-Olson 진폭 ($A_p(s,t)$)</span>
+                                <span class="value" id="res-ps-apamp" style="color:#8b5cf6; font-size: 14px;">$A_p = 0.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">아델릭 곱 보존 무모순성 등식 만족여부</span>
+                                <span class="value" id="res-ps-adelic" style="color:#ef4444; font-size: 16px; font-weight:bold;">$A_\infty \cdot \prod A_p = 1$ 증명 완료</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 31: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -3245,9 +3545,6 @@
                         </div>
                     </div>
                     <!-- Chapter 39 -->
-                    <div class="chapter-content-card" data-ch-content="39" style="display:none;">
-                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
-                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 39: <span class="lang-text en">Generalized Complex Geometry</span><span class="lang-text ko" style="display:none;">일반화 복소 기하학과 코란트 대수</span></h3>
                             <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
                                 <p>Nigel Hitchin에 의해 제안된 기하학으로, 탄젠트 다발과 코탄젠트 다발의 직합 $T \oplus T^*$ 상에서 복소 구조와 사임플렉틱(Symplectic) 구조를 대칭적으로 통합합니다. 리 괄호의 일반화인 Courant 괄호와 NS-NS 3-form flux $H_3$에 의한 뒤틀림을 수학적으로 엄밀히 규정합니다.</p>
                                 <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
@@ -3346,6 +3643,156 @@
                             </div>
                             <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
                                 <p>The Maldacena-Susskind conjecture stating that non-traversable wormholes (Einstein-Rosen bridges) are physically equivalent to Einstein-Podolsky-Rosen quantum entanglement. Contributions from replica wormholes in the gravitational path integral successfully resolve the black hole information paradox, reproducing the unitary Page entropy curve via the island formula.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 46 -->
+                    <div class="chapter-content-card" data-ch-content="46" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 46: <span class="lang-text en">Non-geometric Fluxes & T-folds</span><span class="lang-text ko" style="display:none;">비기하적 플럭스와 T-폴드</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>패치 간 연결에서 일반적 배제 기하를 넘어 T-이중성($O(d,d)$ 대칭군) 결합 함수를 쓰는 비기하적 시공간(T-fold)을 규명합니다. 이 공간을 관통하는 끈의 닫힌 배경 포텐셜은 국소적으로 기하학이나 대역적으로는 비기하적인 $Q$-flux 및 대역적으로도 불확정적이며 비결합 대수구조를 지닌 $R$-flux로 대변되는 비기하적 플럭스 구조를 창출합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    [x^i, x^j, x^k] \propto i \hbar^2 R^{ijk}, \quad \text{Transition Monodromy} \in O(d,d,\mathbb{Z})
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>It investigates non-geometric spacetimes (T-folds) where transition functions between coordinate patches are unified under the T-duality group $O(d,d,\mathbb{Z})$. Strings probing these backgrounds experience non-geometric $Q$-fluxes (locally geometric, globally non-geometric) and non-associative $R$-fluxes that violate the Jacobi identity of coordinate operators.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 47 -->
+                    <div class="chapter-content-card" data-ch-content="47" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 47: <span class="lang-text en">Conformal Bootstrap & Crossing Symmetry</span><span class="lang-text ko" style="display:none;">등각 부트스트랩과 교차 대칭성</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>라그랑지안 기술에 의존하지 않고, 물리적 일관성인 CFT 등각 불록 전개의 교차 대칭성과 스펙트럼 유니터리성만을 연립하여 양자장론의 해공간 경계를 획정하는 혁신적인 기하학 패러다임입니다. 반정부호 계획법(SDP)을 활용하여 엄밀한 스케일링 임계 임계점(bootstrap bounds)을 도출합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \sum_{\mathcal{O}} \lambda_{\phi\phi\mathcal{O}}^2 g_{\Delta, \ell}(u,v) = \left(\frac{u}{v}\right)^{\Delta_\phi} \left[ 1 + \sum_{\mathcal{O}'} \lambda_{\phi\phi\mathcal{O}'}^2 g_{\Delta', \ell'}(v,u) \right]
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>A non-perturbative method that constrains or solves quantum field theories using only physical consistency: conformal crossing symmetry and spectral unitarity, without referring to a Lagrangian. Numerical semidefinite programming (SDP) is employed to extract exact scaling dimension limits and bootstrap bounds.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 48 -->
+                    <div class="chapter-content-card" data-ch-content="48" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 48: <span class="lang-text en">Non-Abelian T-Duality & Buscher Rules</span><span class="lang-text ko" style="display:none;">비가환 T-이중성과 가적 변형</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>비가환 등거리군(Isometry Group) 상에서 라그랑지안 시그마 모형의 게이지 대칭성을 정식화하고 Lagrange 승수장(Lagrange multipliers)을 도입해 Buscher 규칙을 비가환 공간으로 확장하는 고급 이중성입니다. 끈 시그마 모형의 가적성(Integrability)을 유지하는 Klimcik의 Yang-Baxter $\eta$-변형과 유기적으로 결합됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \tilde{E}_{ij} = E_{ij} - E_{ik} \left( M + E \right)^{-1}_{kl} E_{lj}, \quad M_{kl} = f^m_{kl} \tilde{\chi}_m
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>An advanced formulation of T-duality applied to non-abelian isometry groups of target spacetimes. Extending Buscher's original rules via Lagrange multipliers, it relates gauge-fixing choices to dual configurations and is deeply connected with integrable Yang-Baxter deformations of string sigma models.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 49 -->
+                    <div class="chapter-content-card" data-ch-content="49" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 49: <span class="lang-text en">Resurgence Theory & Picard-Lefschetz Saddles</span><span class="lang-text ko" style="display:none;">리서전스 이론과 복소 안장점</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>섭동 전개 급수의 팩토리얼 발산 구조($a_n \propto n!$)가 지닌 유용한 기하학적 정보들을 복소 Borel 평면 상의 특이점(Singularity) 분포로 해석하여, 섭동 팽창과 비섭동 인스턴톤(Picard-Lefschetz 복소 안장점) 상태를 유기적인 Transseries 식으로 완전하고 결점 없이 통일하는 수리 물리 이론입니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \mathcal{B}[A](s) = \sum_{n=0}^\infty \frac{a_n}{n!} s^n, \quad \Phi(g^2) = \sum a_n g^{2n} + e^{-\frac{S_{\text{inst}}}{g^2}} \sum b_n g^{2n}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>A mathematical physics framework unifying perturbative expansions and non-perturbative corrections (instantons) into a seamless transseries. It maps factory-divergent perturbative coefficients to Borel singularities, matching the imaginary ambiguities of Borel summation with the physics of Picard-Lefschetz complex saddle-point transitions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 50 -->
+                    <div class="chapter-content-card" data-ch-content="50" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 50: <span class="lang-text en">p-Adic String Theory & Adelic Formula</span><span class="lang-text ko" style="display:none;">p-진수 초끈 이론과 아델릭 공식</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>끈의 세계면 실수를 p-진수 수체 $\mathbb{Q}_p$로 전치함으로써 계산되는 Freund-Olson tree 진폭입니다. 무한히 많은 대역적 소수 p에 대해 계산된 p-adic 진폭들과 실수 진폭의 곱이 항상 1이라는 아델릭 공식은 정수론과 양자 중력 간의 심오한 조화를 반증합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    A_p(s,t) = \int_{\mathbb{Q}_p} dx |x|_p^{s-1} |1-x|_p^{t-1} = \frac{p^{s+t-1} - p^{s-1} - p^{t-1} + 1}{(p^s-1)(p^t-1)}, \quad A_\infty(s,t) \cdot \prod_p A_p(s,t) = 1
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>It replaces the standard real-number worldsheet with the field of p-adic numbers $\mathbb{Q}_p$, yielding the tree-level Freund-Olson scattering amplitude. The adelic product formula states that the product of all p-adic amplitudes and the physical real amplitude equals 1, linking quantum gravity deeply with number theory.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 51 -->
+                    <div class="chapter-content-card" data-ch-content="51" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(16, 185, 129, 0.3);">
+                            <h3 style="color: #10b981; font-size: 14px; margin-bottom: 8px;">Chapter 51: <span class="lang-text en">Division Algebras & G2 Holonomy</span><span class="lang-text ko" style="display:none;">나눗셈 대수와 G2 홀로노미</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>네 개의 유일한 나눗셈 대수 $\mathbb{R}, \mathbb{C}, \mathbb{H}, \mathbb{O}$와 시공간 차원 $D=3, 4, 6, 10$의 초대칭성 간의 일치와, 8원수(Octonions)에 기인한 G2 예외 군의 기하학적 특성을 다룹니다. 7차원 G2 다양체 축소화는 양자역학적 물리 성질과 $N=1$ SUSY를 완벽하게 정합시킵니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    d\Phi = 0, \quad d*\Phi = 0, \quad \text{Hol}(M^7) \subseteq G_2 \subset SO(7)
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>It explores the remarkable connection between the four division algebras $\mathbb{R}, \mathbb{C}, \mathbb{H}, \mathbb{O}$ and supersymmetric string dimensions $D=3,4,6,10$. Octonionic structures dictate the G2 exceptional group holonomy, preserving exactly $N=1$ supersymmetry in 4D under 7-manifold compactification.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 52 -->
+                    <div class="chapter-content-card" data-ch-content="52" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 52: <span class="lang-text en">SYK Model & Schwarzian Action</span><span class="lang-text ko" style="display:none;">SYK 모델과 슈왈츠 작용식</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>무작위 상호작용하는 다수 마요라나 페르미온들로 구성된 Sachdev-Ye-Kitaev(SYK) 모델의 적외선 저온 극한 창발 1차원 양방향 등각 대칭성과 이의 깨짐 양상입니다. 등각 대칭성의 자발적/명시적 깨짐은 Schwarzian 도함수 작용식으로 묘사되며, 이는 2차원 JT 중력의 Bekenstein-Hawking 엔트로피 창발 원리와 동일합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    S[\phi] = -\frac{N}{J} \int dt \, \{ \tan(\phi/2), t \}, \quad \{ f, t \} = \frac{f'''}{f'} - \frac{3}{2}\left(\frac{f''}{f'}\right)^2
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The Sachdev-Ye-Kitaev (SYK) model describes N randomly interacting Majorana fermions. At low temperatures, its emergent conformal symmetry is spontaneously and explicitly broken, governed by the Schwarzian derivative action, which is holographically dual to 2D Jackiw-Teitelboim (JT) gravity.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 53 -->
+                    <div class="chapter-content-card" data-ch-content="53" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                            <h3 style="color: #f59e0b; font-size: 14px; margin-bottom: 8px;">Chapter 53: <span class="lang-text en">Double Field Theory & O(d,d) Symmetry</span><span class="lang-text ko" style="display:none;">이중장 이론과 O(d,d) 대칭성</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>초끈의 모멘텀(momentum) 좌표 $x^i$와 감김(winding) 좌표 $\tilde{x}_i$를 대등한 $2D$-차원 이중 시공간 $X^M$으로 확장하여 T-이중성 대칭군 $O(d,d)$를 매니페스트하게 구현하는 기하 장론입니다. 물리 상태가 하프-레벨 매칭 조건(Section Condition)을 만족할 때 기존 초중력 이론으로 환원됩니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \eta^{MN} \partial_M \partial_N \Phi = 0, \quad S_{DFT} = \int d^{2d}X e^{-2d} \mathcal{R}(d, \mathcal{H})
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Double Field Theory (DFT) reformulates supergravity on a doubled $2d$-dimensional spacetime $X^M = (x^i, \tilde{x}_i)$, incorporating both string momentum and winding coordinates. It makes the T-duality group $O(d,d)$ manifest, reducing to standard supergravity when physical fields satisfy the strong section condition constraint.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 54 -->
+                    <div class="chapter-content-card" data-ch-content="54" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(236, 72, 153, 0.3);">
+                            <h3 style="color: #ec4899; font-size: 14px; margin-bottom: 8px;">Chapter 54: <span class="lang-text en">N=4 SYM Integrability & Bethe Ansatz</span><span class="lang-text ko" style="display:none;">N=4 SYM 가적성과 베테 가설</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>AdS/CFT 대응성의 게이지 이론 측면에서 $N=4$ Super Yang-Mills의 planar 극한 비섭동적 적분가능성을 증명하는 열쇠입니다. 단일 트레이스 국소 작용소를 Heisenberg XXX 스핀 체인 상태로 대입하고 Bethe Ansatz 가설을 솔빙함으로써 임의의 강결합 상태의 비섭동 차원을 연산합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    \left(\frac{u_k + i/2}{u_k - i/2}\right)^L = \prod_{j \ne k} \frac{u_k - u_j + i}{u_k - u_j - i}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Integrability in planar $\mathcal{N}=4$ Super Yang-Mills provides a powerful tool to calculate exact scaling dimensions of local operators. By mapping single-trace operators to Heisenberg spin chains and solving the Bethe Ansatz Equations (BAE), the exact non-perturbative planar spectrum of the gauge theory is determined.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Chapter 55 -->
+                    <div class="chapter-content-card" data-ch-content="55" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(139, 92, 246, 0.3);">
+                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 8px;">Chapter 55: <span class="lang-text en">Non-associative Geometry & R-fluxes</span><span class="lang-text ko" style="display:none;">비결합 기하학과 R-플럭스</span></h3>
+                            <div class="lang-text ko" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>강한 배경 플럭스 하에서 열린 끈과 D-막의 비가환성을 넘어, 비기하적 $R$-플럭스가 주입된 시공간에서 닫힌 끈이 경험하는 물리 기하학입니다. 세 좌표 연산자 간의 스타 곱 결합 법칙이 성립하지 않는 비결합성 대수 관계를 가지며, 양자 역학의 고전적 모노폴 구조와 일치합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px;">
+                                    [x^i, x^j, x^k] \equiv [x^i, x^j] \star x^k - x^i \star [x^j, x^k] = \frac{3}{2}\hbar^2 R^{ijk}
+                                </div>
+                            </div>
+                            <div class="lang-text en" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Non-associative geometry emerges when closed strings probe spacetimes twisted by non-geometric $R$-fluxes. It forces coordinates to satisfy a non-associative star product algebra, violating the associative law of multiplication, which is physically linked to strings in magnetic monopole backgrounds.</p>
                             </div>
                         </div>
                     </div>
