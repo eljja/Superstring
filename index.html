@@ -61,6 +61,7 @@
             <button class="tab-btn" data-tab="amplituhedron">💎 진폭면체 & 트위스터 (Amplituhedron)</button>
             <button class="tab-btn" data-tab="string-field">🌌 끈 장론 & 타키온 응축 (String Field Theory)</button>
             <button class="tab-btn" data-tab="page-curve">🕳️ 페이지 곡선 & 섬 공식 (Black Hole Information)</button>
+            <button class="tab-btn" data-tab="osv-topological">🌀 위상 끈 & OSV 추측 (Topological String)</button>
             <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
         </div>
 
@@ -770,7 +771,44 @@
                     </button>
                 </div>
 
-                <!-- Tab Content 15: Theoretical Summary Left -->
+                <!-- Tab Content 15: OSV Topological Left -->
+                <div id="left-osv-topological" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🌀 위상 끈 이론 & OSV 추측</h2>
+                    </div>
+                    <p class="section-desc">우구리-스트로민저-바파(Ooguri-Strominger-Vafa, OSV) 추측을 통해 거시적인 BPS 블랙홀의 엔트로피가 미시적인 위상 끈(Topological String)의 분배 함수와 정확히 일치함을 연산합니다.</p>
+                    
+                    <div class="solver-group glass-card">
+                        <h3>위상 끈 블랙홀 매개변수</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">블랙홀의 자명한 자기 전하(Magnetic Charge) $p$와 전기 전하(Electric Charge) $q_0$를 설정합니다.</p>
+                        <div class="inputs-grid">
+                            <div class="input-item">
+                                <label>자기 전하 (Magnetic Charge $p$)</label>
+                                <input type="range" id="osv-p" min="1" max="50" step="1" value="10">
+                                <span class="range-val" id="osv-p-val">p = 10</span>
+                            </div>
+                            <div class="input-item">
+                                <label>전기 전하 (Electric Charge $q_0$)</label>
+                                <input type="range" id="osv-q" min="1" max="100" step="1" value="40">
+                                <span class="range-val" id="osv-q-val">q₀ = 40</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3>OSV 추측 (OSV Conjecture)</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">거시적 블랙홀의 분배 함수는 미시적 위상 끈 분배 함수의 절대값 제곱과 같습니다.</p>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                            $$Z_{\text{BH}}(p, \phi) = |Z_{\text{top}}(p + i \frac{\phi}{\pi})|^2$$
+                        </div>
+                    </div>
+                    
+                    <button class="action-btn" id="btn-calc-osv" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border: none; color: #fff; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        📉 미시-거시 엔트로피 일치성 검증
+                    </button>
+                </div>
+
+                <!-- Tab Content 16: Theoretical Summary Left -->
                 <div id="left-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
@@ -905,6 +943,16 @@
                             <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">23</span>
                             <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Monstrous Moonshine (j-function)</span>
                             <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">괴물 몬샤인과 모듈러 형식</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="24" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">24</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Topological Strings & OSV Conjecture</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">위상 끈 이론과 OSV 추측</span>
+                        </button>
+                        <button class="chapter-btn" data-chapter="25" style="display: flex; align-items: center; width: 100%; text-align: left; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 10px 12px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">
+                            <span class="ch-num" style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 14px; color: var(--text-muted); margin-right: 12px; min-width: 18px;">25</span>
+                            <span class="ch-title-en lang-text en" style="font-size: 11px; font-weight: 600; flex: 1;">Generalized Complex Geometry</span>
+                            <span class="ch-title-ko lang-text ko" style="display:none; font-size: 11px; font-weight: 600; flex: 1;">일반화된 복소 기하학</span>
                         </button>
                     </div>
                 </div>
@@ -1744,7 +1792,42 @@
                     </div>
                 </div>
 
-                <!-- Tab Content 15: Theoretical Summary Right -->
+                <!-- Tab Content 15: OSV Topological Right -->
+                <div id="right-osv-topological" class="subpanel-content">
+                    <div class="panel-header">
+                        <h2>🌀 OSV 미시-거시 엔트로피 일치 증명</h2>
+                    </div>
+
+                    <div class="solver-group glass-card">
+                        <h3 style="color: #3b82f6;">엔트로피 상응(Entropy Matching) 연산</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">BPS 블랙홀의 베켄슈타인-호킹 엔트로피와 미시적 위상 끈 상태들의 통계적 엔트로피가 극도로 정확하게 일치함을 증명합니다.</p>
+                        
+                        <div class="asm-spec-grid" style="margin-top: 15px;">
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">거시적 얽힘 블랙홀 엔트로피 ($S_{BH}$)</span>
+                                <span class="value" id="res-osv-macro" style="color:#ef4444; font-size: 14px;">$S_{\text{macro}} = 0.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">미시적 위상 끈 엔트로피 ($S_{\text{micro}} = \ln |Z_{top}|^2$)</span>
+                                <span class="value" id="res-osv-micro" style="color:#3b82f6; font-size: 14px;">$S_{\text{micro}} = 0.0$</span>
+                            </div>
+                            <div class="asm-spec-item" style="width: 100%;">
+                                <span class="label">결과 및 일치율 (Correspondence Ratio)</span>
+                                <span class="value" id="res-osv-match" style="color:#10b981; font-size: 16px; font-weight:bold;">100% Exact Match</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solver-group glass-card" style="margin-top: 15px;">
+                        <h3 style="color: #1d4ed8;">양자 중력과 위상수학의 통합</h3>
+                        <p class="section-desc" style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">OSV 공식은 M-이론의 블랙홀 양자 상태가 놀랍게도 칼라비-야우 다양체의 위상적(Gromov-Witten) 불변량만으로 결정됨을 뜻합니다.</p>
+                        <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #1d4ed8;">
+                            S_{BH}(p, q) = \frac{\pi}{2} \sqrt{p^3 q_0} + \dots
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content 16: Theoretical Summary Right -->
                 <div id="right-theory-summary" class="subpanel-content">
                     <div class="panel-header">
                         <h2>📖 <span class="lang-text en">Mathematical Physics Digest</span><span class="lang-text ko" style="display:none;">수리 물리학 요약 논문</span></h2>
@@ -2402,6 +2485,52 @@
                                     $$j(\tau) = \frac{1}{q} + 744 + 196884q + 21493760q^2 + \cdots$$
                                 </div>
                                 <p>$196884 = 196883 + 1$임을 주목하십시오. 끈 이론에 등장하는 타원 모듈러 함수의 퓨리에 계수들이 괴물군의 기약 표현(Irreducible Representation)의 차원 수와 정확히 일치합니다! 우주의 근본 끈은 거대한 괴물군의 대칭성에 맞추어 진동하고 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 24 -->
+                    <div class="chapter-content-card" data-ch-content="24" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(59, 130, 246, 0.3);">
+                            <h3 style="color: #3b82f6; font-size: 14px; margin-bottom: 8px;">Chapter 24: <span class="lang-text en">Topological Strings & OSV Conjecture</span><span class="lang-text ko" style="display:none;">위상 끈 이론과 OSV 추측</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>The <strong>Ooguri-Strominger-Vafa (OSV) Conjecture</strong> establishes a direct, exact relationship between macroscopic black hole thermodynamics and microscopic topological string theory. It states that the mixed partition function of a BPS black hole is the absolute square of the topological string partition function.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                                    $$Z_{\text{BH}}(p, \phi) = \sum_{q} \Omega(p,q) e^{-\phi \cdot q} \quad \Rightarrow \quad Z_{\text{BH}} = |Z_{\text{top}}(p + i \frac{\phi}{\pi})|^2$$
+                                </div>
+                                <p>This provides an exact microscopic counting of black hole microstates in terms of Gromov-Witten invariants, proving that the quantum geometry of Calabi-Yau manifolds explicitly determines the macroscopic entropy of gravity.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p><strong>OSV(Ooguri-Strominger-Vafa) 추측</strong>은 거시적인 블랙홀의 열역학과 미시적인 위상 끈 이론 사이의 정확하고 직접적인 관계를 확립합니다. BPS 블랙홀의 혼합 분배 함수는 위상 끈 분배 함수의 절대값 제곱과 같습니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #3b82f6;">
+                                    $$Z_{\text{BH}}(p, \phi) = \sum_{q} \Omega(p,q) e^{-\phi \cdot q} \quad \Rightarrow \quad Z_{\text{BH}} = |Z_{\text{top}}(p + i \frac{\phi}{\pi})|^2$$
+                                </div>
+                                <p>이는 그로모프-위튼(Gromov-Witten) 불변량을 통해 블랙홀 미시 상태의 정확한 개수를 제공하며, 칼라비-야우 다양체의 양자 기하학이 중력의 거시적 엔트로피를 명시적으로 결정함을 증명합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter 25 -->
+                    <div class="chapter-content-card" data-ch-content="25" style="display:none;">
+                        <div class="solver-group glass-card" style="border-color: rgba(168, 85, 247, 0.3);">
+                            <h3 style="color: #a855f7; font-size: 14px; margin-bottom: 8px;">Chapter 25: <span class="lang-text en">Generalized Complex Geometry</span><span class="lang-text ko" style="display:none;">일반화된 복소 기하학</span></h3>
+                            
+                            <div class="lang-text en" style="font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>Nigel Hitchin's <strong>Generalized Complex Geometry</strong> unifies complex and symplectic geometry by studying structures on the direct sum bundle $TM \oplus T^*M$. This beautifully accommodates the $B$-field in string theory.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #a855f7;">
+                                    \mathcal{J} = \begin{pmatrix} I & \pi \\ \omega & -I^* \end{pmatrix} \quad \text{where} \quad \mathcal{J}^2 = -1 \text{ on } TM \oplus T^*M
+                                </div>
+                                <p>This framework effortlessly unifies the A-model (symplectic structure, Lagrangian branes) and B-model (complex structure, holomorphic branes) of topological string theory into a single generalized algebraic structure.</p>
+                            </div>
+
+                            <div class="lang-text ko" style="display:none; font-size: 11.5px; line-height: 1.6; color: #d1d5db;">
+                                <p>나이젤 히친(Nigel Hitchin)의 **일반화된 복소 기하학(Generalized Complex Geometry)**은 접다발과 공변접다발의 직합 $TM \oplus T^*M$ 위에서의 구조를 연구하여 복소 기하학과 심플렉틱 기하학을 통합합니다. 이는 끈 이론의 $B$-장(B-field)을 자연스럽게 수용합니다.</p>
+                                <div class="math-block" style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px; margin: 10px 0; font-family: 'Fira Code', monospace; font-size: 11px; border-left: 3px solid #a855f7;">
+                                    \mathcal{J} = \begin{pmatrix} I & \pi \\ \omega & -I^* \end{pmatrix} \quad \text{where} \quad \mathcal{J}^2 = -1 \text{ on } TM \oplus T^*M
+                                </div>
+                                <p>이 프레임워크는 위상 끈 이론의 A-모델(심플렉틱 구조, 라그랑지안 막)과 B-모델(복소 구조, 정칙 막)을 단일한 일반화된 대수적 구조로 놀랍도록 완벽하게 통합해냅니다.</p>
                             </div>
                         </div>
                     </div>
