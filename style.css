@@ -121,6 +121,26 @@ body {
     color: #22d3ee;
 }
 
+/* Header Actions Area */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.github-link:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(167, 139, 250, 0.5) !important;
+    color: #c084fc !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+}
+
+.header-lang-toggle {
+    flex-shrink: 0;
+}
+
 /* Dashboard Grid Layout */
 .dashboard-grid {
     display: grid;
@@ -636,25 +656,30 @@ body {
 /* Tab Navigation Header Bar */
 .tab-navigation {
     display: flex;
-    gap: 12px;
-    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    padding: 12px 16px;
     border-radius: 12px;
     background: rgba(15, 10, 30, 0.4);
     border: 1px solid rgba(124, 58, 237, 0.15);
     margin-bottom: 8px;
+    max-height: none;
+    overflow: visible;
 }
 
 .tab-btn {
     background: transparent;
-    border: 1px solid transparent;
+    border: 1px solid rgba(255, 255, 255, 0.04);
     color: var(--text-muted);
     font-family: 'Outfit', sans-serif;
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 5px 10px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .tab-btn:hover {

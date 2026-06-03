@@ -37,52 +37,68 @@
                 <span class="logo-icon">🪐</span>
                 <h1>SUPERSTRING HUB</h1>
             </div>
-            <p class="subtitle">초끈 이론(Superstring Theory) 입자 조립 시뮬레이션 및 이론적 검증 엔진</p>
-            <div class="export-links">
-                <span class="badge">v1.1.0 Stable</span>
-                <span class="badge file-badge">SQLite DB 연동</span>
-                <span class="badge file-badge">GSO 검증 엔진 탑재</span>
+            <p class="subtitle">
+                <span class="lang-text en">Superstring Theory Particle Assembly Simulation & Verification Engine</span>
+                <span class="lang-text ko" style="display:none;">초끈 이론(Superstring Theory) 입자 조립 시뮬레이션 및 이론적 검증 엔진</span>
+            </p>
+            <div class="header-actions">
+                <!-- Language Toggle -->
+                <div class="header-lang-toggle" style="display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.4); border-radius: 20px; padding: 3px; border: 1px solid rgba(255,255,255,0.08);">
+                    <button class="lang-pill-btn active" data-lang="en" style="background: linear-gradient(135deg, #a78bfa, #7c3aed); color: white; border: none; padding: 5px 12px; border-radius: 18px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">EN</button>
+                    <button class="lang-pill-btn" data-lang="ko" style="background: transparent; color: var(--text-muted); border: none; padding: 5px 12px; border-radius: 18px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s;">한국어</button>
+                </div>
+                <!-- GitHub Repo -->
+                <a href="https://github.com/eljja/Superstring" target="_blank" rel="noopener noreferrer" class="github-link" title="View on GitHub" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 6px 12px; color: var(--text-main); text-decoration: none; font-size: 12px; font-weight: 600; transition: all 0.25s ease;">
+                    <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor" style="flex-shrink:0;"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    GitHub
+                </a>
+                <!-- Badges -->
+                <div class="export-links" style="display: flex; gap: 8px;">
+                    <span class="badge">v1.1.0 Stable</span>
+                    <span class="badge file-badge">SQLite DB</span>
+                    <span class="badge file-badge">GSO Engine</span>
+                </div>
             </div>
         </header>
 
         <!-- Tab Navigation Bar -->
         <div class="tab-navigation glass-card">
-            <button class="tab-btn active" data-tab="explorer">🌌 이론 탐색기 (Theory Explorer)</button>
-            <button class="tab-btn" data-tab="assembly">🧪 입자 조립 연구소 (Particle Lab)</button>
-            <button class="tab-btn" data-tab="scattering">💥 입자 산란 연구소 (Scattering Lab)</button>
-            <button class="tab-btn" data-tab="holography">🔮 홀로그래피 & 블랙홀 (Holography & BH)</button>
-            <button class="tab-btn" data-tab="cosmology">🪐 우주끈 & 우주론 (Cosmic Cosmology)</button>
-            <button class="tab-btn" data-tab="dualities">🔗 M-이론 & 이중성 (M-Theory & Dualities)</button>
-            <button class="tab-btn" data-tab="swampland">🏜️ 지형과 늪지대 (Landscape & Swampland)</button>
-            <button class="tab-btn" data-tab="standard-model">⚛️ 기본입자 유도 (Standard Model Lab)</button>
-            <button class="tab-btn" data-tab="diagnostics">🛡️ 이론적 검증 및 진단 (Diagnostics)</button>
-            <button class="tab-btn" data-tab="higgs">☀️ 힉스 & 중성미자 (Higgs & Neutrinos)</button>
-            <button class="tab-btn" data-tab="mirror">🪞 거울 대칭 & 위상 끈 (Mirror Symmetry)</button>
-            <button class="tab-btn" data-tab="amplituhedron">💎 진폭면체 & 트위스터 (Amplituhedron)</button>
-            <button class="tab-btn" data-tab="string-field">🌌 끈 장론 & 타키온 응축 (String Field Theory)</button>
-            <button class="tab-btn" data-tab="page-curve">🕳️ 페이지 곡선 & 섬 공식 (Black Hole Information)</button>
-            <button class="tab-btn" data-tab="osv-topological">🌀 위상 끈 & OSV 추측 (Topological String)</button>
-            <button class="tab-btn" data-tab="seiberg-witten">🧲 사이버그-위튼 & 자기 홀극 (Seiberg-Witten N=2)</button>
-            <button class="tab-btn" data-tab="k-theory">🧬 K-이론 & D-막 전하 (K-Theory & D-Branes)</button>
-            <button class="tab-btn" data-tab="f-theory">🔥 F-이론 & 특이점 (F-Theory & Singularities)</button>
-            <button class="tab-btn" data-tab="matrix-model">⬛ 행렬 모델 (BFSS / IKKT Matrix Theory)</button>
-            <button class="tab-btn" data-tab="tensor-network">🕸️ 텐서 네트워크 & 홀로그래피 (Tensor Networks)</button>
-            <button class="tab-btn" data-tab="non-commutative">🧮 비가환 기하학 (Non-commutative Geometry)</button>
-            <button class="tab-btn" data-tab="chern-simons">🌀 천-사이먼스 & 매듭 (Chern-Simons TQFT)</button>
-            <button class="tab-btn" data-tab="celestial">🌠 천구 홀로그래피 (Celestial Holography)</button>
-            <button class="tab-btn" data-tab="generalized-geom">🧬 일반화 기하학 & Courant (Generalized Geometry)</button>
-            <button class="tab-btn" data-tab="loop-gravity">🕸️ 루프 양자 중력 (LQG vs String Theory)</button>
-            <button class="tab-btn" data-tab="non-geometric-flux">🌀 비기하적 플럭스 & T-폴드 (Non-geometric Flux)</button>
-            <button class="tab-btn" data-tab="conformal-bootstrap">📐 등각 부트스트랩 (Conformal Bootstrap)</button>
-            <button class="tab-btn" data-tab="integrable-deformations">🔗 비가환 이중성 & 가적 변형 (Integrable Deformations)</button>
-            <button class="tab-btn" data-tab="resurgence">📈 리서전스 & 복소 안장점 (Resurgence Theory)</button>
-            <button class="tab-btn" data-tab="padic-string">🔢 p-진수 초끈 & 아델릭 (p-Adic Strings)</button>
-            <button class="tab-btn" data-tab="mock-modular">🪞 목 모듈러 & 마티유 달빛 (Mock Modular & Moonshine)</button>
-            <button class="tab-btn" data-tab="carrollian-physics">🌀 캐롤 시공간 & 평탄 홀로그래피 (Carrollian Physics)</button>
-            <button class="tab-btn" data-tab="non-invertible">⛓️ 비가역 대칭성 & 위상 결함 (Non-Invertible Symmetry)</button>
-            <button class="tab-btn" data-tab="boundary-sft">🌌 경계 끈 장론 & 타키온 (Boundary SFT)</button>
-            <button class="tab-btn" data-tab="freed-witten">🧬 프리드-위튼 변칙 & K-이론 (Freed-Witten Anomaly)</button>
-            <button class="tab-btn" data-tab="theory-summary">📚 이론 요약 (Theoretical Summary)</button>
+            <button class="tab-btn active" data-tab="explorer">🌌 Theory Explorer</button>
+            <button class="tab-btn" data-tab="assembly">🧪 Particle Lab</button>
+            <button class="tab-btn" data-tab="scattering">💥 Scattering Lab</button>
+            <button class="tab-btn" data-tab="holography">🔮 Holography & BH</button>
+            <button class="tab-btn" data-tab="cosmology">🪐 Cosmic Strings</button>
+            <button class="tab-btn" data-tab="dualities">🔗 M-Theory & Dualities</button>
+            <button class="tab-btn" data-tab="swampland">🏜️ Swampland</button>
+            <button class="tab-btn" data-tab="standard-model">⚛️ Standard Model</button>
+            <button class="tab-btn" data-tab="diagnostics">🛡️ Diagnostics</button>
+            <button class="tab-btn" data-tab="higgs">☀️ Higgs & Neutrinos</button>
+            <button class="tab-btn" data-tab="mirror">🪞 Mirror Symmetry</button>
+            <button class="tab-btn" data-tab="amplituhedron">💎 Amplituhedron</button>
+            <button class="tab-btn" data-tab="string-field">🌌 String Field Theory</button>
+            <button class="tab-btn" data-tab="page-curve">🕳️ Page Curve & Islands</button>
+            <button class="tab-btn" data-tab="osv-topological">🌀 Topological String</button>
+            <button class="tab-btn" data-tab="seiberg-witten">🧲 Seiberg-Witten</button>
+            <button class="tab-btn" data-tab="k-theory">🧬 K-Theory & D-Branes</button>
+            <button class="tab-btn" data-tab="f-theory">🔥 F-Theory</button>
+            <button class="tab-btn" data-tab="matrix-model">⬛ Matrix Models</button>
+            <button class="tab-btn" data-tab="tensor-network">🕸️ Tensor Networks</button>
+            <button class="tab-btn" data-tab="non-commutative">🧮 NC Geometry</button>
+            <button class="tab-btn" data-tab="chern-simons">🌀 Chern-Simons</button>
+            <button class="tab-btn" data-tab="celestial">🌠 Celestial Holography</button>
+            <button class="tab-btn" data-tab="generalized-geom">🧬 Generalized Geometry</button>
+            <button class="tab-btn" data-tab="loop-gravity">🕸️ Loop Quantum Gravity</button>
+            <button class="tab-btn" data-tab="non-geometric-flux">🌀 Non-geometric Flux</button>
+            <button class="tab-btn" data-tab="conformal-bootstrap">📐 Conformal Bootstrap</button>
+            <button class="tab-btn" data-tab="integrable-deformations">🔗 Integrable Deform.</button>
+            <button class="tab-btn" data-tab="resurgence">📈 Resurgence</button>
+            <button class="tab-btn" data-tab="padic-string">🔢 p-Adic Strings</button>
+            <button class="tab-btn" data-tab="mock-modular">🪞 Mock Modular</button>
+            <button class="tab-btn" data-tab="carrollian-physics">🌀 Carrollian Physics</button>
+            <button class="tab-btn" data-tab="non-invertible">⛓️ Non-Invertible Sym.</button>
+            <button class="tab-btn" data-tab="boundary-sft">🌌 Boundary SFT</button>
+            <button class="tab-btn" data-tab="freed-witten">🧬 Freed-Witten</button>
+            <button class="tab-btn" data-tab="theory-summary">📚 Theory Summary</button>
         </div>
 
         <!-- Main Dashboard Layout -->
@@ -1408,15 +1424,7 @@
                     <div class="panel-header">
                         <h2>📚 이론적 핵심 요약 (Theory Digest)</h2>
                     </div>
-                    
-                    <!-- Language Selector (futuristic sliding pills) -->
-                    <div class="lang-selector-card glass-card" style="margin-bottom: 15px; padding: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(167, 139, 250, 0.25); background: rgba(10,10,22,0.65);">
-                        <span style="font-size: 11px; font-weight: 700; color: #a78bfa; letter-spacing: 0.5px;">🌐 LANGUAGE / 언어</span>
-                        <div class="lang-pills" style="display: flex; background: rgba(0,0,0,0.4); border-radius: 20px; padding: 2px; border: 1px solid rgba(255,255,255,0.05);">
-                            <button class="lang-pill-btn active" data-lang="en" style="background: linear-gradient(135deg, #a78bfa, #7c3aed); color: white; border: none; padding: 4px 10px; border-radius: 18px; font-size: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s;">EN (Default)</button>
-                            <button class="lang-pill-btn" data-lang="ko" style="background: transparent; color: var(--text-muted); border: none; padding: 4px 10px; border-radius: 18px; font-size: 10px; font-weight: bold; cursor: pointer; transition: all 0.2s;">한국어</button>
-                        </div>
-                    </div>
+
 
                     <p class="section-desc">
                         <span class="lang-text en">Explore the mathematically rigorous formulations of superstrings, dualities, D-branes, holography, black hole microstates, and swampland criteria. Select a chapter below.</span>
