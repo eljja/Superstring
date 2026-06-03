@@ -4356,6 +4356,14 @@ function initTheorySummary() {
             if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                 window.MathJax.typesetPromise();
             }
+            
+            // Rerun engines to refresh bilingual text fields
+            runPAdicStringEngine();
+            runMockModularEngine();
+            runCarrollianPhysicsEngine();
+            runNonInvertibleEngine();
+            runBoundarySFTEngine();
+            runFreedWittenEngine();
         });
     });
     
@@ -4890,7 +4898,12 @@ function runPAdicStringEngine() {
         actualP++;
     }
     
-    if(document.getElementById("ps-p-val")) document.getElementById("ps-p-val").innerText = `p = ${actualP} (${p !== actualP ? '소수 보정됨' : '소수'})`;
+    const isEn = (document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en") === "en";
+    
+    const pStatusText = p !== actualP 
+        ? (isEn ? "Prime Corrected" : "소수 보정됨") 
+        : (isEn ? "Prime" : "소수");
+    if(document.getElementById("ps-p-val")) document.getElementById("ps-p-val").innerText = `p = ${actualP} (${pStatusText})`;
     if(document.getElementById("ps-ap-val")) document.getElementById("ps-ap-val").innerText = `\\alpha' = ${ap.toFixed(1)}`;
     
     // Freund-Olson tree amplitude for s=2, t=2
@@ -4900,7 +4913,12 @@ function runPAdicStringEngine() {
     const apAmp = num / den;
     
     if(document.getElementById("res-ps-apamp")) document.getElementById("res-ps-apamp").innerText = `$A_p(s,t) = ${apAmp.toFixed(4)}$`;
-    if(document.getElementById("res-ps-adelic")) document.getElementById("res-ps-adelic").innerText = `$A_\\infty \\cdot \\prod A_p = 1$ (아델릭 공식 성립)`;
+    
+    const adelicText = isEn
+        ? `$A_\\infty \\cdot \\prod A_p = 1$ (Adelic Formula Verified)`
+        : `$A_\\infty \\cdot \\prod A_p = 1$ (아델릭 공식 성립)`;
+    if(document.getElementById("res-ps-adelic")) document.getElementById("res-ps-adelic").innerText = adelicText;
+    
     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
         window.MathJax.typesetPromise([document.getElementById('res-ps-apamp'), document.getElementById('res-ps-adelic')]);
     }
@@ -4917,8 +4935,14 @@ function runMockModularEngine() {
     // c(n) coefficient = 2 * dim of representation for n=1
     const cCoeff = preset === 1 ? 90 : preset === 2 ? 462 : preset === 3 ? 1540 : 4096;
     
+    const isEn = (document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en") === "en";
+    
     if(document.getElementById("res-mm-coeff")) document.getElementById("res-mm-coeff").innerText = `$c(1) = ${cCoeff} = 2 \\times \\text{dim}(V_{${preset === 4 ? '1024' : dim}})$`;
-    if(document.getElementById("res-mm-moonshine")) document.getElementById("res-mm-moonshine").innerText = `$Z_{K3}(\\tau,z) = 24 \\operatorname{ch} + \\sum c(n)q^n$ (M24 달빛 은하 정합 완료)`;
+    
+    const moonshineText = isEn 
+        ? `$Z_{K3}(\\tau,z) = 24 \\operatorname{ch} + \\sum c(n)q^n$ (M24 Moonshine Consistency Checked)`
+        : `$Z_{K3}(\\tau,z) = 24 \\operatorname{ch} + \\sum c(n)q^n$ (M24 달빛 은하 정합 완료)`;
+    if(document.getElementById("res-mm-moonshine")) document.getElementById("res-mm-moonshine").innerText = moonshineText;
     
     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
         window.MathJax.typesetPromise([document.getElementById('res-mm-coeff'), document.getElementById('res-mm-moonshine')]);
@@ -4935,8 +4959,14 @@ function runCarrollianPhysicsEngine() {
     const g00 = -cSpeed * cSpeed;
     const qBms = bmsT * 4.5 * (1.0 - g00);
     
+    const isEn = (document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en") === "en";
+    
     if(document.getElementById("res-cp-metric")) document.getElementById("res-cp-metric").innerText = `$g_{00} = -c^2 = ${g00.toFixed(6)}$`;
-    if(document.getElementById("res-cp-bms")) document.getElementById("res-cp-bms").innerText = `$Q_{\\text{BMS}} = ${qBms.toFixed(4)} \\hbar / G_5$ (Asymptotic Flat 수렴완료)`;
+    
+    const bmsText = isEn
+        ? `$Q_{\\text{BMS}} = ${qBms.toFixed(4)} \\hbar / G_5$ (Asymptotic Flat Convergence Verified)`
+        : `$Q_{\\text{BMS}} = ${qBms.toFixed(4)} \\hbar / G_5$ (Asymptotic Flat 수렴완료)`;
+    if(document.getElementById("res-cp-bms")) document.getElementById("res-cp-bms").innerText = bmsText;
     
     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
         window.MathJax.typesetPromise([document.getElementById('res-cp-metric'), document.getElementById('res-cp-bms')]);
@@ -4952,8 +4982,17 @@ function runNonInvertibleEngine() {
     
     const qDim = Math.sqrt(pNum) * fusionN;
     
-    if(document.getElementById("res-ni-fusion")) document.getElementById("res-ni-fusion").innerText = `$\\mathcal{D}_a \\times \\mathcal{D}_b = ${fusionN} \\mathcal{D}_c$ (융합 환원식 확인)`;
-    if(document.getElementById("res-ni-dimension")) document.getElementById("res-ni-dimension").innerText = `$d_{\\mathcal{D}} = \\sqrt{${pNum}} \\times ${fusionN} = ${qDim.toFixed(4)}$ (비가역 양자차원 합치)`;
+    const isEn = (document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en") === "en";
+    
+    const fusionText = isEn
+        ? `$\\mathcal{D}_a \\times \\mathcal{D}_b = ${fusionN} \\mathcal{D}_c$ (Fusion Reduction Checked)`
+        : `$\\mathcal{D}_a \\times \\mathcal{D}_b = ${fusionN} \\mathcal{D}_c$ (융합 환원식 확인)`;
+    if(document.getElementById("res-ni-fusion")) document.getElementById("res-ni-fusion").innerText = fusionText;
+    
+    const dimText = isEn
+        ? `$d_{\\mathcal{D}} = \\sqrt{${pNum}} \\times ${fusionN} = ${qDim.toFixed(4)}$ (Non-invertible Quantum Dim Match)`
+        : `$d_{\\mathcal{D}} = \\sqrt{${pNum}} \\times ${fusionN} = ${qDim.toFixed(4)}$ (비가역 양자차원 합치)`;
+    if(document.getElementById("res-ni-dimension")) document.getElementById("res-ni-dimension").innerText = dimText;
     
     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
         window.MathJax.typesetPromise([document.getElementById('res-ni-fusion'), document.getElementById('res-ni-dimension')]);
@@ -4970,8 +5009,17 @@ function runBoundarySFTEngine() {
     const potRatio = Math.max(0, (1 + tachyonT) * Math.exp(-tachyonT));
     const tensionRatio = Math.exp(-rgScale * potRatio);
     
-    if(document.getElementById("res-bs-potential")) document.getElementById("res-bs-potential").innerText = `$V(T)/V_0 = ${potRatio.toFixed(5)}$ (진공 에너지 수축)`;
-    if(document.getElementById("res-bs-tension")) document.getElementById("res-bs-tension").innerText = `$\\mathcal{T}/\\mathcal{T}_0 = ${(tensionRatio * 100).toFixed(3)}\\%$ (D-막 장력 감쇠완료)`;
+    const isEn = (document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en") === "en";
+    
+    const potText = isEn
+        ? `$V(T)/V_0 = ${potRatio.toFixed(5)}$ (Vacuum Energy Decay)`
+        : `$V(T)/V_0 = ${potRatio.toFixed(5)}$ (진공 에너지 수축)`;
+    if(document.getElementById("res-bs-potential")) document.getElementById("res-bs-potential").innerText = potText;
+    
+    const tensionText = isEn
+        ? `$\\mathcal{T}/\\mathcal{T}_0 = ${(tensionRatio * 100).toFixed(3)}\\%$ (D-brane Tension Annihilation)`
+        : `$\\mathcal{T}/\\mathcal{T}_0 = ${(tensionRatio * 100).toFixed(3)}\\%$ (D-막 장력 감쇠완료)`;
+    if(document.getElementById("res-bs-tension")) document.getElementById("res-bs-tension").innerText = tensionText;
     
     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
         window.MathJax.typesetPromise([document.getElementById('res-bs-potential'), document.getElementById('res-bs-tension')]);
@@ -4987,9 +5035,13 @@ function runFreedWittenEngine() {
     
     const obs = (hFlux + wClass) % 2;
     
+    const isEn = (document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en") === "en";
+    
     if(document.getElementById("res-fw-obstruction")) document.getElementById("res-fw-obstruction").innerText = `$W_3(W) + [H] \\equiv ${obs} \\pmod 2$`;
     if(document.getElementById("res-fw-anomaly")) {
-        document.getElementById("res-fw-anomaly").innerText = obs === 0 ? "$\\text{무변칙: } K(X) \\cong \\mathbb{Z}$ 보존" : "$\\text{FW 변칙: } W_3 + [H] \\neq 0$ 장애";
+        document.getElementById("res-fw-anomaly").innerText = obs === 0 
+            ? (isEn ? "$\\text{Anomaly-Free: } K(X) \\cong \\mathbb{Z}$ Conserved" : "$\\text{무변칙: } K(X) \\cong \\mathbb{Z}$ 보존")
+            : (isEn ? "$\\text{FW Anomaly: } W_3 + [H] \\neq 0$ Obstruction" : "$\\text{FW 변칙: } W_3 + [H] \\neq 0$ 장애");
     }
     
     if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
