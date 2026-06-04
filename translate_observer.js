@@ -728,9 +728,42 @@
         return null;
     }
 
+    let observer = null;
+    const observerConfig = {
+        childList: true,
+        subtree: true,
+        characterData: true
+    };
+
+    function startObserving() {
+        if (observer) {
+            observer.observe(document.body, observerConfig);
+        }
+    }
+
+    function stopObserving() {
+        if (observer) {
+            observer.disconnect();
+        }
+    }
+
+    function isMathJax(node) {
+        let curr = node;
+        while (curr) {
+            if (curr.nodeType === 1) {
+                const tagName = curr.tagName || "";
+                if (tagName.startsWith("MJX")) return true;
+                if (curr.classList && (curr.classList.contains("mjx-container") || curr.classList.contains("MathJax"))) return true;
+            }
+            curr = curr.parentNode;
+        }
+        return false;
+    }
+
     function translateNode(node, lang) {
         const isEn = lang === "en";
         if (node.nodeType === 3) {
+            if (isMathJax(node)) return;
             const val = node.nodeValue;
             const trimmed = val.trim();
             if (trimmed && /[가-힣]/.test(trimmed)) {
@@ -747,29 +780,45 @@
                 }
             }
         } else if (node.nodeType === 1) {
-            if (node.tagName !== "SCRIPT" && node.tagName !== "STYLE" && node.tagName !== "TEXTAREA") {
-                node.childNodes.forEach(child => translateNode(child, lang));
+            const tagName = node.tagName || "";
+            if (tagName === "SCRIPT" || tagName === "STYLE" || tagName === "TEXTAREA" || tagName.startsWith("MJX")) {
+                return;
             }
+            if (node.classList && (node.classList.contains("mjx-container") || node.classList.contains("MathJax"))) {
+                return;
+            }
+            node.childNodes.forEach(child => translateNode(child, lang));
         }
     }
 
     function restoreKo(node) {
         if (node.nodeType === 3) {
+            if (isMathJax(node)) return;
             if (node._originalKoText) {
                 node.nodeValue = node._originalKoText;
             }
         } else if (node.nodeType === 1) {
-            if (node.tagName !== "SCRIPT" && node.tagName !== "STYLE" && node.tagName !== "TEXTAREA") {
-                node.childNodes.forEach(restoreKo);
+            const tagName = node.tagName || "";
+            if (tagName === "SCRIPT" || tagName === "STYLE" || tagName === "TEXTAREA" || tagName.startsWith("MJX")) {
+                return;
             }
+            if (node.classList && (node.classList.contains("mjx-container") || node.classList.contains("MathJax"))) {
+                return;
+            }
+            node.childNodes.forEach(restoreKo);
         }
     }
 
     function translatePage(lang) {
-        if (lang === "en") {
-            translateNode(document.body, "en");
-        } else {
-            restoreKo(document.body);
+        stopObserving();
+        try {
+            if (lang === "en") {
+                translateNode(document.body, "en");
+            } else {
+                restoreKo(document.body);
+            }
+        } finally {
+            startObserving();
         }
     }
 
@@ -793,23 +842,30 @@
         }, 100);
         
         // MutationObserver to watch text changes
-        const observer = new MutationObserver((mutations) => {
+        observer = new MutationObserver((mutations) => {
             const currentLang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
             if (currentLang === "en") {
-                mutations.forEach(mutation => {
-                    if (mutation.type === "childList") {
-                        mutation.addedNodes.forEach(node => translateNode(node, "en"));
-                    } else if (mutation.type === "characterData") {
-                        translateNode(mutation.target, "en");
-                    }
-                });
+                stopObserving();
+                try {
+                    mutations.forEach(mutation => {
+                        if (mutation.type === "childList") {
+                            mutation.addedNodes.forEach(node => {
+                                if (!isMathJax(node)) {
+                                    translateNode(node, "en");
+                                }
+                            });
+                        } else if (mutation.type === "characterData") {
+                            if (!isMathJax(mutation.target)) {
+                                translateNode(mutation.target, "en");
+                            }
+                        }
+                    });
+                } finally {
+                    startObserving();
+                }
             }
         });
         
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-            characterData: true
-        });
+        startObserving();
     });
 })();
