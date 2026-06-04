@@ -1025,3 +1025,31 @@ body {
     color: var(--text-muted);
 }
 
+/* Custom Premium Floating Tooltips for Navigation Tabs */
+.custom-tab-tooltip {
+    position: absolute;
+    background: rgba(10, 6, 20, 0.94);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid rgba(167, 139, 250, 0.35);
+    color: #f1f5f9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.45;
+    pointer-events: none;
+    z-index: 99999;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65), 0 0 15px rgba(124, 58, 237, 0.25);
+    max-width: 280px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+}
+
+.custom-tab-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+

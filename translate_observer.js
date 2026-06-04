@@ -809,6 +809,153 @@
         }
     }
 
+    const TAB_DESCRIPTIONS = {
+        explorer: {
+            ko: "5대 초끈 이론(Type IIA, IIB, I, Heterotic) 및 11차원 M-이론의 무질량 입자 스펙트럼과 허용된 D-브레인을 비교 탐색합니다.",
+            en: "Explore massless spectra and allowed D-branes across the 5 superstring theories and 11D M-Theory."
+        },
+        assembly: {
+            ko: "세계면 섹터(NS-NS, R-R 등)와 진동수 및 감김 수(Winding)를 설정하여 4차원의 실제 소립자를 합성합니다.",
+            en: "Synthesize 4D elementary particles by configuring worldsheet sectors, vibration modes, and winding numbers."
+        },
+        scattering: {
+            ko: "고에너지 영역에서 Mandelstam 변수를 조절하여 4점 끈 산란 진폭(Virasoro-Shapiro)과 공명 스펙트럼을 분석합니다.",
+            en: "Analyze 4-point string scattering amplitudes (Virasoro-Shapiro) and resonance spectrums using Mandelstam variables."
+        },
+        holography: {
+            ko: "D1-D5-P 블랙홀의 BPS 미시상태 수를 계산해 Cardy 공식을 통한 CFT 엔트로피와 베켄슈타인-호킹 중력 엔트로피의 일치성을 검증합니다.",
+            en: "Verify the equivalence of statistical microstate entropy and gravitational Bekenstein-Hawking entropy via D1-D5-P black holes."
+        },
+        cosmology: {
+            ko: "우주끈의 장력(Gμ)과 루프 크기에 따른 중력파 신호 및 KKLT 브레인 급팽창의 CMB 우주 마이크로파 배경 물리량을 계산합니다.",
+            en: "Calculate gravitational wave signals from cosmic strings and cosmic microwave background (CMB) parameters from KKLT inflation."
+        },
+        dualities: {
+            ko: "끈 결합 상수(g_s)와 반경(R) 공간을 결합하여 S-이중성(강결합-약결합) 및 T-이중성(대-소 반경) 통합 관계를 시뮬레이션합니다.",
+            en: "Simulate S-duality and T-duality maps connecting different superstring regimes in M-theory."
+        },
+        swampland: {
+            ko: "저에너지 유효장론이 양자중력과 모순되지 않는지 moduli 안정화 조건(SDC, dS, 약중력 추측)을 통해 검증합니다.",
+            en: "Verify if low-energy effective field theories are consistent with quantum gravity using Swampland conjectures."
+        },
+        "standard-model": {
+            ko: "Hodge 수와 Wilson Line 이산 몫군구조를 활용해 10차원 기하학에서 3세대 표준모형 기본 입자 및 유카와 결합을 유도합니다.",
+            en: "Derive 3-generation Standard Model particles and Yukawa couplings from 10D geometry using Hodge numbers."
+        },
+        diagnostics: {
+            ko: "시공간 차원(D)과 게이지군을 변경해 등각 변칙(total central charge) 및 Virasoro 대수의 고스트 상태 발생을 진단합니다.",
+            en: "Diagnose conformal anomalies and ghost states in the Virasoro algebra by varying spacetime dimensions and gauge groups."
+        },
+        higgs: {
+            ko: "초대칭(SUSY) 깨짐 스케일에 따른 힉스 퍼텐셜 대칭성 깨짐(EWSB)과 끈 스케일 우-카이럴 중성미자 시소 메커니즘을 연산합니다.",
+            en: "Compute Higgs potential symmetry breaking (EWSB) and heavy Majorana neutrino seesaw mechanisms."
+        },
+        mirror: {
+            ko: "칼라비-야우 A-모델과 B-모델 사이의 거울 대칭성을 분석하고 Leech 격자 위상 몫공간의 Gromov-Witten 불변량을 계산합니다.",
+            en: "Analyze mirror symmetry between A- and B-models, computing Gromov-Witten invariants."
+        },
+        amplituhedron: {
+            ko: "게이지 이론의 파인만 다이어그램을 대체하는 외적 기하학(진폭면체)을 구현해 수만 개의 산란 진폭을 단순 기하학적 부피로 계산합니다.",
+            en: "Compute gauge theory scattering amplitudes as geometric volumes using the multi-dimensional Amplituhedron."
+        },
+        "string-field": {
+            ko: "끈의 모든 진동 상태를 무한 차원 장(Field)으로 제안하는 끈장론(SFT)에서 센(Sen)의 퍼텐셜 에너지를 유도하고 타키온 붕괴를 관측합니다.",
+            en: "Study string field theory (SFT), Sen's potential, and tachyon condensation energy profiles."
+        },
+        "page-curve": {
+            ko: "정보 역설을 해결하는 블랙홀 얽힘 엔트로피의 Page 곡선과 여차원 시공간 벌크 상의 복소 위상 기하 섬(Island) 효과를 모사합니다.",
+            en: "Track black hole entanglement entropy Page curves and quantum extremization islands."
+        },
+        "osv-topological": {
+            ko: "Topological A/B-모델 자유에너지와 OSV 엔트로피 이중성(S_BH = ln|Ψ|^2)을 계산하고 오구리-스트로민저-바파 공식을 검증합니다.",
+            en: "Compute topological string partition functions and verify Oguri-Strominger-Vafa (OSV) entropy dualities."
+        },
+        "seiberg-witten": {
+            ko: "N=2 초대칭 게이지 이론의 저에너지 유효 작용소를 도출하고 모듈러 타원곡선 변동에 따른 BPS 단극자(monopole) 질량을 연산합니다.",
+            en: "Solve low-energy N=2 SUSY gauge theories and BPS monopole mass spectrums via Seiberg-Witten geometry."
+        },
+        "k-theory": {
+            ko: "위상 불변량인 위상 K-이론 군(K_0(X))을 정의하여 일반 호몰로지 대수로 분류되는 D-브레인의 등가 양자 전하와 안정성을 분류합니다.",
+            en: "Classify allowed D-brane charges and topological stability using mathematical K-theory."
+        },
+        "f-theory": {
+            ko: "Axion-dilaton 결합 상수를 추가 2차원 torus 복소 구조로 기하학화한 12차원 F-이론에서 Elliptic Fibration 타원 특이점(ADE 분류)을 추출합니다.",
+            en: "Extract ADE gauge symmetries and elliptic fibration singularities in 12-dimensional F-theory."
+        },
+        "matrix-model": {
+            ko: "BFSS 행렬 작용소 및 IKKT 행렬 모형의 Large N 고유값 분포로부터 연속적인 비가환 시공간과 중력이 창발하는 대수학을 연산합니다.",
+            en: "Compute emergent spacetime and gravity from large-N matrix configurations (BFSS/IKKT models)."
+        },
+        "tensor-network": {
+            ko: "MERA/HaPPY 양자 오류 정정 부호 텐서망을 설계하여 경계 CFT의 양자 얽힘이 벌크 AdS 곡률 기하학을 유도하는 홀로그래피를 시뮬레이션합니다.",
+            en: "Model bulk AdS gravity and Ryu-Takayanagi minimal areas emerging from boundary CFT MERA tensor networks."
+        },
+        "non-commutative": {
+            ko: "스타 곱(Moyal Product) 공간 [X^μ, X^ν] = i θ^μν 상의 세계면 결합을 계산하고 시공간 최소 면적 불확정성을 가시화합니다.",
+            en: "Calculate Moyal-Weyl star products and examine coordinate non-commutativity limits."
+        },
+        "chern-simons": {
+            ko: "3차원 Chern-Simons 게이지 작용과 레벨(k)을 조정하여 Trefoil 매듭의 위상적 기하학 불변량(Jones Polynomial)을 산출합니다.",
+            en: "Solve 3D Chern-Simons topological quantum field theories and calculate Trefoil knot Jones polynomials."
+        },
+        celestial: {
+            ko: "4차원 산란 진폭을 Mellin 변환을 통해 2차원 천구(Celestial Sphere) 등각상관 함수로 변환하고 BMS 초대칭 대수 전하를 유도합니다.",
+            en: "Map 4D scattering amplitudes to 2D celestial sphere conformal blocks using Mellin transforms."
+        },
+        "generalized-geom": {
+            ko: "접다발과 여접다발의 합인 T ⊕ T* 상의 일반화된 복소 구조와 Courant 괄호식을 정의해 Type II 초대칭 플럭스 기하학을 통합합니다.",
+            en: "Unify Kähler and complex structures on tangent-cotangent bundles using Generalized Geometry."
+        },
+        "loop-gravity": {
+            ko: "스핀 네트워크 기하학의 불연속적 시공간에서 면적 연산자(Area Operator)의 양자화된 고유값을 도출하고 Immirzi 변수 비율을 산정합니다.",
+            en: "Compute quantized area operator eigenvalues on spin network nodes in Loop Quantum Gravity."
+        },
+        "non-geometric-flux": {
+            ko: "끈이 감긴 감김 차원의 모노드로미 전이에서 발생하는 비기하학 플럭스 Q, R로 인해 유도되는 비가환/비결합 평탄 좌표계 작용을 계산합니다.",
+            en: "Track non-geometric fluxes (Q, R) and coordinate non-associativity in T-fold backgrounds."
+        },
+        "conformal-bootstrap": {
+            ko: "Crossing Symmetry 조건을 만족하는 연산자 곱 전개(OPE) 수치 범위를 설정하여 등각 3차원 Ising 모형의 임계 경계를 차트화합니다.",
+            en: "Map non-perturbative bounds on conformal CFT operator dimensions using crossing symmetry bootstrap."
+        },
+        "integrable-deformations": {
+            ko: "양-백스터(Yang-Baxter) 변형식을 통해 2차원 비선형 시그마 모형의 가적분성(Integrability)을 해소하고 중력 배경 다양체를 변형합니다.",
+            en: "Calculate background deformations (such as eta-deformations) preserving integrable Lax connections."
+        },
+        resurgence: {
+            ko: "섭동 전개 계수의 계승적 발산 거동에서 Borel 적분 특이점을 검출하고, Picard-Lefschetz saddle 변환을 거쳐 비섭동 instanton 가중치를 복원합니다.",
+            en: "Reconstruct non-perturbative physics from divergent perturbation series via Borel resurgence and Lefschetz thimbles."
+        },
+        "padic-string": {
+            ko: "p-진수 정수체(Q_p)의 월드시트 가환계를 구성하여 Freund-Olson p-adic 타키온 산란 진폭 및 아델릭 곱 공식을 계산합니다.",
+            en: "Calculate tree-level amplitudes over p-adic number fields and verify the Adelic product formula."
+        },
+        "mock-modular": {
+            ko: "K3 표면의 Elliptic genus 분배함수의 비홀로모픽 Maass completion 계수를 산출하여 Mathieu 군 M_24 표현론 차원과 대조합니다.",
+            en: "Calculate mock modular forms and Mathieu group M24 representation dimensions of K3 elliptic genera."
+        },
+        "carrollian-physics": {
+            ko: "광속 한계가 영으로 수렴하는 극단적 캐롤 극한(c -> 0) 시공간의 벡터장 변동성과 천구 등각장 초대칭 전하를 도출합니다.",
+            en: "Explore Carrollian limits (c -> 0) and flat space holography at null infinity."
+        },
+        "non-invertible": {
+            ko: "군론적 대칭성을 넘어서는 Fusion Category 결합선 교차를 설계하고, 위상 결함 결합에 따른 비가역적 대칭성 파동함수를 연산합니다.",
+            en: "Evaluate fusion Category defect line (TDL) intersections and non-invertible symmetry actions."
+        },
+        "boundary-sft": {
+            ko: "경계 등각장론(BCFT) 타키온 응축 퍼텐셜 V(T)에 따른 D-브레인 소멸 과정의 임계 분배함수와 잔여 에너지 흐름을 수치 모델링합니다.",
+            en: "Model D-brane decay and energy-momentum tensor transitions under Boundary String Field Theory."
+        },
+        "freed-witten": {
+            ko: "D-브레인 월드시트에 통과하는 게이지 B-필드 플럭스에 의해 발생하는 코호몰로지 변칙 W_3(W) + [H] = 0 기하 상쇄를 검증합니다.",
+            en: "Verify the topological obstruction cancelation class for D-branes in flux backgrounds."
+        },
+        "theory-summary": {
+            ko: "35개 물리 시뮬레이션의 수학적 정밀성과 상호 연관성(이중성, 변칙 상쇄, 게이지 변환 등)을 한눈에 요약 진단하는 대시보드 리포트입니다.",
+            en: "View a unified synthesis of the mathematical physics, connection mappings, and consistency metrics of all labs."
+        }
+    };
+
     function translatePage(lang) {
         stopObserving();
         try {
@@ -840,6 +987,52 @@
             const activeLang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
             translatePage(activeLang);
         }, 100);
+
+        // Tooltip Engine for Navigation Tabs
+        const tooltip = document.createElement("div");
+        tooltip.className = "custom-tab-tooltip";
+        document.body.appendChild(tooltip);
+
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabButtons.forEach(btn => {
+            const tabId = btn.getAttribute("data-tab");
+            if (!TAB_DESCRIPTIONS[tabId]) return;
+
+            btn.addEventListener("mouseenter", () => {
+                const currentLang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
+                const desc = TAB_DESCRIPTIONS[tabId][currentLang] || TAB_DESCRIPTIONS[tabId]["en"];
+                tooltip.innerText = desc;
+                tooltip.classList.add("visible");
+
+                // Position calculation
+                const rect = btn.getBoundingClientRect();
+                const tooltipWidth = tooltip.offsetWidth;
+                const tooltipHeight = tooltip.offsetHeight;
+
+                let left = rect.left + (rect.width - tooltipWidth) / 2 + window.scrollX;
+                let top = rect.top - tooltipHeight - 8 + window.scrollY;
+
+                // Adjust to show below if it's too close to top
+                if (rect.top - tooltipHeight - 8 < 10) {
+                    top = rect.bottom + 8 + window.scrollY;
+                }
+                if (left < 10) left = 10;
+                if (left + tooltipWidth > window.innerWidth - 10) {
+                    left = window.innerWidth - tooltipWidth - 10;
+                }
+
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${top}px`;
+            });
+
+            btn.addEventListener("mouseleave", () => {
+                tooltip.classList.remove("visible");
+            });
+
+            btn.addEventListener("click", () => {
+                tooltip.classList.remove("visible");
+            });
+        });
         
         // MutationObserver to watch text changes
         observer = new MutationObserver((mutations) => {
