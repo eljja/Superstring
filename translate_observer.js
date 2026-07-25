@@ -988,49 +988,114 @@
             translatePage(activeLang);
         }, 100);
 
+        // Tab Category Definitions
+        const TAB_CATEGORIES = {
+            foundations: ["explorer", "assembly", "scattering", "diagnostics", "theory-summary"],
+            dualities: ["dualities", "k-theory", "f-theory", "mirror", "osv-topological", "non-commutative", "generalized-geom", "non-geometric-flux", "integrable-deformations", "freed-witten"],
+            holography: ["holography", "cosmology", "page-curve", "tensor-network", "celestial", "carrollian-physics"],
+            frontiers: ["swampland", "standard-model", "higgs", "amplituhedron", "string-field", "seiberg-witten", "matrix-model", "chern-simons", "loop-gravity", "conformal-bootstrap", "resurgence", "padic-string", "mock-modular", "non-invertible", "boundary-sft"]
+        };
+
         // Tooltip Engine for Navigation Tabs
         const tooltip = document.createElement("div");
         tooltip.className = "custom-tab-tooltip";
         document.body.appendChild(tooltip);
 
         const tabButtons = document.querySelectorAll(".tab-btn");
-        tabButtons.forEach(btn => {
+
+        function showTooltip(btn) {
             const tabId = btn.getAttribute("data-tab");
             if (!TAB_DESCRIPTIONS[tabId]) return;
 
-            btn.addEventListener("mouseenter", () => {
-                const currentLang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
-                const desc = TAB_DESCRIPTIONS[tabId][currentLang] || TAB_DESCRIPTIONS[tabId]["en"];
-                tooltip.innerText = desc;
-                tooltip.classList.add("visible");
+            const currentLang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
+            const desc = TAB_DESCRIPTIONS[tabId][currentLang] || TAB_DESCRIPTIONS[tabId]["en"];
+            tooltip.innerText = desc;
+            tooltip.classList.add("visible");
 
-                // Position calculation
-                const rect = btn.getBoundingClientRect();
-                const tooltipWidth = tooltip.offsetWidth;
-                const tooltipHeight = tooltip.offsetHeight;
+            // Position calculation
+            const rect = btn.getBoundingClientRect();
+            const tooltipWidth = tooltip.offsetWidth;
+            const tooltipHeight = tooltip.offsetHeight;
 
-                let left = rect.left + (rect.width - tooltipWidth) / 2 + window.scrollX;
-                let top = rect.top - tooltipHeight - 8 + window.scrollY;
+            let left = rect.left + (rect.width - tooltipWidth) / 2 + window.scrollX;
+            let top = rect.top - tooltipHeight - 8 + window.scrollY;
 
-                // Adjust to show below if it's too close to top
-                if (rect.top - tooltipHeight - 8 < 10) {
-                    top = rect.bottom + 8 + window.scrollY;
+            // Adjust to show below if it's too close to top
+            if (rect.top - tooltipHeight - 8 < 10) {
+                top = rect.bottom + 8 + window.scrollY;
+            }
+            if (left < 10) left = 10;
+            if (left + tooltipWidth > window.innerWidth - 10) {
+                left = window.innerWidth - tooltipWidth - 10;
+            }
+
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
+        }
+
+        function hideTooltip() {
+            tooltip.classList.remove("visible");
+        }
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener("mouseenter", () => showTooltip(btn));
+            btn.addEventListener("focus", () => showTooltip(btn));
+            btn.addEventListener("mouseleave", hideTooltip);
+            btn.addEventListener("blur", hideTooltip);
+            btn.addEventListener("click", hideTooltip);
+        });
+
+        // Tab Search & Category Filter Handler
+        const searchInput = document.getElementById("tab-search-input");
+        const clearBtn = document.getElementById("tab-search-clear");
+        const categoryPills = document.querySelectorAll(".category-pill");
+        let activeCategory = "all";
+
+        function filterTabs() {
+            const query = (searchInput?.value || "").toLowerCase().trim();
+            if (clearBtn) clearBtn.style.display = query ? "block" : "none";
+
+            tabButtons.forEach(btn => {
+                const tabId = btn.getAttribute("data-tab");
+                const text = btn.innerText.toLowerCase();
+                const descObj = TAB_DESCRIPTIONS[tabId] || {};
+                const descKo = (descObj.ko || "").toLowerCase();
+                const descEn = (descObj.en || "").toLowerCase();
+
+                const matchesCategory = (activeCategory === "all") || 
+                    (TAB_CATEGORIES[activeCategory] && TAB_CATEGORIES[activeCategory].includes(tabId));
+
+                const matchesQuery = !query || 
+                    text.includes(query) || 
+                    tabId.toLowerCase().includes(query) || 
+                    descKo.includes(query) || 
+                    descEn.includes(query);
+
+                if (matchesCategory && matchesQuery) {
+                    btn.classList.remove("hidden");
+                } else {
+                    btn.classList.add("hidden");
                 }
-                if (left < 10) left = 10;
-                if (left + tooltipWidth > window.innerWidth - 10) {
-                    left = window.innerWidth - tooltipWidth - 10;
-                }
-
-                tooltip.style.left = `${left}px`;
-                tooltip.style.top = `${top}px`;
             });
+        }
 
-            btn.addEventListener("mouseleave", () => {
-                tooltip.classList.remove("visible");
+        if (searchInput) {
+            searchInput.addEventListener("input", filterTabs);
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener("click", () => {
+                if (searchInput) searchInput.value = "";
+                filterTabs();
             });
+        }
 
-            btn.addEventListener("click", () => {
-                tooltip.classList.remove("visible");
+        categoryPills.forEach(pill => {
+            pill.addEventListener("click", () => {
+                categoryPills.forEach(p => p.classList.remove("active"));
+                pill.classList.add("active");
+                activeCategory = pill.getAttribute("data-cat") || "all";
+                filterTabs();
             });
         });
         

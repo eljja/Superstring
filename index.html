@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>초끈 데이터베이스 & 시각화 시뮬레이터 (Superstring Hub)</title>
+    <!-- SEO & Open Graph Meta Tags -->
+    <meta name="description" content="Superstring Theory Particle Assembly Simulation & Verification Engine with 35 interactive physical labs and theoretical chapters.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eljja.github.io/Superstring/">
+    <meta property="og:title" content="Superstring Hub - 10D/11D Quantum Gravity Simulator">
+    <meta property="og:description" content="Interactive Superstring Theory Particle Assembly, Scattering Amplitudes, Dualities, and 35 Advanced Theoretical Labs.">
+    <meta property="og:image" content="https://eljja.github.io/Superstring/favicon.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Superstring Hub Simulator">
+    <meta name="twitter:description" content="Interactive 10D/11D Superstring Theory Particle Assembly & Theoretical Physics Engine.">
     <!-- Google Fonts: Outfit & Inter for high-end look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,6 +70,37 @@
                 </div>
             </div>
         </header>
+
+        <!-- Tab Quick Search & Category Filter Bar -->
+        <div class="tab-filter-bar glass-card">
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="tab-search-input" placeholder="Search 36 theory labs (e.g., Higgs, Matrix, Holography)..." class="tab-search-input">
+                <button type="button" id="tab-search-clear" class="search-clear-btn" style="display:none;">✕</button>
+            </div>
+            <div class="category-pills">
+                <button type="button" class="category-pill active" data-cat="all">
+                    <span class="lang-text en">All</span>
+                    <span class="lang-text ko" style="display:none;">전체</span>
+                </button>
+                <button type="button" class="category-pill" data-cat="foundations">
+                    <span class="lang-text en">Foundations</span>
+                    <span class="lang-text ko" style="display:none;">기초/초끈이론</span>
+                </button>
+                <button type="button" class="category-pill" data-cat="dualities">
+                    <span class="lang-text en">Branes & Dualities</span>
+                    <span class="lang-text ko" style="display:none;">브레인/이중성</span>
+                </button>
+                <button type="button" class="category-pill" data-cat="holography">
+                    <span class="lang-text en">Holography & Cosmology</span>
+                    <span class="lang-text ko" style="display:none;">홀로그래피/우주론</span>
+                </button>
+                <button type="button" class="category-pill" data-cat="frontiers">
+                    <span class="lang-text en">Frontiers</span>
+                    <span class="lang-text ko" style="display:none;">첨단장론</span>
+                </button>
+            </div>
+        </div>
 
         <!-- Tab Navigation Bar -->
         <div class="tab-navigation glass-card">

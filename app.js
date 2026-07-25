@@ -5185,10 +5185,64 @@ document.addEventListener("DOMContentLoaded", () => {
     if(fwBtn) fwBtn.addEventListener("click", () => { runFreedWittenEngine(); fwBtn.innerText="완료 ✅"; setTimeout(()=>fwBtn.innerText="📉 프리드-위튼 위상 기하성 상쇄 연산",1500); });
 });
 
+// --- Copy to Clipboard Utility ---
+function showCopyToast(msg) {
+    let toast = document.getElementById("copy-toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "copy-toast";
+        toast.className = "copy-toast";
+        document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
+}
+
+function copyToClipboard(text, customMsg) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            const lang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
+            const msg = customMsg || (lang === "ko" ? "📋 클립보드에 복사되었습니다!" : "📋 Copied to clipboard!");
+            showCopyToast(msg);
+        }).catch(err => {
+            const lang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
+            const msg = customMsg || (lang === "ko" ? "📋 클립보드에 복사되었습니다!" : "📋 Copied to clipboard!");
+            showCopyToast(msg);
+        });
+    } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        const lang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
+        const msg = customMsg || (lang === "ko" ? "📋 클립보드에 복사되었습니다!" : "📋 Copied to clipboard!");
+        showCopyToast(msg);
+    }
+}
+
+function initCopyHandlers() {
+    document.querySelectorAll(".math-block").forEach(block => {
+        block.setAttribute("title", "Click to copy LaTeX equation");
+        block.addEventListener("click", () => {
+            const tex = block.innerText.trim();
+            const lang = document.querySelector(".lang-pill-btn.active")?.getAttribute("data-lang") || "en";
+            const msg = lang === "ko" ? "📋 LaTeX 수식이 복사되었습니다!" : "📋 LaTeX formula copied!";
+            copyToClipboard(tex, msg);
+        });
+    });
+}
+
 window.onload = () => {
     resizeCanvas();
     initTabs();
     initTheorySummary();
+    initCopyHandlers();
     
     // Select default explorer values
     updateTheoryUI("Type_IIB");
