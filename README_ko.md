@@ -102,5 +102,4 @@ print(f"가진 질량: {result['mass']} GeV, 수준 일치 충족 여부: {resul
 ---
 
 ## 📄 라이선스 (License)
-본 프로젝트는 기존 저장소에 포함된 오픈소스 라이선스 정책을 따릅니다.
-Detailed license terms can be found in the [LICENSE](LICENSE) file.
+본 프로젝트는 **Apache License 2.0** 조건에 따라 라이선스가 부여됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.

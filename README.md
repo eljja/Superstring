@@ -140,4 +140,4 @@ All algorithms in this package are strictly verified against standard treatises 
 ---
 
 ## 📄 License
-This project is licensed under the terms described in the [LICENSE](LICENSE) file.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
